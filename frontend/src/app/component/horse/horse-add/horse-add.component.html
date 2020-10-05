@@ -1,0 +1,58 @@
+
+<!-- Modal success -->
+<div class="modal fade" id="successModal" role="alertdialog" data-toggle="modal">
+  <div class="modal-dialog" role="document" >
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Success</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          &times;
+        </button>
+      </div>
+      <div class="modal-body">
+        <h3>Saving horse successful!</h3>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Horse Add -->
+<div class="input-group mb-3 mt-lg-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text">Name</span>
+  </div>
+  <input type="text" class="form-control" [(ngModel)]="newHorse.name">
+</div>
+<div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text">Description</span>
+  </div>
+  <input type="text" class="form-control" [(ngModel)]="newHorse.description" placeholder="optional">
+</div>
+<div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text">Birthdate</span>
+  </div>
+  <input type="date" class="form-control"  [(ngModel)]="newHorse.birthDate">
+</div>
+<div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text">Sex</span>
+  </div>
+  <select class="custom-select" [(ngModel)]="newHorse.isMale">
+    <option value="null" selected disabled hidden>Please select the sex of the horse</option>
+    <option value="true">Male</option>
+    <option value="false">Female</option>
+  </select>
+</div>
+<div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text">Breed</span>
+  </div>
+  <select class="custom-select" [(ngModel)]="newHorse.breedId">
+    <option value="null" selected disabled hidden>Please select a breed</option>
+    <option *ngFor="let breed of addBreed" value="{{breed.id}}">{{breed.name}}</option>
+  </select>
+</div>
+<button type="button" class="btn btn-outline-primary btn-block" (click)="addHorse(newHorse)">Add horse</button>
+
