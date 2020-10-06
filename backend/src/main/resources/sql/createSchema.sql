@@ -10,6 +10,6 @@ CREATE TABLE IF NOT EXISTS horse
   name          VARCHAR(255) NOT NULL,
   description   VARCHAR(255),
   birth_date    DATETIME     NOT NULL,
-  is_male       BIT          NOT NULL,
+  is_male       BOOLEAN          NOT NULL,
   breed_id      BIGINT       REFERENCES breed(id)
 );

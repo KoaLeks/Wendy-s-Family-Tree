@@ -4,6 +4,7 @@ import {Breed} from '../../dto/breed';
 import {BreedService} from '../../service/breed.service';
 // @ts-ignore
 import $ = require('jquery');
+import {Horse} from '../../dto/horse';
 
 @Component({
   selector: 'app-horse',
@@ -12,7 +13,10 @@ import $ = require('jquery');
 })
 export class HorseComponent implements OnInit {
 
-  public breeds: Breed[];
+
+  public horseList: Horse[];
+  public selectedHorse: Horse = new Horse(null, null, null, null, null, null);
+  public breedList: Breed[];
   public breedMap: Map<number, string> = new Map<number, string>();
   public error = false;
   public errorMessage = '';
@@ -20,6 +24,11 @@ export class HorseComponent implements OnInit {
 
   ngOnInit(): void {
     this.getBreeds();
+    this.getHorses();
+  }
+
+  public selectHorse(event){
+    this.selectedHorse = event;
   }
 
   /**
@@ -28,7 +37,7 @@ export class HorseComponent implements OnInit {
    public getBreeds(){
     this.breedService.getAllBreeds().subscribe(
       (breeds: Breed[]) => {
-        this.breeds = breeds;
+        this.breedList = breeds;
         this.setBreedMap();
       }, error => {
         this.defaultServiceErrorHandling(error);
@@ -36,12 +45,24 @@ export class HorseComponent implements OnInit {
     );
   }
 
+  /**
+   * Loads all horses
+   */
+  public getHorses(){
+    this.horseService.getHorseList().subscribe(
+      (horseList: Horse[]) => {
+        this.horseList = horseList;
+      }, error => {
+        this.defaultServiceErrorHandling(error);
+      }
+    );
+  }
 
   /**
    * Maps breed.name to its id
    */
   public setBreedMap(){
-    this.breeds.forEach(breed => {
+    this.breedList.forEach(breed => {
       this.breedMap.set(breed.id, breed.name);
     });
   }

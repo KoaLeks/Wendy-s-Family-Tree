@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.assignment.individual.service.impl;
 
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
+import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.exception.PersistenceException;
 import at.ac.tuwien.sepm.assignment.individual.exception.ValidationException;
 import at.ac.tuwien.sepm.assignment.individual.persistence.HorseDao;
@@ -11,7 +12,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.lang.invoke.MethodHandles;
+import java.util.List;
 
 @Service
 public class HorseServiceImpl implements HorseService {
@@ -31,5 +34,20 @@ public class HorseServiceImpl implements HorseService {
         LOGGER.debug("Save: Horse values: " + horse);
         validator.validateNewHorse(horse);
         return horseDao.save(horse);
+    }
+
+    @Override
+    public Horse update(Long id, Horse horse) throws PersistenceException, NotFoundException, ValidationException {
+        LOGGER.trace("update({})", id);
+        LOGGER.debug("Update: Horse id: {}; Horse values:  name={}, description={},  date={}, isMale={}, breedId={}",
+            id, horse.getName(), horse.getDescription(), horse.getBirthDate(), horse.getIsMale(), horse.getBreedId());
+        validator.validateUpdateHorse(id, horse);
+        return horseDao.update(id, horse);
+    }
+
+    @Override
+    public List<Horse> getAll() throws PersistenceException {
+        LOGGER.trace("Get all horses.");
+        return horseDao.getAll();
     }
 }

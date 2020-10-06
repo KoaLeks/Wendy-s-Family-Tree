@@ -29,4 +29,17 @@ public class Validator {
         }
     }
 
+    public void validateUpdateHorse(Long id, Horse horse) throws ValidationException {
+        if (id < 0) {
+            LOGGER.error("Invalid id value.");
+            throw new ValidationException("Invalid ID value! ID=" + id);
+        }
+        if (horse.getName() == null || horse.getName().equals("")) {
+            throw new ValidationException("Name must be set!");
+        }
+        if (!horse.getBirthDate().before(Date.valueOf(LocalDate.now()))) {
+            throw new ValidationException("Birth date can't be set to future date!");
+        }
+    }
+
 }

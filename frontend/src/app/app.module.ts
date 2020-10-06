@@ -9,6 +9,8 @@ import {HttpClientModule} from '@angular/common/http';
 import { HorseComponent } from './component/horse/horse.component';
 import { HorseAddComponent } from './component/horse/horse-add/horse-add.component';
 import {FormsModule} from '@angular/forms';
+import { HorseEditComponent } from './component/horse/horse-edit/horse-edit.component';
+import { HorseListComponent } from './component/horse/horse-list/horse-list.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,9 @@ import {FormsModule} from '@angular/forms';
     HeaderComponent,
     BreedComponent,
     HorseComponent,
-    HorseAddComponent
+    HorseAddComponent,
+    HorseEditComponent,
+    HorseListComponent
   ],
     imports: [
         BrowserModule,

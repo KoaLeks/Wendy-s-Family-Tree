@@ -90,11 +90,11 @@ public class HorseDto {
         this.birthDate = birthDate;
     }
 
-    public boolean isMale() {
+    public boolean getIsMale() {
         return isMale;
     }
 
-    public void setMale(boolean male) {
+    public void setIsMale(boolean male) {
         isMale = male;
     }
 
