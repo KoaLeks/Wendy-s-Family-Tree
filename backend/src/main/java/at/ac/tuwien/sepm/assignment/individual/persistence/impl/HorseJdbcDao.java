@@ -108,6 +108,23 @@ public class HorseJdbcDao implements HorseDao {
     }
 
     @Override
+    public void delete(Long id) throws PersistenceException{
+        LOGGER.trace("Delete horse with id {}", id);
+        String sql = "DELETE FROM " + TABLE_NAME + " WHERE ID=?";
+        try {
+            jdbcTemplate.update(connection -> {
+                PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                stmt.setLong(1, id);
+                LOGGER.debug("Query: " + stmt.toString());
+                return stmt;
+            });
+        } catch (DataAccessException e){
+            LOGGER.error("Could not find horse with id: " + id);
+            throw new PersistenceException("Could not find horse with id: " + id);
+        }
+    }
+
+    @Override
     public List<Horse> getAll() throws PersistenceException {
         LOGGER.trace("Get all horses");
         String sql = "SELECT * FROM " + TABLE_NAME;

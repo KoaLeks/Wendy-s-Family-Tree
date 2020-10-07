@@ -30,10 +30,7 @@ public class Validator {
     }
 
     public void validateUpdateHorse(Long id, Horse horse) throws ValidationException {
-        if (id < 0) {
-            LOGGER.error("Invalid id value.");
-            throw new ValidationException("Invalid ID value! ID=" + id);
-        }
+        checkId(id);
         if (horse.getName() == null || horse.getName().equals("")) {
             throw new ValidationException("Name must be set!");
         }
@@ -42,4 +39,9 @@ public class Validator {
         }
     }
 
+    public void checkId(Long id) {
+        if (id < 0) {
+            throw new ValidationException("Invalid ID value! ID=" + id);
+        }
+    }
 }

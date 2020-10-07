@@ -45,6 +45,13 @@ public class HorseServiceImpl implements HorseService {
     }
 
     @Override
+    public void delete(Long id) throws ValidationException, PersistenceException {
+        LOGGER.trace("delete({})", id);
+        validator.checkId(id);
+        horseDao.delete(id);
+    }
+
+    @Override
     public List<Horse> getAll() throws PersistenceException {
         LOGGER.trace("Get all horses.");
         return horseDao.getAll();

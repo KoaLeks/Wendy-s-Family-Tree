@@ -64,9 +64,22 @@ public class HorseEndpoint {
         }
     }
 
+    @DeleteMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteHorse(@PathVariable("id") Long id) {
+        LOGGER.info("Delete " + BASE_URL + "/" + id);
+        try {
+            horseService.delete(id);
+        } catch (PersistenceException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Error deleting horse: " + e.getMessage(), e);
+        } catch (ValidationException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error deleting horse: " + e.getMessage(), e);
+        }
+    }
+
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<HorseDto> getAll(){
+    public List<HorseDto> getAllHorses(){
         LOGGER.info("GET All " + BASE_URL + "/" + "");
         try {
             return horseMapper.entityToDtoList(horseService.getAll());

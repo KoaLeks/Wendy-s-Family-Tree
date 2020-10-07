@@ -35,6 +35,15 @@ export class HorseService {
   }
 
   /**
+   * Delete specific horse from the backend
+   * @param id of the horse to delete
+   */
+  deleteHorse(id: number): void{
+    console.log('Deleting horse ' + id);
+    this.httpClient.delete(this.messageBaseUri + '/' + id).subscribe();
+  }
+
+  /**
    * Gets all horses from the database
    */
   getHorseList(): Observable<Horse[]> {

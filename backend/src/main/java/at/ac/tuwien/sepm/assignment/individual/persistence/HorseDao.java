@@ -27,6 +27,12 @@ public interface HorseDao {
     Horse update(Long id, Horse horse) throws NotFoundException, PersistenceException;
 
     /**
+     * @param id of the horse to delete.
+     * @throws PersistenceException will be thrown if something goes wrong during the database access.
+     */
+    void delete(Long id) throws PersistenceException;
+
+    /**
      * @return list of all horses in the database.
      * @throws PersistenceException will be thrown if something goes wrong during the database access.
      */

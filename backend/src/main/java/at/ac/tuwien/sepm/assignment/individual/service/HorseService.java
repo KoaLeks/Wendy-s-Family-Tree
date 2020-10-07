@@ -32,6 +32,15 @@ public interface HorseService {
     Horse update(Long id, Horse horse) throws PersistenceException, NotFoundException, ValidationException;
 
     /**
+     * Deletes the horse with the given id from the database
+     *
+     * @param id of the horse to delete.
+     * @throws ValidationException  will be thrown if the id value is invalid
+     * @throws PersistenceException will be thrown if something goes wrong during the database access.
+     */
+    void delete(Long id) throws ValidationException, PersistenceException;
+
+    /**
      * @return list of all horses in the database.
      * @throws PersistenceException will be thrown if something goes wrong during the database access.
      */
