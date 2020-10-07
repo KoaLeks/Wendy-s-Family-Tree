@@ -12,7 +12,7 @@ import $ = require('jquery');
   styleUrls: ['./horse-add.component.scss']
 })
 export class HorseAddComponent implements OnInit {
-  public newHorse: Horse = new Horse(null, null, null, null, null, null);
+  public newHorse: Horse = new Horse(null, null, null, null, null, new Breed(null, null));
   @Input() addBreed: Breed[];
   addError = false;
 

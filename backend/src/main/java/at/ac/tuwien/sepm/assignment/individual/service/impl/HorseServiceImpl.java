@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 
@@ -40,7 +39,7 @@ public class HorseServiceImpl implements HorseService {
     public Horse update(Long id, Horse horse) throws PersistenceException, NotFoundException, ValidationException {
         LOGGER.trace("update({})", id);
         LOGGER.debug("Update: Horse id: {}; Horse values:  name={}, description={},  date={}, isMale={}, breedId={}",
-            id, horse.getName(), horse.getDescription(), horse.getBirthDate(), horse.getIsMale(), horse.getBreedId());
+            id, horse.getName(), horse.getDescription(), horse.getBirthDate(), horse.getIsMale(), horse.getBreed());
         validator.validateUpdateHorse(id, horse);
         return horseDao.update(id, horse);
     }

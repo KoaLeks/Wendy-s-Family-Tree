@@ -1,3 +1,4 @@
+import {Breed} from './breed';
 
 export class Horse {
   constructor(
@@ -6,5 +7,5 @@ export class Horse {
     public description: string,
     public birthDate: Date,
     public isMale: boolean,
-    public breedId: number){}
+    public breed: Breed){}
 }

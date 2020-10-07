@@ -49,10 +49,15 @@
   <div class="input-group-prepend">
     <span class="input-group-text">Breed</span>
   </div>
-  <select class="custom-select" [(ngModel)]="newHorse.breedId">
-    <option value="null" selected disabled hidden>Please select a breed</option>
-    <option *ngFor="let breed of addBreed" value="{{breed.id}}">{{breed.name}}</option>
+  <select class="custom-select" [(ngModel)]="newHorse.breed">
+    <option selected disabled hidden>Please select a breed</option>
+    <option value="null" >No specific breed</option>
+    <option *ngFor="let breed of addBreed" [ngValue]="breed">{{breed.name}}</option>
   </select>
 </div>
 <button type="button" class="btn btn-outline-primary btn-block" (click)="addHorse(newHorse)">Add horse</button>
 
+{{newHorse.name}}
+{{newHorse.isMale}}
+{{newHorse.breed.name}}
+{{newHorse.breed.id}}

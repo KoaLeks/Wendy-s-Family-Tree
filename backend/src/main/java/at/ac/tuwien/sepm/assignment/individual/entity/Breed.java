@@ -54,6 +54,6 @@ public class Breed {
 
     @Override
     public String toString() {
-        return "Owner{ " + fieldsString() +" }";
+        return "Breed{ " + fieldsString() +" }";
     }
 }

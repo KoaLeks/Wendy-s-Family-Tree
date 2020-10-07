@@ -42,9 +42,9 @@ public class HorseEndpoint {
             Horse horseEntity = horseMapper.dtoToEntity(horse);
             return horseMapper.entityToDto(horseService.save(horseEntity));
         } catch (ValidationException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error saving horse", e);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error saving horse: " + e.getMessage(), e);
         } catch (PersistenceException e){
-            throw  new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Error saving horse", e);
+            throw  new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Error saving horse: " + e.getMessage(), e);
         }
     }
 
@@ -56,11 +56,11 @@ public class HorseEndpoint {
             Horse horseEntity = horseMapper.dtoToEntity(horse);
             return horseMapper.entityToDto(horseService.update(id, horseEntity));
         } catch (PersistenceException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Error updating horse: ", e);
+            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Error updating horse: " + e.getMessage(), e);
         } catch (ValidationException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error updating horse: ", e);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error updating horse: " + e.getMessage(), e);
         } catch (NotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error updating horse: ", e);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error updating horse: " + e.getMessage(), e);
         }
     }
 

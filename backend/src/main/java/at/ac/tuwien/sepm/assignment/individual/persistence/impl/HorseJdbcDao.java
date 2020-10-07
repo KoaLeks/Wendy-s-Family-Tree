@@ -37,8 +37,8 @@ public class HorseJdbcDao implements HorseDao {
     @Override
     public Horse save(Horse horse) throws PersistenceException {
         LOGGER.trace("Save horse with name: " + horse.getName());
-        final String sql = "INSERT INTO " + TABLE_NAME + " (ID, NAME, DESCRIPTION, BIRTH_DATE, IS_MALE, BREED_ID)" +
-            " VALUES (null, ?, ?, ?, ?, ?)";
+        final String sql = "INSERT INTO " + TABLE_NAME + " (ID, NAME, DESCRIPTION, BIRTH_DATE, IS_MALE, BREED_ID, BREED_NAME)" +
+            " VALUES (null, ?, ?, ?, ?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         try {
@@ -48,10 +48,14 @@ public class HorseJdbcDao implements HorseDao {
                 stmt.setString(2, horse.getDescription());
                 stmt.setDate(3, horse.getBirthDate());
                 stmt.setBoolean(4, horse.getIsMale());
-                if (horse.getBreedId() != null) {
-                    stmt.setLong(5, horse.getBreedId());
+                LOGGER.info("Horse "+horse);
+                LOGGER.info("Horse Breed "+horse.getBreed());
+                if (horse.getBreed().getId() != null) {
+                    stmt.setLong(5, horse.getBreed().getId());
+                    stmt.setString(6, horse.getBreed().getName());
                 } else {
                     stmt.setNull(5, Types.BIGINT);
+                    stmt.setString(6, null);
                 }
                 LOGGER.debug("Query: " + stmt.toString());
                 return stmt;
@@ -69,7 +73,7 @@ public class HorseJdbcDao implements HorseDao {
     public Horse update(Long id, Horse horse) throws NotFoundException, PersistenceException {
         LOGGER.trace("Get horse with id {} and update values", id);
         String sql = "UPDATE " + TABLE_NAME + " SET NAME=COALESCE(?, NAME), DESCRIPTION=COALESCE(?, DESCRIPTION), " +
-            "BIRTH_DATE=COALESCE(?, BIRTH_DATE), IS_MALE=COALESCE(?, IS_MALE), BREED_ID=ISNULL(?, BREED_ID) WHERE ID=?";
+            "BIRTH_DATE=COALESCE(?, BIRTH_DATE), IS_MALE=COALESCE(?, IS_MALE), BREED_ID=?, BREED_NAME=COALESCE(?, BREED_NAME) WHERE ID=?";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         try {
@@ -79,12 +83,16 @@ public class HorseJdbcDao implements HorseDao {
                 stmt.setString(2, horse.getDescription());
                 stmt.setDate(3, horse.getBirthDate());
                 stmt.setBoolean(4, horse.getIsMale());
-                if (horse.getBreedId() != null) {
-                    stmt.setLong(5, horse.getBreedId());
+                LOGGER.info("Horse "+horse);
+                LOGGER.info("Horse Breed "+horse.getBreed());
+                if (horse.getBreed().getId() != null ) {
+                    stmt.setLong(5, horse.getBreed().getId());
+                    stmt.setString(6, horse.getBreed().getName());
                 } else {
                     stmt.setNull(5, Type.LONG);
+                    stmt.setString(6, null);
                 }
-                stmt.setLong(6, id);
+                stmt.setLong(7, id);
                 LOGGER.debug("Query: " + stmt.toString());
                 return stmt;
             }, keyHolder);
@@ -95,6 +103,7 @@ public class HorseJdbcDao implements HorseDao {
         if (keyHolder.getKeyList().isEmpty()){
             throw new NotFoundException("Could not find horse with id: " + id);
         }
+
         return horse;
     }
 
@@ -123,7 +132,7 @@ public class HorseJdbcDao implements HorseDao {
         horse.setDescription(resultSet.getString("description"));
         horse.setBirthDate(Date.valueOf(resultSet.getTimestamp("birth_date").toLocalDateTime().toLocalDate()));
         horse.setIsMale(resultSet.getBoolean("is_male"));
-        horse.setBreed(resultSet.getLong("breed_id"));
+        horse.setBreed(new Breed(resultSet.getLong("breed_id"), resultSet.getString("breed_name")));
         return horse;
     }
 }

@@ -17,7 +17,7 @@ export class HorseComponent implements OnInit {
   public horseList: Horse[];
   public selectedHorse: Horse = new Horse(null, null, null, null, null, null);
   public breedList: Breed[];
-  public breedMap: Map<number, string> = new Map<number, string>();
+  // public breedMap: Map<number, string> = new Map<number, string>();
   public error = false;
   public errorMessage = '';
   constructor(private horseService: HorseService, private breedService: BreedService) { }
@@ -38,7 +38,7 @@ export class HorseComponent implements OnInit {
     this.breedService.getAllBreeds().subscribe(
       (breeds: Breed[]) => {
         this.breedList = breeds;
-        this.setBreedMap();
+        // this.setBreedMap();
       }, error => {
         this.defaultServiceErrorHandling(error);
       }
@@ -58,14 +58,14 @@ export class HorseComponent implements OnInit {
     );
   }
 
-  /**
-   * Maps breed.name to its id
-   */
-  public setBreedMap(){
-    this.breedList.forEach(breed => {
-      this.breedMap.set(breed.id, breed.name);
-    });
-  }
+  // /**
+  //  * Maps breed.name to its id
+  //  */
+  // public setBreedMap(){
+  //   this.breedList.forEach(breed => {
+  //     this.breedMap.set(breed.id, breed.name);
+  //   });
+  // }
 
   /**
    * Error flag will be deactivated, which clears the error message

@@ -10,28 +10,27 @@ public class Horse {
     private String description;
     private Date birthDate;
     private boolean isMale;
-    private Long breedId;
+    private Breed breed;
 
     public Horse() {
     }
 
-    public Horse(Long id, String name, String description, Date birthDate, boolean isMale, Long breedId) {
+    public Horse(Long id, String name, String description, Date birthDate, boolean isMale, Breed breed) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.birthDate = birthDate;
         this.isMale = isMale;
-        this.breedId = breedId;
+        this.breed = breed;
     }
 
     protected String fieldsString() {
         return "id=" + id +
             ", name='" + name +
-            ", description=" + description +
-            ", birthDate=" + birthDate +
-            ", isMale=" + isMale +
-            ", breed=" + breedId +
-            '\'';
+            "', description='" + description +
+            "', birthDate='" + birthDate +
+            "', isMale=" + isMale +
+            ", breed=" + breed;
     }
 
     @Override
@@ -49,12 +48,12 @@ public class Horse {
             name.equals(horse.name) &&
             Objects.equals(description, horse.description) &&
             birthDate.equals(horse.birthDate) &&
-            Objects.equals(breedId, horse.breedId);
+            Objects.equals(breed, horse.breed);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, birthDate, isMale, breedId);
+        return Objects.hash(id, name, description, birthDate, isMale, breed);
     }
 
     public Long getId() {
@@ -97,11 +96,11 @@ public class Horse {
         isMale = male;
     }
 
-    public Long getBreedId() {
-        return breedId;
+    public Breed getBreed() {
+        return breed;
     }
 
-    public void setBreed(Long breedId) {
-        this.breedId = breedId;
+    public void setBreed(Breed breed) {
+        this.breed = breed;
     }
 }

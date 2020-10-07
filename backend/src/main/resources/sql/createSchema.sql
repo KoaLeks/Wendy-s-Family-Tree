@@ -7,9 +7,10 @@ CREATE TABLE IF NOT EXISTS breed
 CREATE TABLE IF NOT EXISTS horse
 (
   id            BIGINT AUTO_INCREMENT PRIMARY KEY,
-  name          VARCHAR(255) NOT NULL,
+  name          VARCHAR(255)     NOT NULL,
   description   VARCHAR(255),
-  birth_date    DATETIME     NOT NULL,
+  birth_date    DATETIME         NOT NULL,
   is_male       BOOLEAN          NOT NULL,
-  breed_id      BIGINT       REFERENCES breed(id)
+  breed_id      BIGINT           REFERENCES breed(id),
+  breed_name    VARCHAR(255)
 );
