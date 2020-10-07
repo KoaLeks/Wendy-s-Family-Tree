@@ -1,0 +1,74 @@
+
+<!-- Modal success -->
+<div class="modal fade" id="successEditModal" role="alertdialog" data-toggle="modal">
+  <div class="modal-dialog" role="document" >
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Success</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          &times;
+        </button>
+      </div>
+      <div class="modal-body">
+        <h3>Editing horse successful!</h3>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Edit horse -->
+<div class="modal fade" id="horse-edit" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          &times;
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Name</span>
+          </div>
+          <input type="text" class="form-control" [(ngModel)]="editHorse.name">
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Description</span>
+          </div>
+          <input type="text" class="form-control" [(ngModel)]="editHorse.description" placeholder="optional">
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Birthdate</span>
+          </div>
+          <input type="date" class="form-control"  [(ngModel)]="editHorse.birthDate">
+        </div>
+
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Sex</span>
+          </div>
+          <select class="custom-select" [(ngModel)]="editHorse.isMale">
+            <option value="true">Male</option>
+            <option value="false">Female</option>
+          </select>
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Breed</span>
+          </div>
+          <select class="custom-select" [(ngModel)]="editHorse.breed">
+            <option value="null">No specific breed</option>
+            <option *ngFor="let breed of editBreeds"  [ngValue]="breed">{{breed.name}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="updateHorse()" data-dismiss="modal">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,30 @@
+
+<table class="table table-hover">
+  <thead class="thead-dark">
+  <tr>
+    <th scope="col">Name</th>
+    <th scope="col">Description</th>
+    <th scope="col">Birthdate</th>
+    <th scope="col">Sex</th>
+    <th scope="col">Breed</th>
+    <th scope="col">Edit</th>
+    <th scope="col">Delete</th>
+  </tr>
+  </thead>
+  <tbody *ngFor="let horse of horseListTable">
+  <tr>
+    <td>{{horse.name}}</td>
+    <td>{{horse.description}}</td>
+    <td>{{horse.birthDate}}</td>
+    <td>{{horse.isMale ? 'Male' : 'Female'}}</td>
+    <td>{{horse.breed.id != 0 ? horse.breed.name : 'not specified'}}</td>
+    <td><button class="btn btn-primary" data-toggle="modal" data-target="#horse-edit" (click)="selectHorse(horse)">
+      <i class="material-icons">edit</i>
+    </button></td>
+    <td><button class="btn btn-danger" data-toggle="modal" data-target="#horse-delete" (click)="selectHorse(horse)">
+      <i class="material-icons">delete</i>
+    </button>
+    </td>
+  </tr>
+  </tbody>
+</table>
