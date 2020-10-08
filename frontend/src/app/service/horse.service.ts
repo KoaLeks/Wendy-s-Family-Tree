@@ -28,7 +28,7 @@ export class HorseService {
    * Update specific horse from the backend
    * @param horse contains the updated values
    */
-  updateHorse(horse: Horse){
+  updateHorse(horse: Horse) {
     console.log('Edit horse ' + horse.id);
     const httpOptions = {headers: new HttpHeaders({'Content-Type': 'application/json'})};
     return this.httpClient.put(this.messageBaseUri + '/' + horse.id, horse, httpOptions);
@@ -38,9 +38,10 @@ export class HorseService {
    * Delete specific horse from the backend
    * @param id of the horse to delete
    */
-  deleteHorse(id: number): void{
+  deleteHorse(id: number): Observable<void> {
     console.log('Deleting horse ' + id);
-    this.httpClient.delete(this.messageBaseUri + '/' + id).subscribe();
+    // @ts-ignore
+    return this.httpClient.delete(this.messageBaseUri + '/' + id);
   }
 
   /**
