@@ -24,7 +24,13 @@ public class Validator {
         if (horse.getName() == null || horse.getName().equals("")) {
             throw new ValidationException("Name must be set!");
         }
-        if (horse.getBirthDate() == null || !horse.getBirthDate().before(Date.valueOf(LocalDate.now()))) {
+        if (horse.getName().length() > 255) {
+            throw new ValidationException("Name too long! Please keep it below 255 characters!");
+        }
+        if (horse.getDescription() != null && horse.getDescription().length() > 255) {
+            throw new ValidationException("Description too long! Please keep it below 255 characters!");
+        }
+        if (horse.getBirthDate() == null || !horse.getBirthDate().toLocalDate().isBefore(LocalDate.now().plusDays(1))) {
             throw new ValidationException("Birth date must be set! Can't be set to future date!");
         }
     }
@@ -34,8 +40,29 @@ public class Validator {
         if (horse.getName() == null || horse.getName().equals("")) {
             throw new ValidationException("Name must be set!");
         }
-        if (!horse.getBirthDate().before(Date.valueOf(LocalDate.now()))) {
+        if (!horse.getBirthDate().toLocalDate().isBefore(LocalDate.now().plusDays(1))) {
             throw new ValidationException("Birth date can't be set to future date!");
+        }
+    }
+
+    public void validateParentDate(Horse child, Horse parent){
+        if (parent == null) {
+            return;
+        }
+//        LOGGER.info(child.getBirthDate().toLocalDate().toString());
+//        LOGGER.info(parent.getBirthDate().toLocalDate().toString());
+        if(child.getBirthDate().toLocalDate().isBefore(parent.getBirthDate().toLocalDate()) ||
+            child.getBirthDate().toLocalDate().isEqual(parent.getBirthDate().toLocalDate())){
+            throw new ValidationException("Invalid parent! Children can't be older than their parents!");
+        }
+    }
+
+    public void validateParentsCheckIfSameSex(Horse father, Horse mother) {
+        if (father == null || mother == null) {
+            return;
+        }
+        if (father.getIsMale() == mother.getIsMale()) {
+            throw new ValidationException("Both parents can't have the same sex!");
         }
     }
 

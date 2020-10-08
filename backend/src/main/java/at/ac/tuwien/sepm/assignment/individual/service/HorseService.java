@@ -6,6 +6,7 @@ import at.ac.tuwien.sepm.assignment.individual.exception.PersistenceException;
 import at.ac.tuwien.sepm.assignment.individual.exception.ValidationException;
 
 import java.io.IOException;
+import java.rmi.ServerException;
 import java.util.List;
 
 public interface HorseService {
@@ -36,9 +37,19 @@ public interface HorseService {
      *
      * @param id of the horse to delete.
      * @throws ValidationException  will be thrown if the id value is invalid
+     * @throws NotFoundException    will be thrown if the horse does not exist
      * @throws PersistenceException will be thrown if something goes wrong during the database access.
      */
-    void delete(Long id) throws ValidationException, PersistenceException;
+    void delete(Long id) throws ValidationException, NotFoundException, PersistenceException;
+
+    /**
+     * @param id of the horse to find.
+     * @return the horse with the specified id.
+     * @throws RuntimeException    will be thrown if something goes wrong during data processing.
+     * @throws NotFoundException   will be thrown if the owner could not be found in the system.
+     * @throws ValidationException will be thrown if the id value is invalid.
+     */
+    Horse findOneById(Long id) throws RuntimeException, NotFoundException, ValidationException;
 
     /**
      * @return list of all horses in the database.

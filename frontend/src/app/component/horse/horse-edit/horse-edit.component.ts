@@ -13,8 +13,10 @@ import $ = require('jquery');
 })
 export class HorseEditComponent implements OnInit {
 
-  @Input() editHorse: Horse = new Horse(null, null, null, null, null, new Breed(null, null));
-  @Input() editBreeds: Breed[];
+  @Input() editHorse: Horse = new Horse(null, null, null, null, null,
+    new Breed(0, null), null, null);
+  @Input() editBreedList: Breed[];
+  @Input() editHorseList: Horse[];
   public editError = false;
 
   constructor(private horseService: HorseService, private horseComponent: HorseComponent) { }

@@ -7,6 +7,8 @@
     <th scope="col">Birthdate</th>
     <th scope="col">Sex</th>
     <th scope="col">Breed</th>
+    <th scope="col">Father</th>
+    <th scope="col">Mother</th>
     <th scope="col">Edit</th>
     <th scope="col">Delete</th>
   </tr>
@@ -18,6 +20,8 @@
     <td>{{horse.birthDate}}</td>
     <td>{{horse.isMale ? 'Male' : 'Female'}}</td>
     <td>{{horse.breed.id != 0 ? horse.breed.name : 'not specified'}}</td>
+    <td>{{horse.fatherId}}</td>
+    <td>{{horse.motherId}}</td>
     <td><button class="btn btn-primary" data-toggle="modal" data-target="#horse-edit" (click)="selectHorse(horse)">
       <i class="material-icons">edit</i>
     </button></td>

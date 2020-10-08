@@ -52,12 +52,30 @@
   <select class="custom-select" [(ngModel)]="newHorse.breed">
     <option selected disabled hidden>Please select a breed</option>
     <option value="null" >No specific breed</option>
-    <option *ngFor="let breed of addBreed" [ngValue]="breed">{{breed.name}}</option>
+    <option *ngFor="let breed of addBreedList" [ngValue]="breed">{{breed.name}}</option>
+  </select>
+</div>
+<div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text">Father </span>
+  </div>
+  <select class="custom-select" [(ngModel)]="newHorse.fatherId">
+    <option value="0">Unknown</option>
+    <ng-container *ngFor="let horse of addHorseList" >
+      <option *ngIf="horse.isMale == true" value="{{horse.id}}" >{{horse.name}}</option>
+    </ng-container>
+  </select>
+</div>
+<div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text">Mother </span>
+  </div>
+  <select class="custom-select" [(ngModel)]="newHorse.motherId">
+    <option value="0">Unknown</option>
+    <ng-container *ngFor="let horse of addHorseList" >
+      <option *ngIf="horse.isMale == false" value="{{horse.id}}" >{{horse.name}}</option>
+    </ng-container>
   </select>
 </div>
 <button type="button" class="btn btn-outline-primary btn-block" (click)="addHorse(newHorse)">Add horse</button>
 
-{{newHorse.name}}
-{{newHorse.isMale}}
-{{newHorse.breed.name}}
-{{newHorse.breed.id}}

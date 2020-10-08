@@ -12,17 +12,21 @@ public class HorseDto {
     private Date birthDate;
     private boolean isMale;
     private BreedDto breed;
+    private Long fatherId;
+    private Long motherId;
 
     public HorseDto() {
     }
 
-    public HorseDto(Long id, String name, String description, Date birthDate, boolean isMale, BreedDto breed) {
+    public HorseDto(Long id, String name, String description, Date birthDate, boolean isMale, BreedDto breed, Long fatherId, Long motherId) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.birthDate = birthDate;
         this.isMale = isMale;
         this.breed = breed;
+        this.fatherId = fatherId;
+        this.motherId = motherId;
     }
 
     protected String fieldsString() {
@@ -32,12 +36,9 @@ public class HorseDto {
             ", birthDate=" + birthDate +
             ", isMale=" + isMale +
             ", breed=" + breed +
+            ", fatherId=" + fatherId +
+            ", motherId=" + motherId +
             '\'';
-    }
-
-    @Override
-    public String toString() {
-        return "HorseDto{ " + fieldsString() +" }";
     }
 
     @Override
@@ -50,12 +51,35 @@ public class HorseDto {
             name.equals(horseDto.name) &&
             Objects.equals(description, horseDto.description) &&
             birthDate.equals(horseDto.birthDate) &&
-            Objects.equals(breed, horseDto.breed);
+            Objects.equals(breed, horseDto.breed) &&
+            Objects.equals(fatherId, horseDto.fatherId) &&
+            Objects.equals(motherId, horseDto.motherId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, birthDate, isMale, breed);
+        return Objects.hash(id, name, description, birthDate, isMale, breed, fatherId, motherId);
+    }
+
+    @Override
+    public String toString() {
+        return "HorseDto{ " + fieldsString() +" }";
+    }
+
+    public Long getFatherId() {
+        return fatherId;
+    }
+
+    public void setFatherId(Long fatherId) {
+        this.fatherId = fatherId;
+    }
+
+    public Long getMotherId() {
+        return motherId;
+    }
+
+    public void setMotherId(Long motherId) {
+        this.motherId = motherId;
     }
 
     public Long getId() {

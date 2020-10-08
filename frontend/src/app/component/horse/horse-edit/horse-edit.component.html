@@ -60,8 +60,30 @@
             <span class="input-group-text">Breed</span>
           </div>
           <select class="custom-select" [(ngModel)]="editHorse.breed">
-            <option value="null">No specific breed</option>
-            <option *ngFor="let breed of editBreeds"  [ngValue]="breed">{{breed.name}}</option>
+            <option [ngValue]="">No specific breed</option>
+            <option *ngFor="let breed of editBreedList" [ngValue]="breed">{{breed.name}}</option>
+          </select>
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Father </span>
+          </div>
+          <select class="custom-select" [(ngModel)]="editHorse.fatherId">
+            <option value="0">Unknown</option>
+            <ng-container *ngFor="let horse of editHorseList" >
+              <option *ngIf="horse.isMale === true && horse.id != editHorse.id" value="{{horse.id}}" >{{horse.name}}</option>
+            </ng-container>
+          </select>
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Mother </span>
+          </div>
+          <select class="custom-select" [(ngModel)]="editHorse.motherId">
+            <option value="0">Unknown</option>
+            <ng-container *ngFor="let horse of editHorseList" >
+              <option *ngIf="horse.isMale === false && horse.id != editHorse.id" value="{{horse.id}}">{{horse.name}}</option>
+            </ng-container>
           </select>
         </div>
       </div>

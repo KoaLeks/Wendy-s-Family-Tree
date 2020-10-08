@@ -7,5 +7,7 @@ export class Horse {
     public description: string,
     public birthDate: Date,
     public isMale: boolean,
-    public breed: Breed){}
+    public breed: Breed,
+    public fatherId: number,
+    public motherId: number){}
 }

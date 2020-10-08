@@ -29,10 +29,10 @@
   </div>
   <!-- Horse add -->
   <div id="horse-add" class="tab-pane fade">
-    <app-horse-add [addBreed]="breedList"></app-horse-add>
+    <app-horse-add [addBreedList]="breedList" [addHorseList]="horseList"></app-horse-add>
   </div>
   <!-- Horse edit -->
-  <app-horse-edit [editBreeds]="breedList" [editHorse]="selectedHorse"></app-horse-edit>
+  <app-horse-edit [editBreedList]="breedList" [editHorse]="selectedHorse" [editHorseList]="horseList"></app-horse-edit>
   <!-- Horse delete -->
   <app-horse-delete [delHorse]="selectedHorse"></app-horse-delete>
 </div>

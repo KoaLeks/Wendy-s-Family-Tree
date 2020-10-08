@@ -15,7 +15,8 @@ export class HorseComponent implements OnInit {
 
 
   public horseList: Horse[];
-  public selectedHorse: Horse = new Horse(null, null, null, null, null, null);
+  public selectedHorse: Horse = new Horse(null, null, null, null, null,
+    new Breed(null, null), 0, 0);
   public breedList: Breed[];
   // public breedMap: Map<number, string> = new Map<number, string>();
   public error = false;

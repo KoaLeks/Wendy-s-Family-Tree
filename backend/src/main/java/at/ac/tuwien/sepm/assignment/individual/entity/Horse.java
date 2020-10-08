@@ -11,17 +11,30 @@ public class Horse {
     private Date birthDate;
     private boolean isMale;
     private Breed breed;
+    private Horse father;
+    private Horse mother;
 
     public Horse() {
     }
 
-    public Horse(Long id, String name, String description, Date birthDate, boolean isMale, Breed breed) {
+    public Horse(Long id) {
+        this.id = id;
+    }
+
+    public Horse(Horse father, Horse mother) {
+        this.father = father;
+        this.mother = mother;
+    }
+
+    public Horse(Long id, String name, String description, Date birthDate, boolean isMale, Breed breed, Horse father, Horse mother) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.birthDate = birthDate;
         this.isMale = isMale;
         this.breed = breed;
+        this.father = father;
+        this.mother = mother;
     }
 
     protected String fieldsString() {
@@ -30,7 +43,9 @@ public class Horse {
             "', description='" + description +
             "', birthDate='" + birthDate +
             "', isMale=" + isMale +
-            ", breed=" + breed;
+            ", breed=" + breed +
+            ", father=" + father +
+            ", mother=" + mother;
     }
 
     @Override
@@ -54,6 +69,22 @@ public class Horse {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, description, birthDate, isMale, breed);
+    }
+
+    public Horse getFather() {
+        return father;
+    }
+
+    public void setFather(Horse father) {
+        this.father = father;
+    }
+
+    public Horse getMother() {
+        return mother;
+    }
+
+    public void setMother(Horse mother) {
+        this.mother = mother;
     }
 
     public Long getId() {

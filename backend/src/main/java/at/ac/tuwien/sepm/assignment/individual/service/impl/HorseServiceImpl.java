@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.invoke.MethodHandles;
+import java.rmi.ServerException;
 import java.util.List;
 
 @Service
@@ -32,6 +33,7 @@ public class HorseServiceImpl implements HorseService {
         LOGGER.trace("save({})", horse);
         LOGGER.debug("Save: Horse values: " + horse);
         validator.validateNewHorse(horse);
+        checkParents(horse);
         return horseDao.save(horse);
     }
 
@@ -41,19 +43,49 @@ public class HorseServiceImpl implements HorseService {
         LOGGER.debug("Update: Horse id: {}; Horse values:  name={}, description={},  date={}, isMale={}, breedId={}",
             id, horse.getName(), horse.getDescription(), horse.getBirthDate(), horse.getIsMale(), horse.getBreed());
         validator.validateUpdateHorse(id, horse);
+        checkParents(horse);
         return horseDao.update(id, horse);
     }
 
     @Override
-    public void delete(Long id) throws ValidationException, PersistenceException {
+    public void delete(Long id) throws ValidationException, NotFoundException, PersistenceException {
         LOGGER.trace("delete({})", id);
-        validator.checkId(id);
+        try {
+            findOneById(id);
+        } catch (NotFoundException e) {
+            throw new NotFoundException("Horse with id = " + id + " already deleted.");
+        }
         horseDao.delete(id);
+    }
+
+    @Override
+    public Horse findOneById(Long id) throws ValidationException {
+        LOGGER.trace("findOneById({})", id);
+        validator.checkId(id);
+        return horseDao.findOneById(id);
     }
 
     @Override
     public List<Horse> getAll() throws PersistenceException {
         LOGGER.trace("Get all horses.");
         return horseDao.getAll();
+    }
+
+    private void checkParents(Horse horse){
+        Horse father;
+        Horse mother;
+        try {
+            father = findOneById(horse.getFather().getId());
+        } catch (NotFoundException e) {
+            father = null;
+        }
+        try {
+            mother = findOneById(horse.getMother().getId());
+        } catch (NotFoundException e) {
+            mother = null;
+        }
+        validator.validateParentsCheckIfSameSex(father, mother);
+        validator.validateParentDate(horse, father);
+        validator.validateParentDate(horse, mother);
     }
 }

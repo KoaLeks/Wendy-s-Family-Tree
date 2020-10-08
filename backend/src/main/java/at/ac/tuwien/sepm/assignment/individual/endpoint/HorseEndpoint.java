@@ -81,6 +81,24 @@ public class HorseEndpoint {
         } catch (ValidationException e) {
             LOGGER.error("Error deleting horse: " + e);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error deleting horse: " + e.getMessage(), e);
+        } catch (NotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error deleting horse: " + e.getMessage(), e);
+        }
+
+    }
+
+    @GetMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public HorseDto getOneById(@PathVariable("id") Long id) {
+        LOGGER.info("GET " + BASE_URL + "/{}", id);
+        try {
+            return horseMapper.entityToDto(horseService.findOneById(id));
+        } catch (NotFoundException e) {
+            LOGGER.error("Error loading horse with id: " + id + e);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error during reading horse: " + e.getMessage());
+        } catch (ValidationException e) {
+            LOGGER.error("Error loading horse with id: " + id + e);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error during reading horse: " + e.getMessage());
         }
     }
 

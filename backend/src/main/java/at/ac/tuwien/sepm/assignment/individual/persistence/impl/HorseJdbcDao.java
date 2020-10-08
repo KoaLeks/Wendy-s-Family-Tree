@@ -37,8 +37,8 @@ public class HorseJdbcDao implements HorseDao {
     @Override
     public Horse save(Horse horse) throws PersistenceException {
         LOGGER.trace("Save horse with name: " + horse.getName());
-        final String sql = "INSERT INTO " + TABLE_NAME + " (ID, NAME, DESCRIPTION, BIRTH_DATE, IS_MALE, BREED_ID, BREED_NAME)" +
-            " VALUES (null, ?, ?, ?, ?, ?, ?)";
+        final String sql = "INSERT INTO " + TABLE_NAME + " (ID, NAME, DESCRIPTION, BIRTH_DATE, IS_MALE, BREED_ID, BREED_NAME, FATHER_ID, MOTHER_ID)" +
+            " VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         try {
@@ -48,14 +48,24 @@ public class HorseJdbcDao implements HorseDao {
                 stmt.setString(2, horse.getDescription());
                 stmt.setDate(3, horse.getBirthDate());
                 stmt.setBoolean(4, horse.getIsMale());
-                LOGGER.info("Horse "+horse);
-                LOGGER.info("Horse Breed "+horse.getBreed());
+//                LOGGER.info(""+horse);
+//                LOGGER.info(""+horse.getBreed());
                 if (horse.getBreed().getId() != null) {
                     stmt.setLong(5, horse.getBreed().getId());
                     stmt.setString(6, horse.getBreed().getName());
                 } else {
                     stmt.setNull(5, Types.BIGINT);
                     stmt.setString(6, null);
+                }
+                if (horse.getFather().getId() != null) {
+                    stmt.setLong(7, horse.getFather().getId());
+                } else {
+                    stmt.setNull(7, Type.LONG);
+                }
+                if (horse.getMother().getId() != null) {
+                    stmt.setLong(8, horse.getMother().getId());
+                } else {
+                    stmt.setNull(8, Type.LONG);
                 }
                 LOGGER.debug("Query: " + stmt.toString());
                 return stmt;
@@ -73,7 +83,7 @@ public class HorseJdbcDao implements HorseDao {
     public Horse update(Long id, Horse horse) throws NotFoundException, PersistenceException {
         LOGGER.trace("Get horse with id {} and update values", id);
         String sql = "UPDATE " + TABLE_NAME + " SET NAME=COALESCE(?, NAME), DESCRIPTION=COALESCE(?, DESCRIPTION), " +
-            "BIRTH_DATE=COALESCE(?, BIRTH_DATE), IS_MALE=COALESCE(?, IS_MALE), BREED_ID=?, BREED_NAME=COALESCE(?, BREED_NAME) WHERE ID=?";
+            "BIRTH_DATE=COALESCE(?, BIRTH_DATE), IS_MALE=COALESCE(?, IS_MALE), BREED_ID=?, BREED_NAME=COALESCE(?, BREED_NAME), FATHER_ID=?, MOTHER_ID=? WHERE ID=?";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         try {
@@ -83,8 +93,8 @@ public class HorseJdbcDao implements HorseDao {
                 stmt.setString(2, horse.getDescription());
                 stmt.setDate(3, horse.getBirthDate());
                 stmt.setBoolean(4, horse.getIsMale());
-                LOGGER.info("Horse "+horse);
-                LOGGER.info("Horse Breed "+horse.getBreed());
+//                LOGGER.info(""+horse);
+//                LOGGER.info(""+horse.getBreed());
                 if (horse.getBreed().getId() != null ) {
                     stmt.setLong(5, horse.getBreed().getId());
                     stmt.setString(6, horse.getBreed().getName());
@@ -92,12 +102,21 @@ public class HorseJdbcDao implements HorseDao {
                     stmt.setNull(5, Type.LONG);
                     stmt.setString(6, null);
                 }
-                stmt.setLong(7, id);
+                if (horse.getFather().getId() != null) {
+                    stmt.setLong(7, horse.getFather().getId());
+                } else {
+                    stmt.setNull(7, Type.LONG);
+                }
+                if (horse.getMother().getId() != null) {
+                    stmt.setLong(8, horse.getMother().getId());
+                } else {
+                    stmt.setNull(8, Type.LONG);
+                }
+                stmt.setLong(9, id);
                 LOGGER.debug("Query: " + stmt.toString());
                 return stmt;
             }, keyHolder);
         } catch (DataAccessException e){
-            LOGGER.error("Error during update for horse with id: " + id);
             throw new PersistenceException("Failed to update horse with id: " + id);
         }
         if (keyHolder.getKeyList().isEmpty()){
@@ -119,9 +138,22 @@ public class HorseJdbcDao implements HorseDao {
                 return stmt;
             });
         } catch (DataAccessException e){
-            LOGGER.error("Could not find horse with id: " + id);
             throw new PersistenceException("Could not find horse with id: " + id);
         }
+    }
+
+    @Override
+    public Horse findOneById(Long id) {
+        LOGGER.trace("Get horse with id {}", id);
+        final String sql = "SELECT * FROM " + TABLE_NAME + " WHERE ID=?";
+        List<Horse> horses = jdbcTemplate.query(sql, new Object[] { id }, this::mapRow);
+//        LOGGER.info("" + horses.get(0));
+//        LOGGER.info("" + horses.isEmpty());
+//        LOGGER.info("" + horses.toString());
+        if (horses.isEmpty()) {
+            throw new NotFoundException("Could not find horse with id " + id);
+        }
+        return horses.get(0);
     }
 
     @Override
@@ -137,7 +169,6 @@ public class HorseJdbcDao implements HorseDao {
             }, this::mapRow);
             return horseList;
         } catch (DataAccessException e){
-            LOGGER.error("Problem while getting all horses!");
             throw new PersistenceException("Could not get all horses.");
         }
     }
@@ -150,6 +181,8 @@ public class HorseJdbcDao implements HorseDao {
         horse.setBirthDate(Date.valueOf(resultSet.getTimestamp("birth_date").toLocalDateTime().toLocalDate()));
         horse.setIsMale(resultSet.getBoolean("is_male"));
         horse.setBreed(new Breed(resultSet.getLong("breed_id"), resultSet.getString("breed_name")));
+        horse.setFather(new Horse(resultSet.getLong("father_id")));
+        horse.setMother(new Horse(resultSet.getLong("mother_id")));
         return horse;
     }
 }
