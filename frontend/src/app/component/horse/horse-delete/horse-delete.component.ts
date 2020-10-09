@@ -3,7 +3,6 @@ import {Horse} from '../../../dto/horse';
 import {Breed} from '../../../dto/breed';
 import {HorseService} from '../../../service/horse.service';
 import {HorseComponent} from '../horse.component';
-import {error} from '@angular/compiler/src/util';
 // @ts-ignore
 import $ = require('jquery');
 
@@ -22,7 +21,6 @@ export class HorseDeleteComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  // TODO: Check if horse doesn't exist --> success modal
   public deleteHorse(id: number){
     this.horseService.deleteHorse(id)
       .subscribe(next => {
@@ -31,6 +29,7 @@ export class HorseDeleteComponent implements OnInit {
           this.deleteError = this.horseComponent.defaultServiceErrorHandling(error1);
         }).add(() => {
       if (!this.deleteError) {
+        // @ts-ignore
         $('#successDeleteModal').modal('show');
       }
       this.deleteError = false;

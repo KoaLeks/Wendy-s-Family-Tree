@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {BreedComponent} from './component/breed/breed.component';
 import {HorseComponent} from './component/horse/horse.component';
+import {HorseAddComponent} from './component/horse/horse-add/horse-add.component';
 
 
 const routes: Routes = [

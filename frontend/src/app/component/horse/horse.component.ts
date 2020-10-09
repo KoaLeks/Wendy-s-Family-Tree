@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {HorseService} from '../../service/horse.service';
 import {Breed} from '../../dto/breed';
 import {BreedService} from '../../service/breed.service';
+import {Horse} from '../../dto/horse';
 // @ts-ignore
 import $ = require('jquery');
-import {Horse} from '../../dto/horse';
 
 @Component({
   selector: 'app-horse',
@@ -30,6 +30,11 @@ export class HorseComponent implements OnInit {
 
   public selectHorse(event){
     this.selectedHorse = event;
+  }
+
+  public addHorseToTable(event) {
+    this.horseList.push(event);
+    this.horseList = this.horseList;
   }
 
   /**
@@ -86,6 +91,7 @@ export class HorseComponent implements OnInit {
     } else {
       this.errorMessage = error.error.message;
     }
+    // @ts-ignore
     $('#errorModal').modal('show');
     return this.error;
   }

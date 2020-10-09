@@ -6,6 +6,9 @@ import {HorseComponent} from '../horse.component';
 // @ts-ignore
 import $ = require('jquery');
 
+// @ts-ignore
+import $ = require('jquery');
+
 @Component({
   selector: 'app-horse-edit',
   templateUrl: './horse-edit.component.html',
@@ -34,6 +37,7 @@ export class HorseEditComponent implements OnInit {
       }
     ).add(() => {
       if (!this.editError) {
+        // @ts-ignore
         $('#successEditModal').modal('show');
       }
       this.editError = false;

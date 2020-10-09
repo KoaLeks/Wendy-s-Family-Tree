@@ -29,7 +29,7 @@
   </div>
   <!-- Horse add -->
   <div id="horse-add" class="tab-pane fade">
-    <app-horse-add [addBreedList]="breedList" [addHorseList]="horseList"></app-horse-add>
+    <app-horse-add [addBreedList]="breedList" [addHorseList]="horseList" (newHorseTable)="addHorseToTable($event)"></app-horse-add>
   </div>
   <!-- Horse edit -->
   <app-horse-edit [editBreedList]="breedList" [editHorse]="selectedHorse" [editHorseList]="horseList"></app-horse-edit>
