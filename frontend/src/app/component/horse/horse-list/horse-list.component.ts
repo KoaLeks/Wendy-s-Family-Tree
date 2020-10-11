@@ -29,21 +29,12 @@ export class HorseListComponent implements OnInit {
     return this.horseListTable.find(horse => horse.id === id);
   }
 
-  scrollToParent(){
-    $('.collapse').on('show.bs.collapse', function(e) {
-      const $card = $(this).closest('.card');
-      const $open = $($(this).data('parent')).find('.collapse.show');
+  scrollToParent(id: number){
 
-      let additionalOffset = 0;
-      if ($card.prevAll().filter($open.closest('.card')).length !== 0)
-      {
-        additionalOffset =  $open.height();
-      }
-      // $('html, body')
-      //   .animate({
-      //   scrollTop: $card.offset().top - additionalOffset
-      // }, 500);
-    });
+    const scrollDiv = document.querySelector('#horse' + id);
+    // console.log(scrollDiv);
+    // console.log(scrollDiv.scrollTop);
+    window.scrollTo(0, scrollDiv.scrollHeight);
   }
 
   public displayName(horse: Horse) {

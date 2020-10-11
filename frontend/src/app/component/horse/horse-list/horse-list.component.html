@@ -25,17 +25,17 @@
         </div>
       </div>
     </div>
-    <div class="card-body collapse horse{{horse.id}}" data-parent="#accordion">
+    <div class="card-body collapse horse{{horse.id}}" id="horse{{horse.id}}" data-parent="#accordion">
       <p class="col-md-12 card-text">Description: {{horse.description}}</p>
       <p class="col-md-12 card-text">Sex: {{horse.isMale ? 'Male' : 'Female'}}</p>
       <p class="col-md-12 card-text">Breed: {{horse.breed.id != 0 ? horse.breed.name : 'not specified'}}</p>
       <p class="col-md-12 card-text">Father: {{ horse.fatherId != 0 || horse.fatherId != null ? displayName(findParent(horse.fatherId)) : 'unknown'}}
-        <a class="btn btn-outline-info float-right" (click)="scrollToParent()" data-toggle="collapse" [attr.data-target]="'.horse' + ((horse.fatherId != null && horse.fatherId != 0) ? horse.fatherId : -1)">
+        <a class="btn btn-outline-info float-right" (click)="scrollToParent(horse.fatherId)" data-toggle="collapse" [attr.data-target]="'.horse' + ((horse.fatherId != null && horse.fatherId != 0) ? horse.fatherId : -1)">
           Show details father
         </a>
       </p>
       <p class="col-md-12 card-text">Mother: {{ horse.motherId != 0 || horse.motherId != null ? displayName(findParent(horse.motherId)) : 'unknown'}}
-        <a class="btn btn-outline-info float-right" (click)="scrollToParent()" data-toggle="collapse" [attr.data-target]="'.horse' + ((horse.motherId != null && horse.motherId != 0) ? horse.motherId : -1)">
+        <a class="btn btn-outline-info float-right" (click)="scrollToParent(horse.motherId)" data-toggle="collapse" [attr.data-target]="'.horse' + ((horse.motherId != null && horse.motherId != 0) ? horse.motherId : -1)">
           Show details mother
         </a>
       </p>
