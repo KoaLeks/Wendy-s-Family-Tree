@@ -66,6 +66,10 @@ public class Validator {
         }
     }
 
+    public void validateSearchParameter(Horse horse) {
+
+    }
+
     public void checkId(Long id) {
         if (id < 0) {
             throw new ValidationException("Invalid ID value! ID=" + id);

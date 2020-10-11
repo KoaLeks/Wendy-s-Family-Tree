@@ -147,13 +147,44 @@ public class HorseJdbcDao implements HorseDao {
         LOGGER.trace("Get horse with id {}", id);
         final String sql = "SELECT * FROM " + TABLE_NAME + " WHERE ID=?";
         List<Horse> horses = jdbcTemplate.query(sql, new Object[] { id }, this::mapRow);
-//        LOGGER.info("" + horses.get(0));
-//        LOGGER.info("" + horses.isEmpty());
-//        LOGGER.info("" + horses.toString());
         if (horses.isEmpty()) {
             throw new NotFoundException("Could not find horse with id " + id);
         }
         return horses.get(0);
+    }
+
+    @Override
+    public List<Horse> findHorses(Horse horse) throws PersistenceException {
+        LOGGER.info("Search for horses with parameter: name: {}, description: {}, birthDate: {}, isMale: {}, breed: {}",
+            horse.getName(), horse.getDescription(),  horse.getBirthDate(), horse.getIsMale(), horse.getBreed());
+        String sql = "SELECT * FROM " + TABLE_NAME + " WHERE UPPER(NAME) LIKE UPPER(?) AND UPPER(IFNULL(DESCRIPTION, '')) LIKE UPPER(?) " +
+            "AND BIRTH_DATE <= ? AND IS_MALE LIKE ? AND IFNULL(BREED_ID, '0') LIKE ?";
+
+        List<Horse> horseList;
+        try {
+            horseList = jdbcTemplate.query(connection -> {
+                PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                stmt.setString(1, horse.getName() != null ? "%" + horse.getName() + "%" : "%");
+                stmt.setString(2, horse.getDescription() != null ? "%" + horse.getDescription() + "%" : "%");
+                stmt.setDate(3, horse.getBirthDate() != null ? horse.getBirthDate() : Date.valueOf("9999-12-31"));
+                if (horse.getIsMale() != null) {
+                    stmt.setBoolean(4, horse.getIsMale());
+                } else {
+                    stmt.setString(4, "%");
+                }
+                if (horse.getBreed() != null && horse.getBreed().getId() != null) {
+                    stmt.setLong(5, horse.getBreed().getId());
+                } else {
+                    stmt.setString(5, "%");
+                }
+                LOGGER.info("Query: " + stmt.toString());
+                return stmt;
+            }, this::mapRow);
+        } catch (DataAccessException e){
+            throw new PersistenceException("Could not access database while searching for horses.");
+        }
+        LOGGER.info("List: "+horseList);
+        return horseList;
     }
 
     @Override

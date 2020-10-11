@@ -16,11 +16,11 @@ public interface TestData {
      * Breed Data
      */
     static Breed getNewBreed() {
-        return new Breed("Breed");
+        return new Breed( 1L);
     }
 
-    static Breed getNewBreed(String name) {
-        return new Breed(name);
+    static Breed getNewBreed(Long id) {
+        return new Breed(id);
     }
 
     static Breed getNewBreedWithId() {

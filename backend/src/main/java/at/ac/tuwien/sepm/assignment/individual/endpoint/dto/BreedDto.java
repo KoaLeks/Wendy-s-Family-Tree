@@ -9,13 +9,17 @@ public class BreedDto {
     public BreedDto() {
     }
 
-    public BreedDto(String name) {
-        this.name = name;
+    public BreedDto(Long id) {
+        this.id = id;
     }
 
+//    public BreedDto(String name) {
+//        this.name = name;
+//    }
+
     public BreedDto(Long id, String name) {
-        this(name);
-        this.id = id;
+        this(id);
+        this.name = name;
     }
 
     public Long getId() {

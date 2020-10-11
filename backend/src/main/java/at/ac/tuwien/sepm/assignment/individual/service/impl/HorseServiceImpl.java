@@ -66,6 +66,12 @@ public class HorseServiceImpl implements HorseService {
     }
 
     @Override
+    public List<Horse> findHorses(Horse horse) throws PersistenceException {
+        LOGGER.trace("Search for horses.");
+        return horseDao.findHorses(horse);
+    }
+
+    @Override
     public List<Horse> getAll() throws PersistenceException {
         LOGGER.trace("Get all horses.");
         return horseDao.getAll();

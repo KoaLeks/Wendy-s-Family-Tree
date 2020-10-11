@@ -9,13 +9,17 @@ public class Breed {
     public Breed() {
     }
 
-    public Breed(String name) {
-        this.name = name;
+    public Breed(Long id) {
+        this.id = id;
     }
 
+//    public Breed(String name) {
+//        this.name = name;
+//    }
+
     public Breed(Long id, String name) {
-        this(name);
-        this.id = id;
+        this(id);
+        this.name = name;
     }
 
     public Long getId() {

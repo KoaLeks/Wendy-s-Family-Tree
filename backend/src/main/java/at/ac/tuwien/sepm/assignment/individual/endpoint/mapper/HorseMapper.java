@@ -2,10 +2,12 @@ package at.ac.tuwien.sepm.assignment.individual.endpoint.mapper;
 
 import at.ac.tuwien.sepm.assignment.individual.endpoint.dto.BreedDto;
 import at.ac.tuwien.sepm.assignment.individual.endpoint.dto.HorseDto;
+import at.ac.tuwien.sepm.assignment.individual.endpoint.dto.SearchDto;
 import at.ac.tuwien.sepm.assignment.individual.entity.Breed;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import org.springframework.stereotype.Component;
 
+import java.sql.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -23,6 +25,13 @@ public class HorseMapper {
             horseDto.getIsMale(), horseDto.getBreed() != null ? new Breed(horseDto.getBreed().getId(), horseDto.getBreed().getName()) : null,
             new Horse(horseDto.getFatherId()), new Horse(horseDto.getMotherId()));
     }
+
+    public Horse searchDtoToEntity(SearchDto searchDto) {
+        return new Horse(null, searchDto.getName(), searchDto.getDescription(), searchDto.getBirthDate() != null ? Date.valueOf(searchDto.getBirthDate()) : null,
+            searchDto.getIsMale(), searchDto.getBreedId() != null ? new Breed(searchDto.getBreedId()) : null,
+            null, null);
+    }
+
     public List<HorseDto> entityToDtoList(List<Horse> horseList) {
         List<HorseDto> dtoList = new LinkedList<>();
         for (Horse horse: horseList) {

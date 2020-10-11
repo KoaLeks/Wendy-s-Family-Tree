@@ -10,7 +10,7 @@ public class HorseDto {
     private String name;
     private String description;
     private Date birthDate;
-    private boolean isMale;
+    private Boolean isMale;
     private BreedDto breed;
     private Long fatherId;
     private Long motherId;
@@ -18,7 +18,7 @@ public class HorseDto {
     public HorseDto() {
     }
 
-    public HorseDto(Long id, String name, String description, Date birthDate, boolean isMale, BreedDto breed, Long fatherId, Long motherId) {
+    public HorseDto(Long id, String name, String description, Date birthDate, Boolean isMale, BreedDto breed, Long fatherId, Long motherId) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -114,11 +114,11 @@ public class HorseDto {
         this.birthDate = birthDate;
     }
 
-    public boolean getIsMale() {
+    public Boolean getIsMale() {
         return isMale;
     }
 
-    public void setIsMale(boolean male) {
+    public void setIsMale(Boolean male) {
         isMale = male;
     }
 

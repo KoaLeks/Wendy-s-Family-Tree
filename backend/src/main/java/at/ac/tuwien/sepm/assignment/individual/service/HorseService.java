@@ -52,6 +52,15 @@ public interface HorseService {
     Horse findOneById(Long id) throws RuntimeException, NotFoundException, ValidationException;
 
     /**
+     * Finds all horses that fulfill the search parameter
+     *
+     * @param horse contains the parameter for the search
+     * @return List of all horses, that fulfil the parameter
+     * @throws PersistenceException will be thrown if something goes wrong during database access.
+     */
+    List<Horse> findHorses(Horse horse) throws PersistenceException;
+
+    /**
      * @return list of all horses in the database.
      * @throws PersistenceException will be thrown if something goes wrong during the database access.
      */

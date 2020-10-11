@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.assignment.individual.endpoint;
 
 import at.ac.tuwien.sepm.assignment.individual.endpoint.dto.HorseDto;
+import at.ac.tuwien.sepm.assignment.individual.endpoint.dto.SearchDto;
 import at.ac.tuwien.sepm.assignment.individual.endpoint.mapper.HorseMapper;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
@@ -95,15 +96,33 @@ public class HorseEndpoint {
             return horseMapper.entityToDto(horseService.findOneById(id));
         } catch (NotFoundException e) {
             LOGGER.error("Error loading horse with id: " + id + e);
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error during reading horse: " + e.getMessage());
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error during reading horse: " + e.getMessage(), e);
         } catch (ValidationException e) {
             LOGGER.error("Error loading horse with id: " + id + e);
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error during reading horse: " + e.getMessage());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error during reading horse: " + e.getMessage(), e);
         }
     }
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
+    public List<HorseDto> findHorses(SearchDto searchDto) {
+        if (searchDto != null) {
+            LOGGER.info("FIND " + BASE_URL + "?name={}&description={}&birthDate={}&isMale={}&breed={}",
+                searchDto.getName(), searchDto.getDescription(), searchDto.getBirthDate(), searchDto.getIsMale(), searchDto.getBreedId());
+            try {
+                return horseMapper.entityToDtoList(horseService.findHorses(horseMapper.searchDtoToEntity(searchDto)));
+            } catch (PersistenceException e) {
+                throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Error getting horses: " + e.getMessage());
+            } catch (ValidationException e) {
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error getting horses: " + e.getMessage());
+            }
+        } else {
+            return getAllHorses();
+        }
+    }
+
+//    @GetMapping
+//    @ResponseStatus(HttpStatus.OK)
     public List<HorseDto> getAllHorses(){
         LOGGER.info("GET All " + BASE_URL + "/" + "");
         try {
