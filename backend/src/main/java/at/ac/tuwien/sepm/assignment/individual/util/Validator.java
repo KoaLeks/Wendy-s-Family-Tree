@@ -31,7 +31,7 @@ public class Validator {
             throw new ValidationException("Description too long! Please keep it below 255 characters!");
         }
         if (horse.getBirthDate() == null || !horse.getBirthDate().toLocalDate().isBefore(LocalDate.now().plusDays(1))) {
-            throw new ValidationException("Birth date must be set! Can't be set to future date!");
+            throw new ValidationException("Birthdate must be set! Can't be set to future date!");
         }
     }
 
@@ -40,8 +40,8 @@ public class Validator {
         if (horse.getName() == null || horse.getName().equals("")) {
             throw new ValidationException("Name must be set!");
         }
-        if (!horse.getBirthDate().toLocalDate().isBefore(LocalDate.now().plusDays(1))) {
-            throw new ValidationException("Birth date can't be set to future date!");
+        if (horse.getBirthDate() == null || !horse.getBirthDate().toLocalDate().isBefore(LocalDate.now().plusDays(1))) {
+            throw new ValidationException("Birthdate must be set! Can't be set to future date!");
         }
     }
 

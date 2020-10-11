@@ -1,11 +1,14 @@
 <!--Accordion wrapper-->
 <div class="accordion md-accordion" id="accordion" role="tablist" aria-multiselectable="true">
   <div class="card" *ngFor="let horse of horseListTable">
-    <div class="card-header container-fluid"data-toggle="collapse" [attr.data-target]="'.horse'+ horse.id">
+    <div class="card-header container-fluid">
       <div class="row">
         <div class="col-md-8">
-          <h4>{{horse.name}}</h4>
+          <h2 class="mb-0">
+            <button type="button" class="btn btn-link btn-lg"  data-toggle="collapse" [attr.data-target]="'.horse'+ horse.id">{{horse.name}}</button>
+          </h2>
         </div>
+
         <div class="col-md-2">
           <h4>{{horse.birthDate}}</h4>
         </div>
@@ -32,7 +35,7 @@
         </a>
       </p>
       <p class="col-md-12 card-text">Mother: {{ horse.motherId != 0 || horse.motherId != null ? displayName(findParent(horse.motherId)) : 'unknown'}}
-        <a class="btn btn-outline-info float-right" (click)="scrollToParent()"  data-toggle="collapse" [attr.data-target]="'.horse' + ((horse.motherId != null && horse.motherId != 0) ? horse.motherId : -1)">
+        <a class="btn btn-outline-info float-right" (click)="scrollToParent()" data-toggle="collapse" [attr.data-target]="'.horse' + ((horse.motherId != null && horse.motherId != 0) ? horse.motherId : -1)">
           Show details mother
         </a>
       </p>

@@ -33,7 +33,7 @@ export class HorseAddComponent implements OnInit {
       .subscribe(
         (horseSub: Horse) => {
           this.newHorse = horseSub;
-          this.newHorseTable.emit(this.newHorse);
+          // this.newHorseTable.emit(this.newHorse);
         },
         error => {
           this.addError = this.horseComponent.defaultServiceErrorHandling(error);

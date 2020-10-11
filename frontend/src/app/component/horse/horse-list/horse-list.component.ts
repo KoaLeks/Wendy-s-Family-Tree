@@ -14,6 +14,7 @@ export class HorseListComponent implements OnInit {
   @Output() outputHorse: EventEmitter<Horse> = new EventEmitter<Horse>();
   public selectedHorseTable: Horse;
 
+
   constructor() { }
 
   public selectHorse(horse: Horse) {
@@ -47,11 +48,12 @@ export class HorseListComponent implements OnInit {
 
   public displayName(horse: Horse) {
     if (horse == null) {
-      return 'undefined';
+      return 'unknown';
     }
     return horse.name;
   }
-  ngOnInit(): void {
-  }
 
+  ngOnInit(): void {
+
+  }
 }
