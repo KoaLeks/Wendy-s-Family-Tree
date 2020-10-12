@@ -28,7 +28,7 @@
 <div class="tab-content mb-3">
   <!-- Horse list -->
   <div id="horse-list" class="tab-pane fade">
-    <app-horse-list [horseListTable]="horseList" (outputHorse)="selectHorse($event)" ></app-horse-list>
+    <app-horse-list [horseListTable]="horseList" [breedListTable]="breedList" (outputHorse)="selectHorse($event)" ></app-horse-list>
   </div>
   <!-- Horse add -->
   <div id="horse-add" class="tab-pane fade">

@@ -1,8 +1,9 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Horse} from '../dto/horse';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {environment} from 'src/environments/environment';
 import {Observable} from 'rxjs';
+import {formatDate} from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -45,10 +46,40 @@ export class HorseService {
   }
 
   /**
+   * Finds all horses that fulfill the paramter from the database
+   */
+  findHorses(horse: Horse): Observable<Horse[]>{
+    console.log('Finding horses');
+    if (horse != null) {
+      const httpParamsOptions ={
+        params: new HttpParams()
+          .set('name', horse.name)
+          .set('description', horse.description)
+          .set('birthDate', formatDate(
+            horse.birthDate == null || horse.birthDate.toString().length === 0 ?
+              new Date().toISOString().slice(0, 10) : horse.birthDate, 'yyyy-MM-dd', 'en-US'))
+          .set('isMale', String(horse.isMale))
+          .set('breedId', String(horse.breed.id))
+      };
+      return this.httpClient.get<Horse[]>(this.messageBaseUri, httpParamsOptions);
+    } else {
+      const httpParamsOptions ={ params: new HttpParams()
+          .set('name', '')
+          .set('description', '')
+          .set('birthDate', formatDate('9999-01-01', 'yyyy-MM-dd', 'en-US'))
+          .set('isMale', '')
+          .set('breedId', '')
+      };
+      return this.httpClient.get<Horse[]>(this.messageBaseUri);
+    }
+
+  }
+
+  /**
    * Gets all horses from the database
    */
   getHorseList(): Observable<Horse[]> {
     console.log('Getting horses');
-    return this.httpClient.get<Horse[]>(this.messageBaseUri);
+    return this.findHorses(null);
   }
 }

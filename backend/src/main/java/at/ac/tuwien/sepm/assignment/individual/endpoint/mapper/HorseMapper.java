@@ -8,6 +8,7 @@ import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import org.springframework.stereotype.Component;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -27,8 +28,12 @@ public class HorseMapper {
     }
 
     public Horse searchDtoToEntity(SearchDto searchDto) {
-        return new Horse(null, searchDto.getName(), searchDto.getDescription(), searchDto.getBirthDate() != null ? Date.valueOf(searchDto.getBirthDate()) : null,
-            searchDto.getIsMale(), searchDto.getBreedId() != null ? new Breed(searchDto.getBreedId()) : null,
+       return new Horse(null,
+            (searchDto.getName() != null && !searchDto.getName().equals("null")) ? searchDto.getName() : null,
+            (searchDto.getDescription() != null && !searchDto.getDescription().equals("null")) ? searchDto.getDescription() : null,
+            (searchDto.getBirthDate() != null && !searchDto.getBirthDate().equals("null") && !searchDto.getBirthDate().equals("")) ? Date.valueOf(searchDto.getBirthDate()) : Date.valueOf(LocalDate.now()),
+            (searchDto.getIsMale() != null && !searchDto.getIsMale().equals("null") && !searchDto.getIsMale().equals("")) ? Boolean.valueOf(searchDto.getIsMale()) : null,
+            (searchDto.getBreedId() != null && !searchDto.getBreedId().equals("null") && !searchDto.getBreedId().equals("")) ? new Breed(Long.valueOf(searchDto.getBreedId())) : null,
             null, null);
     }
 

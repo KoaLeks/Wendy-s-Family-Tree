@@ -1,18 +1,26 @@
 package at.ac.tuwien.sepm.assignment.individual.endpoint.dto;
 
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.lang.Nullable;
+
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Objects;
 
 public class SearchDto {
 
+    @Nullable
     private String name;
+    @Nullable
     private String description;
-    private LocalDate birthDate;
-    private Boolean isMale;
-    private Long breedId;
+    @Nullable
+    private String birthDate;
+    @Nullable
+    private String isMale;
+    @Nullable
+    private String breedId;
 
-    public SearchDto(String name, String description, LocalDate birthDate, Boolean isMale, Long breedId) {
+    public SearchDto(String name, String description, String birthDate, String isMale, String breedId) {
         this.name = name;
         this.description = description;
         this.birthDate = birthDate;
@@ -53,27 +61,27 @@ public class SearchDto {
         this.description = description;
     }
 
-    public LocalDate getBirthDate() {
+    public String getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(LocalDate birthDate) {
+    public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
     }
 
-    public Boolean getIsMale() {
+    public String getIsMale() {
         return isMale;
     }
 
-    public void setIsMale(Boolean male) {
+    public void setIsMale(String male) {
         isMale = male;
     }
 
-    public Long getBreedId() {
+    public String getBreedId() {
         return breedId;
     }
 
-    public void setBreedId(Long breedId) {
+    public void setBreedId(String breedId) {
         this.breedId = breedId;
     }
 }
