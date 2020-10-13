@@ -1,15 +1,11 @@
 package at.ac.tuwien.sepm.assignment.individual.persistence.impl;
 
 import at.ac.tuwien.sepm.assignment.individual.entity.Breed;
-import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.exception.PersistenceException;
 import at.ac.tuwien.sepm.assignment.individual.persistence.BreedDao;
 import java.lang.invoke.MethodHandles;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -45,7 +43,44 @@ public class BreedJdbcDao implements BreedDao {
     }
 
     @Override
-    public List<Breed> getAll() { LOGGER.trace("Get all horses");
+    public Breed getOneByName(String name) {
+        LOGGER.trace("getOneByName({})", name);
+        final String sql = "SELECT * FROM " + TABLE_NAME + " WHERE UPPER(name) = UPPER(?)";
+        List<Breed> breeds = jdbcTemplate.query(sql, new Object[] { name }, this::mapRow);
+
+        if (breeds.isEmpty()) throw new NotFoundException("Could not find breed with name " + name);
+
+        return breeds.get(0);
+    }
+
+    @Override
+    public Breed save(Breed breed) {
+        LOGGER.trace("Save breed with name: " + breed.getName());
+        final String sql = "INSERT INTO " + TABLE_NAME + " (ID, NAME, DESCRIPTION)" +
+            " VALUES (null, ?, ?)";
+
+        LOGGER.info("" + breed);
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        try {
+            jdbcTemplate.update(connection -> {
+                PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                stmt.setString(1, breed.getName());
+                stmt.setString(2, breed.getDescription());
+                LOGGER.info("Query: " + stmt.toString());
+                return stmt;
+            }, keyHolder);
+        } catch (DataAccessException e){
+            throw new PersistenceException("Failed to save breed.");
+        }
+
+        breed.setId(((Number)keyHolder.getKeys().get("id")).longValue());
+
+        return breed;
+    }
+
+    @Override
+    public List<Breed> getAll() {
+        LOGGER.trace("Get all breeds");
         String sql = "SELECT * FROM " + TABLE_NAME;
 
         List<Breed> breedList;
@@ -65,6 +100,7 @@ public class BreedJdbcDao implements BreedDao {
         final Breed breed = new Breed();
         breed.setId(resultSet.getLong("id"));
         breed.setName(resultSet.getString("name"));
+        breed.setDescription(resultSet.getString("description"));
         return breed;
     }
 }

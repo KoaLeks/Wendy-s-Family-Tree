@@ -6,18 +6,34 @@ import java.sql.Date;
 import java.time.LocalDate;
 
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
+import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.exception.ValidationException;
+import at.ac.tuwien.sepm.assignment.individual.persistence.BreedDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class Validator {
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    private final BreedDao breedDao;
 
-
+    @Autowired
+    public Validator(BreedDao breedDao) {
+        this.breedDao = breedDao;
+    }
 
     public void validateNewBreed(Breed breed) {
+        if (breed.getName() == null || breed.getName().equals("")) {
+            throw new ValidationException("Name must be set!");
+        }
+        if (breed.getName().length() >= 255) {
+            throw new ValidationException("Name too long! Please keep it below 255 characters!");
+        }
+        if (checkIfDuplicateBreedName(breed)) {
+            throw new ValidationException("Breed with name: " + breed.getName() + " already exists!");
+        }
     }
 
     public void validateNewHorse(Horse horse) throws ValidationException {
@@ -49,8 +65,6 @@ public class Validator {
         if (parent == null) {
             return;
         }
-//        LOGGER.info(child.getBirthDate().toLocalDate().toString());
-//        LOGGER.info(parent.getBirthDate().toLocalDate().toString());
         if(child.getBirthDate().toLocalDate().isBefore(parent.getBirthDate().toLocalDate()) ||
             child.getBirthDate().toLocalDate().isEqual(parent.getBirthDate().toLocalDate())){
             throw new ValidationException("Invalid parent! Children can't be older than their parents!");
@@ -66,8 +80,18 @@ public class Validator {
         }
     }
 
-    public void validateSearchParameter(Horse horse) {
-
+    public boolean checkIfDuplicateBreedName(Breed breed){
+        Breed duplicate;
+        try {
+            duplicate = breedDao.getOneByName(breed.getName());
+        } catch (NotFoundException e) {
+            return false;
+        }
+        if (breed.getName().equalsIgnoreCase(duplicate.getName())) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void checkId(Long id) {

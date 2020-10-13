@@ -177,13 +177,13 @@ public class HorseJdbcDao implements HorseDao {
                 } else {
                     stmt.setString(5, "%");
                 }
-                LOGGER.info("Query: " + stmt.toString());
+                LOGGER.debug("Query: " + stmt.toString());
                 return stmt;
             }, this::mapRow);
         } catch (DataAccessException e){
             throw new PersistenceException("Could not access database while searching for horses.");
         }
-        LOGGER.info("List: "+horseList);
+//        LOGGER.info("List: "+horseList);
         return horseList;
     }
 

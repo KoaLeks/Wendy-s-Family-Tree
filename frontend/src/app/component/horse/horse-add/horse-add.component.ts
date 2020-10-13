@@ -15,7 +15,7 @@ import $ = require('jquery');
 export class HorseAddComponent implements OnInit {
 
   public newHorse: Horse = new Horse(null, null, null, null, null,
-    new Breed(null, null), 0, 0);
+    new Breed(null, null, null), 0, 0);
   @Input() addBreedList: Breed[];
   @Input() addHorseList: Horse[];
   @Output() newHorseTable: EventEmitter<Horse> = new EventEmitter<Horse>();
@@ -47,7 +47,7 @@ export class HorseAddComponent implements OnInit {
           this.newHorse.description = null;
           this.newHorse.birthDate = null;
           this.newHorse.isMale = null;
-          this.newHorse.breed = new Breed(null, null);
+          this.newHorse.breed = new Breed(null, null, null);
           this.newHorse.fatherId = 0;
           this.newHorse.motherId = 0;
         }

@@ -1,17 +1,20 @@
-<div *ngIf="error" class="alert alert-danger alert-dismissible fade show" role="alert">
-  <strong>Error! </strong> {{ errorMessage }}
-  <button type="button" (click)="vanishError()" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
+<button type="button" class="btn btn-outline-primary mt-3" routerLink="/breeds/add">Add Breed</button>
 
-<div class="container mt-3" *ngIf="breed">
-  <div class="alert alert-success" role="alert">
-    <h4 class="alert-heading">Well done!</h4>
-    <p>Your application is up and running</p>
-    <hr>
-    <p>This is the name of the breed with id 1 from your backend system:
-      <span class="font-weight-bold">{{breed.name}}</span>
-    </p>
+<!-- Modal error -->
+<div class="modal fade" id="errorModal" role="alertdialog" data-toggle="modal">
+  <div class="modal-dialog" role="document" >
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Error</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="vanishError()">
+          &times;
+        </button>
+      </div>
+      <div class="modal-body">
+        <h3>{{errorMessage}}</h3>
+      </div>
+    </div>
   </div>
 </div>
+
+<router-outlet></router-outlet>

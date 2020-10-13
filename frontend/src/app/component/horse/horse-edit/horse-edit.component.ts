@@ -6,9 +6,6 @@ import {HorseComponent} from '../horse.component';
 // @ts-ignore
 import $ = require('jquery');
 
-// @ts-ignore
-import $ = require('jquery');
-
 @Component({
   selector: 'app-horse-edit',
   templateUrl: './horse-edit.component.html',
@@ -17,7 +14,7 @@ import $ = require('jquery');
 export class HorseEditComponent implements OnInit {
 
   @Input() editHorse: Horse = new Horse(null, null, null, null, null,
-    new Breed(0, null), null, null);
+    new Breed(0, null, null), null, null);
   @Input() editBreedList: Breed[];
   @Input() editHorseList: Horse[];
   public editError = false;

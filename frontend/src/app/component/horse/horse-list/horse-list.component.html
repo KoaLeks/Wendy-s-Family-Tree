@@ -1,9 +1,9 @@
-<div id="horse-search" (keydown)="keyPress($event)">
-  <div class="input-group mb-3 mt-lg-3">
+<span id="horse-search" (keydown)="keyPress($event)">
+  <div class="input-group mb-3 mt-3">
     <!-- Search form -->
-    <div class="input-group-prepend">
-      <span class="input-group-text" >Search</span>
-    </div>
+<!--    <div class="input-group-prepend">-->
+<!--      <span class="input-group-text" >Search</span>-->
+<!--    </div>-->
     <input class="form-control" type="text" placeholder="Name" [(ngModel)]="searchParam.name">
     <input class="form-control" type="text" placeholder="Description" [(ngModel)]="searchParam.description">
     <input type="date" class="form-control" [(ngModel)]="searchParam.birthDate"  id="datePicker">
@@ -16,9 +16,13 @@
       <option value="null">No specific breed</option>
       <option *ngFor="let breed of breedListTable" value="{{breed.id}}">{{breed.name}}</option>
     </select>
+    <div class="input-group-append">
+      <button type="button" class="btn btn-outline-secondary">
+        <i class="material-icons float-right" (click)="findHorses(searchParam)">search</i>
+      </button>
+    </div>
   </div>
-</div>
-{{searchParam.birthDate != null ? 'nicht null' : 'null'}}
+</span>
 
 <!--Accordion wrapper-->
 <div class="accordion md-accordion" id="accordion" role="tablist" aria-multiselectable="true">

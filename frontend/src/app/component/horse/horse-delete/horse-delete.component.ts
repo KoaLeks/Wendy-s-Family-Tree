@@ -13,7 +13,7 @@ import $ = require('jquery');
 })
 export class HorseDeleteComponent implements OnInit {
   @Input() delHorse: Horse = new Horse(null, null, null, null, null,
-    new Breed(null, null), null, null);
+    new Breed(null, null, null), null, null);
   deleteError = false;
 
   constructor(private horseService: HorseService, private horseComponent: HorseComponent) { }
@@ -25,8 +25,8 @@ export class HorseDeleteComponent implements OnInit {
     this.horseService.deleteHorse(id)
       .subscribe(next => {
         },
-        error1 => {
-          this.deleteError = this.horseComponent.defaultServiceErrorHandling(error1);
+        error => {
+          this.deleteError = this.horseComponent.defaultServiceErrorHandling(error);
         }).add(() => {
       if (!this.deleteError) {
         // @ts-ignore

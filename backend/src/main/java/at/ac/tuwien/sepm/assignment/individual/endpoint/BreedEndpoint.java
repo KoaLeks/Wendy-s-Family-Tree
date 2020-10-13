@@ -2,8 +2,11 @@ package at.ac.tuwien.sepm.assignment.individual.endpoint;
 
 import at.ac.tuwien.sepm.assignment.individual.endpoint.dto.BreedDto;
 import at.ac.tuwien.sepm.assignment.individual.endpoint.mapper.BreedMapper;
+import at.ac.tuwien.sepm.assignment.individual.entity.Breed;
+import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.exception.PersistenceException;
+import at.ac.tuwien.sepm.assignment.individual.exception.ValidationException;
 import at.ac.tuwien.sepm.assignment.individual.service.BreedService;
 import java.lang.invoke.MethodHandles;
 import java.util.List;
@@ -36,10 +39,25 @@ public class BreedEndpoint {
         try {
             return breedMapper.entityToDto(breedService.getOneById(id));
         } catch (NotFoundException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error during reading breed", e);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error during reading breed" + e.getMessage(), e);
         }
     }
 
+    @PostMapping
+    public BreedDto saveBreed(@RequestBody BreedDto breed) {
+        LOGGER.info("POST " + BASE_URL + "/");
+        LOGGER.info("" + breed);
+        try {
+            Breed breedEntity = breedMapper.dtoToEntity(breed);
+            return breedMapper.entityToDto(breedService.save(breedEntity));
+        } catch (ValidationException e) {
+            LOGGER.error("Error saving breed: " + e);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error during saving breed: " + e.getMessage(), e);
+        } catch (PersistenceException e) {
+            LOGGER.error("Error saving breed: " + e);
+            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Error during saving breed: " + e.getMessage(), e);
+        }
+    }
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<BreedDto> getAll() {
@@ -47,7 +65,8 @@ public class BreedEndpoint {
         try {
             return breedMapper.entityToDtoList(breedService.getAll());
         } catch (PersistenceException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Error getting breeds", e);
+            LOGGER.error("Error getting all breeds: " + e);
+            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Error getting breeds: " + e.getMessage(), e);
         }
     }
 }

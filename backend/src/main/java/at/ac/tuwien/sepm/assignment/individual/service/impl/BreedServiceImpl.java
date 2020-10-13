@@ -1,6 +1,9 @@
 package at.ac.tuwien.sepm.assignment.individual.service.impl;
 
 import at.ac.tuwien.sepm.assignment.individual.entity.Breed;
+import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
+import at.ac.tuwien.sepm.assignment.individual.exception.PersistenceException;
+import at.ac.tuwien.sepm.assignment.individual.exception.ValidationException;
 import at.ac.tuwien.sepm.assignment.individual.persistence.BreedDao;
 import at.ac.tuwien.sepm.assignment.individual.service.BreedService;
 import at.ac.tuwien.sepm.assignment.individual.util.Validator;
@@ -29,6 +32,13 @@ public class BreedServiceImpl implements BreedService {
     public Breed getOneById(Long id) {
         LOGGER.trace("getOneById({})", id);
         return dao.getOneById(id);
+    }
+
+    @Override
+    public Breed save(Breed breed) throws PersistenceException, ValidationException {
+        LOGGER.trace("save({})", breed);
+        validator.validateNewBreed(breed);
+        return dao.save(breed);
     }
 
     @Override

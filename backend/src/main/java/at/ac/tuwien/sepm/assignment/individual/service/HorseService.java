@@ -15,6 +15,7 @@ public interface HorseService {
      * Saves a horse in the database. Returns the object if successful.
      *
      * @param horse to be saved in the database
+     * @return the saved horse
      * @throws PersistenceException will be thrown if something goes wrong during data processing.
      * @throws ValidationException  will be thrown if the horse has invalid values.
      */

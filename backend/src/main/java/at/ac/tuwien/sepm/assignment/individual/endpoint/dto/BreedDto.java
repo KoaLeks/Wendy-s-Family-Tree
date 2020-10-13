@@ -5,6 +5,9 @@ import java.util.Objects;
 public class BreedDto {
     private Long id;
     private String name;
+    private String description;
+
+
 
     public BreedDto() {
     }
@@ -20,6 +23,25 @@ public class BreedDto {
     public BreedDto(Long id, String name) {
         this(id);
         this.name = name;
+    }
+
+    public BreedDto(Long id, String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+    }
+
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getId() {
@@ -49,7 +71,7 @@ public class BreedDto {
     }
 
     private String fieldsString() {
-        return "id = " + id + ", name='" + name + '\'';
+        return "id = " + id + ", name='" + name + ", description='" + description + '\'';
     }
 
     @Override

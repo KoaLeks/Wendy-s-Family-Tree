@@ -12,6 +12,7 @@ import {FormsModule} from '@angular/forms';
 import { HorseEditComponent } from './component/horse/horse-edit/horse-edit.component';
 import { HorseListComponent } from './component/horse/horse-list/horse-list.component';
 import { HorseDeleteComponent } from './component/horse/horse-delete/horse-delete.component';
+import { BreedAddComponent } from './component/breed/breed-add/breed-add.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { HorseDeleteComponent } from './component/horse/horse-delete/horse-delet
     HorseAddComponent,
     HorseEditComponent,
     HorseListComponent,
-    HorseDeleteComponent
+    HorseDeleteComponent,
+    BreedAddComponent
   ],
     imports: [
         BrowserModule,

@@ -1,0 +1,31 @@
+<!-- Modal success -->
+<div class="modal fade" id="successAddModal" role="alertdialog" data-toggle="modal">
+  <div class="modal-dialog" role="document" >
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Success</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          &times;
+        </button>
+      </div>
+      <div class="modal-body">
+        <h3>Saving breed successful!</h3>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Breed Add -->
+<div class="input-group mb-3 mt-lg-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text">Name</span>
+  </div>
+  <input type="text" class="form-control" [(ngModel)]="newBreed.name">
+</div>
+<div class="input-group mb-3">
+  <div class="input-group-prepend">
+    <span class="input-group-text">Description</span>
+  </div>
+  <input type="text" class="form-control" [(ngModel)]="newBreed.description" placeholder="optional">
+</div>
+<button type="button" class="btn btn-outline-primary btn-block" (click)="addBreed(newBreed)">Add Breed</button>

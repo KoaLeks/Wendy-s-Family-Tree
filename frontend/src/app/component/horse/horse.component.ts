@@ -16,7 +16,7 @@ export class HorseComponent implements OnInit {
 
   public horseList: Horse[];
   public selectedHorse: Horse = new Horse(null, null, null, null, null,
-    new Breed(null, null), 0, 0);
+    new Breed(null, null, null), 0, 0);
   public breedList: Breed[];
   // public breedMap: Map<number, string> = new Map<number, string>();
   public error = false;
@@ -24,8 +24,8 @@ export class HorseComponent implements OnInit {
   constructor(private horseService: HorseService, private breedService: BreedService) { }
 
   ngOnInit(): void {
-    this.getBreeds();
-    this.getHorses();
+    this.getBreedList();
+    this.getHorseList();
   }
 
   public selectHorse(event){
@@ -40,7 +40,7 @@ export class HorseComponent implements OnInit {
   /**
    * Loads all breeds
    */
-   public getBreeds(){
+   public getBreedList(){
     this.breedService.getAllBreeds().subscribe(
       (breeds: Breed[]) => {
         this.breedList = breeds;
@@ -54,7 +54,7 @@ export class HorseComponent implements OnInit {
   /**
    * Loads all horses
    */
-  public getHorses(){
+  public getHorseList(){
     this.horseService.getHorseList().subscribe(
       (horseList: Horse[]) => {
         this.horseList = horseList;

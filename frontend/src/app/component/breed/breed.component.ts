@@ -12,6 +12,7 @@ export class BreedComponent implements OnInit {
   error = false;
   errorMessage = '';
   breed: Breed;
+  breedList: Breed[];
 
   constructor(private breedService: BreedService) {
   }
@@ -25,6 +26,16 @@ export class BreedComponent implements OnInit {
    */
   vanishError() {
     this.error = false;
+  }
+
+  private getBreedList(){
+    this.breedService.getAllBreeds().subscribe(
+      (breeds: Breed[]) =>{
+        this.breedList = breeds;
+      }, error => {
+        this.defaultServiceErrorHandling(error);
+      }
+    );
   }
 
   /**
@@ -43,7 +54,7 @@ export class BreedComponent implements OnInit {
   }
 
 
-  private defaultServiceErrorHandling(error: any) {
+  defaultServiceErrorHandling(error: any): boolean {
     console.log(error);
     this.error = true;
     if (error.status === 0) {
@@ -55,6 +66,9 @@ export class BreedComponent implements OnInit {
     } else {
       this.errorMessage = error.error.message;
     }
+    // @ts-ignore
+    $('#errorModal').modal('show');
+    return this.error;
   }
 
 }

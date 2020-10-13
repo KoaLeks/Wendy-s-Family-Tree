@@ -13,18 +13,18 @@ import java.util.List;
 public class BreedMapper {
 
     public BreedDto entityToDto(Breed breed) {
-        return new BreedDto(breed.getId(), breed.getName());
+        return new BreedDto(breed.getId(), breed.getName(), breed.getDescription());
     }
 
-    public Breed entityToDto(BreedDto breedDto) {
-        return new Breed(breedDto.getId(), breedDto.getName());
+    public Breed dtoToEntity(BreedDto breedDto) {
+        return new Breed(breedDto.getId(), breedDto.getName(), breedDto.getDescription());
     }
 
 
     public List<BreedDto> entityToDtoList(List<Breed> breeds) {
         List<BreedDto> dtoList = new LinkedList<>();
         for (Breed breed: breeds) {
-            dtoList.add(new BreedDto(breed.getId(), breed.getName()));
+            dtoList.add(new BreedDto(breed.getId(), breed.getName(), breed.getDescription()));
         }
         return dtoList;
     }

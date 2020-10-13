@@ -1,9 +1,9 @@
 import {Component, Input, OnInit, Output} from '@angular/core';
 import {Horse} from '../../../dto/horse';
 import {EventEmitter} from '@angular/core';
-import {Breed} from "../../../dto/breed";
-import {HorseService} from "../../../service/horse.service";
-import {HorseComponent} from "../horse.component";
+import {Breed} from '../../../dto/breed';
+import {HorseService} from '../../../service/horse.service';
+import {HorseComponent} from '../horse.component';
 
 @Component({
   selector: 'app-horse-list',
@@ -19,7 +19,7 @@ export class HorseListComponent implements OnInit {
   @Output() outputHorse: EventEmitter<Horse> = new EventEmitter<Horse>();
   public selectedHorseTable: Horse;
   public searchParam: Horse = new Horse(null, null, null, null, null,
-    new Breed(null, null), 0, 0);
+    new Breed(null, null, null), 0, 0);
 
 
 
