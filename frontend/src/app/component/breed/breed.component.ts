@@ -18,7 +18,6 @@ export class BreedComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.loadBreed(1);
   }
 
   /**
@@ -28,15 +27,6 @@ export class BreedComponent implements OnInit {
     this.error = false;
   }
 
-  private getBreedList(){
-    this.breedService.getAllBreeds().subscribe(
-      (breeds: Breed[]) =>{
-        this.breedList = breeds;
-      }, error => {
-        this.defaultServiceErrorHandling(error);
-      }
-    );
-  }
 
   /**
    * Loads the breed for the specified id

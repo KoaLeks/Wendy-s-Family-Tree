@@ -1,9 +1,6 @@
 <span id="horse-search" (keydown)="keyPress($event)">
   <div class="input-group mb-3 mt-3">
     <!-- Search form -->
-<!--    <div class="input-group-prepend">-->
-<!--      <span class="input-group-text" >Search</span>-->
-<!--    </div>-->
     <input class="form-control" type="text" placeholder="Name" [(ngModel)]="searchParam.name">
     <input class="form-control" type="text" placeholder="Description" [(ngModel)]="searchParam.description">
     <input type="date" class="form-control" [(ngModel)]="searchParam.birthDate"  id="datePicker">

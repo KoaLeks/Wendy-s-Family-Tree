@@ -5,13 +5,15 @@ import {HorseComponent} from './component/horse/horse.component';
 import {HorseAddComponent} from './component/horse/horse-add/horse-add.component';
 import {HorseListComponent} from './component/horse/horse-list/horse-list.component';
 import {BreedAddComponent} from './component/breed/breed-add/breed-add.component';
+import {BreedListComponent} from "./component/breed/breed-list/breed-list.component";
 
 
 const routes: Routes = [
   {path: '', redirectTo: 'breeds', pathMatch: 'full'},
   {path: 'breeds', component: BreedComponent,
     children: [
-      {path: 'add', component: BreedAddComponent}
+      {path: 'add', component: BreedAddComponent},
+      {path: 'list', component: BreedListComponent}
     ]},
   {path: 'horses', component: HorseComponent,
     children: [
