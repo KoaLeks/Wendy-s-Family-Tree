@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Horse} from '../../../dto/horse';
 import {Breed} from '../../../dto/breed';
 import {HorseService} from '../../../service/horse.service';
@@ -17,8 +17,8 @@ export class HorseEditComponent implements OnInit, OnDestroy {
 
   editHorse: Horse = new Horse(null, null, null, null, null,
     new Breed(0, null, null), null, null);
-  private editBreedList: Breed[];
-  private editPossibleParents: Horse[];
+  editBreedList: Breed[];
+  editPossibleParents: Horse[];
   public editError = false;
   private subscription: Subscription;
 
