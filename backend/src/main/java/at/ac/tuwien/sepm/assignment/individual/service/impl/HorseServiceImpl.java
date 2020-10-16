@@ -53,7 +53,7 @@ public class HorseServiceImpl implements HorseService {
         try {
             findOneById(id);
         } catch (NotFoundException e) {
-            throw new NotFoundException("Horse with id = " + id + " already deleted.");
+            throw new NotFoundException("Horse already deleted.");
         }
         horseDao.delete(id);
     }
