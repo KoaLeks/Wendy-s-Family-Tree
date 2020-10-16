@@ -122,8 +122,6 @@ public class HorseEndpoint {
         }
     }
 
-//    @GetMapping
-//    @ResponseStatus(HttpStatus.OK)
     public List<HorseDto> getAllHorses(){
         LOGGER.info("GET All " + BASE_URL + "/" + "");
         try {

@@ -16,9 +16,9 @@ public class BreedDto {
         this.id = id;
     }
 
-//    public BreedDto(String name) {
-//        this.name = name;
-//    }
+    public BreedDto(String name) {
+        this.name = name;
+    }
 
     public BreedDto(Long id, String name) {
         this(id);

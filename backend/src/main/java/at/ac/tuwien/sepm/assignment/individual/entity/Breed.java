@@ -69,7 +69,7 @@ public class Breed {
     }
 
     protected String fieldsString() {
-        return "id=" + id + ", name='" + name + ", description='" + description + '\'';
+        return "id=" + id + ", name='" + name + "', description='" + description + '\'';
     }
 
     @Override

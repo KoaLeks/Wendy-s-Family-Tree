@@ -50,19 +50,19 @@ public class HorseJdbcDao implements HorseDao {
                 stmt.setBoolean(4, horse.getIsMale());
 //                LOGGER.info(""+horse);
 //                LOGGER.info(""+horse.getBreed());
-                if (horse.getBreed().getId() != null) {
+                if (horse.getBreed() != null && horse.getBreed().getId() != null) {
                     stmt.setLong(5, horse.getBreed().getId());
                     stmt.setString(6, horse.getBreed().getName());
                 } else {
                     stmt.setNull(5, Types.BIGINT);
                     stmt.setString(6, null);
                 }
-                if (horse.getFather().getId() != null) {
+                if (horse.getFather() != null && horse.getFather().getId() != null) {
                     stmt.setLong(7, horse.getFather().getId());
                 } else {
                     stmt.setNull(7, Type.LONG);
                 }
-                if (horse.getMother().getId() != null) {
+                if (horse.getMother() != null && horse.getMother().getId() != null) {
                     stmt.setLong(8, horse.getMother().getId());
                 } else {
                     stmt.setNull(8, Type.LONG);
@@ -95,19 +95,19 @@ public class HorseJdbcDao implements HorseDao {
                 stmt.setBoolean(4, horse.getIsMale());
 //                LOGGER.info(""+horse);
 //                LOGGER.info(""+horse.getBreed());
-                if (horse.getBreed().getId() != null ) {
+                if (horse.getBreed() != null && horse.getBreed().getId() != null ) {
                     stmt.setLong(5, horse.getBreed().getId());
                     stmt.setString(6, horse.getBreed().getName());
                 } else {
                     stmt.setNull(5, Type.LONG);
                     stmt.setString(6, null);
                 }
-                if (horse.getFather().getId() != null) {
+                if (horse.getFather() != null && horse.getFather().getId() != null) {
                     stmt.setLong(7, horse.getFather().getId());
                 } else {
                     stmt.setNull(7, Type.LONG);
                 }
-                if (horse.getMother().getId() != null) {
+                if (horse.getMother() != null && horse.getMother().getId() != null) {
                     stmt.setLong(8, horse.getMother().getId());
                 } else {
                     stmt.setNull(8, Type.LONG);
