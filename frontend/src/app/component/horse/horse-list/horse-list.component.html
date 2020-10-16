@@ -1,6 +1,9 @@
 <span id="horse-search" (keydown)="keyPress($event)">
   <div class="input-group mb-3 mt-3">
     <!-- Search form -->
+    <div class="input-group-prepend">
+      <span class="input-group-text" >Search</span>
+    </div>
     <input class="form-control" type="text" placeholder="Name" [(ngModel)]="searchParam.name">
     <input class="form-control" type="text" placeholder="Description" [(ngModel)]="searchParam.description">
     <input type="date" class="form-control" [(ngModel)]="searchParam.birthDate"  id="datePicker">
@@ -36,13 +39,13 @@
           <h4>{{horse.birthDate}}</h4>
         </div>
         <div class="col-md-2">
-          <button class="btn btn-outline-primary float-right" data-toggle="modal" data-target="#horse-edit" (click)="selectHorse(horse)">
+          <button class="btn btn-outline-primary float-right" data-toggle="modal" data-target="#horse-edit" (click)="selectHorseEdit(horse)">
             <i class="material-icons">edit</i>
           </button>
-          <button class="btn btn-outline-danger float-right" data-toggle="modal" data-target="#horse-delete" (click)="selectHorse(horse)">
+          <button class="btn btn-outline-danger float-right" data-toggle="modal" data-target="#horse-delete" (click)="selectHorseDelete(horse)">
             <i class="material-icons">delete</i>
           </button>
-          <button class="btn btn-outline-info float-right " (click)="selectHorse(horse)">
+          <button class="btn btn-outline-info float-right ">
             Family Tree
           </button>
         </div>

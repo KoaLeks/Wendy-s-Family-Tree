@@ -18,7 +18,7 @@ export class BreedListComponent implements OnInit {
   }
 
   private getBreedList(){
-    this.breedService.getAllBreeds().subscribe(
+    this.breedService.getBreedList().subscribe(
       (breeds: Breed[]) =>{
         this.breedList = breeds;
       }, error => {

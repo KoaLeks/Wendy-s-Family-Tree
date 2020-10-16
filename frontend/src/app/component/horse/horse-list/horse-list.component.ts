@@ -12,11 +12,9 @@ import {HorseComponent} from '../horse.component';
 })
 export class HorseListComponent implements OnInit {
 
-  @Input() horseListTable: Horse[] = [];
-  @Input() breedListTable: Breed[] = [];
-
-  // @Input() breedMapTable: Map<number, string>;
-  @Output() outputHorse: EventEmitter<Horse> = new EventEmitter<Horse>();
+  horseListTable: Horse[] = [];
+  breedListTable: Breed[] = [];
+  outputHorse: EventEmitter<Horse> = new EventEmitter<Horse>();
   public selectedHorseTable: Horse;
   public searchParam: Horse = new Horse(null, null, null, null, null,
     new Breed(null, null, null), 0, 0);
@@ -26,14 +24,17 @@ export class HorseListComponent implements OnInit {
   constructor(private horseService: HorseService, private horseComponent: HorseComponent) {
   }
 
-  public selectHorse(horse: Horse) {
-    this.selectedHorseTable = horse;
-    this.outputHorse.emit(this.selectedHorseTable);
+  public selectHorseEdit(horse: Horse) {
+    this.horseService.emitSelectedHorseEdit(horse);
+  }
+
+  public selectHorseDelete(horse: Horse) {
+    this.horseService.emitSelectedHorseDelete(horse);
   }
 
 
-  public keyPress(event) {
 
+  public keyPress(event) {
     if (event.key === 'Enter') {
       this.findHorses(this.searchParam);
     }
@@ -55,11 +56,12 @@ export class HorseListComponent implements OnInit {
       }
     );
   }
+
   scrollToParent(id: number){
 
     const scrollDiv = document.querySelector('#horse' + id);
-    // console.log(scrollDiv);
-    // console.log(scrollDiv.scrollTop);
+    console.log(scrollDiv);
+    console.log(scrollDiv.scrollTop);
     window.scrollTo(0, scrollDiv.scrollHeight);
   }
 
@@ -71,6 +73,8 @@ export class HorseListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
+     this.horseService.getHorseList().subscribe((horseList: Horse[]) => {
+       this.horseListTable = horseList;
+    });
   }
 }

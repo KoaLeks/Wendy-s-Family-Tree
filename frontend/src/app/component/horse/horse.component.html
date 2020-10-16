@@ -1,12 +1,8 @@
-<!-- Horse tabs -->
-<ul class="nav nav-tabs">
-<!--  <li><a class="nav-item nav-link" data-toggle="tab" routerLink="/horses/list">Horse List</a></li>-->
-<!--  <li><a class="nav-item nav-link" data-toggle="tab" routerLink="/horses/add">Add Horse</a></li>-->
-  <!--  <li><a class="nav-link" data-toggle="tab" routerLink="/horses/tree">Family Tree</a></li>-->
-  <li><a class="nav-item nav-link" data-toggle="tab" href="#horse-list">Horse List</a></li>
-  <li><a class="nav-item nav-link" data-toggle="tab" href="#horse-add">Add Horse</a></li>
-  <li><a class="nav-item nav-link" data-toggle="tab" href="#horse-tree">Family Tree</a></li>
-</ul>
+<!-- Horse pills -->
+<nav class="nav nav-pills nav-fill justify-content-center">
+  <a class="nav-link m-3" routerLinkActive="active" routerLink="/horses/list">Horse List</a>
+  <a class="nav-link m-3" routerLinkActive="active" routerLink="/horses/add">Add Horse</a>
+</nav>
 
 <!-- Modal error -->
 <div class="modal fade" id="errorModal" role="alertdialog" data-toggle="modal">
@@ -24,22 +20,8 @@
     </div>
   </div>
 </div>
-
-<div class="tab-content mb-3">
-  <!-- Horse list -->
-  <div id="horse-list" class="tab-pane fade">
-    <app-horse-list [horseListTable]="horseList" [breedListTable]="breedList" (outputHorse)="selectHorse($event)" ></app-horse-list>
-  </div>
-  <!-- Horse add -->
-  <div id="horse-add" class="tab-pane fade">
-    <app-horse-add [addBreedList]="breedList" [addHorseList]="horseList" (newHorseTable)="addHorseToTable($event)"></app-horse-add>
-  </div>
-  <!-- Horse Tree -->
-  <div id="horse-tree" class="tab-pane fade">
-  </div>
-  <!-- Horse edit -->
-  <app-horse-edit [editBreedList]="breedList" [editHorse]="selectedHorse" [editHorseList]="horseList"></app-horse-edit>
-  <!-- Horse delete -->
-  <app-horse-delete [delHorse]="selectedHorse"></app-horse-delete>
-</div>
+<!-- Horse edit -->
+<app-horse-edit></app-horse-edit>
+<!-- Horse delete -->
+<app-horse-delete></app-horse-delete>
 <router-outlet></router-outlet>

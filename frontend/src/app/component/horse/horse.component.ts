@@ -13,38 +13,25 @@ import $ = require('jquery');
 })
 export class HorseComponent implements OnInit {
 
-
   public horseList: Horse[];
+  public breedList: Breed[];
   public selectedHorse: Horse = new Horse(null, null, null, null, null,
     new Breed(null, null, null), 0, 0);
-  public breedList: Breed[];
-  // public breedMap: Map<number, string> = new Map<number, string>();
   public error = false;
   public errorMessage = '';
+
   constructor(private horseService: HorseService, private breedService: BreedService) { }
 
   ngOnInit(): void {
-    this.getBreedList();
-    this.getHorseList();
-  }
-
-  public selectHorse(event){
-    this.selectedHorse = event;
-  }
-
-  public addHorseToTable(event) {
-    this.horseList.push(event);
-    this.horseList = this.horseList;
   }
 
   /**
    * Loads all breeds
    */
    public getBreedList(){
-    this.breedService.getAllBreeds().subscribe(
+    this.breedService.getBreedList().subscribe(
       (breeds: Breed[]) => {
         this.breedList = breeds;
-        // this.setBreedMap();
       }, error => {
         this.defaultServiceErrorHandling(error);
       }
@@ -63,15 +50,6 @@ export class HorseComponent implements OnInit {
       }
     );
   }
-
-  // /**
-  //  * Maps breed.name to its id
-  //  */
-  // public setBreedMap(){
-  //   this.breedList.forEach(breed => {
-  //     this.breedMap.set(breed.id, breed.name);
-  //   });
-  // }
 
   /**
    * Error flag will be deactivated, which clears the error message

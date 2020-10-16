@@ -5,6 +5,8 @@ import {HorseComponent} from '../horse.component';
 import {Breed} from '../../../dto/breed';
 // @ts-ignore
 import $ = require('jquery');
+import {BreedComponent} from "../../breed/breed.component";
+import {BreedService} from "../../../service/breed.service";
 
 
 @Component({
@@ -16,24 +18,43 @@ export class HorseAddComponent implements OnInit {
 
   public newHorse: Horse = new Horse(null, null, null, null, null,
     new Breed(null, null, null), 0, 0);
-  @Input() addBreedList: Breed[];
-  @Input() addHorseList: Horse[];
-  @Output() newHorseTable: EventEmitter<Horse> = new EventEmitter<Horse>();
+  addBreedList: Breed[];
+  addHorseList: Horse[];
   addError = false;
 
-  constructor(private horseService: HorseService, private horseComponent: HorseComponent) {
+  constructor(private horseService: HorseService, private horseComponent: HorseComponent,  private breedService: BreedService) {
   }
 
   ngOnInit(): void {
+    this.getHorseList();
+    this.getBreedList();
   }
 
+  public getBreedList(){
+    this.breedService.getBreedList().subscribe(
+      (breeds: Breed[]) => {
+        this.addBreedList = breeds;
+      }, error => {
+        this.horseComponent.defaultServiceErrorHandling(error);
+      }
+    );
+  }
+
+  public getHorseList(){
+    this.horseService.getHorseList().subscribe(
+      (horseList: Horse[]) => {
+        this.addHorseList = horseList;
+      }, error => {
+        this.horseComponent.defaultServiceErrorHandling(error);
+      }
+    );
+  }
 
   public addHorse(horse: Horse) {
     this.horseService.addHorse(horse)
       .subscribe(
         (horseSub: Horse) => {
           this.newHorse = horseSub;
-          // this.newHorseTable.emit(this.newHorse);
         },
         error => {
           this.addError = this.horseComponent.defaultServiceErrorHandling(error);

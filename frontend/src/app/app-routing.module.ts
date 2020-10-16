@@ -5,7 +5,7 @@ import {HorseComponent} from './component/horse/horse.component';
 import {HorseAddComponent} from './component/horse/horse-add/horse-add.component';
 import {HorseListComponent} from './component/horse/horse-list/horse-list.component';
 import {BreedAddComponent} from './component/breed/breed-add/breed-add.component';
-import {BreedListComponent} from "./component/breed/breed-list/breed-list.component";
+import {BreedListComponent} from './component/breed/breed-list/breed-list.component';
 
 
 const routes: Routes = [

@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {EventEmitter, Injectable, OnDestroy} from '@angular/core';
 import {Horse} from '../dto/horse';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {environment} from 'src/environments/environment';
@@ -11,8 +11,19 @@ import {formatDate} from '@angular/common';
 export class HorseService {
 
   private messageBaseUri: string = environment.backendUrl + 'horses';
+  public onHorseSelectEdit: EventEmitter<Horse> = new EventEmitter<Horse>();
+  public onHorseSelectDelete: EventEmitter<Horse> = new EventEmitter<Horse>();
+
 
   constructor(private httpClient: HttpClient) {
+  }
+
+  emitSelectedHorseEdit(horse: Horse) {
+    this.onHorseSelectEdit.emit(horse);
+  }
+
+  emitSelectedHorseDelete(horse: Horse) {
+    this.onHorseSelectDelete.emit(horse);
   }
 
   /**
@@ -46,12 +57,12 @@ export class HorseService {
   }
 
   /**
-   * Finds all horses that fulfill the paramter from the database
+   * Finds all horses that fulfill the parameter from the database
    */
   findHorses(horse: Horse): Observable<Horse[]>{
-    console.log('Finding horses');
     if (horse != null) {
-      const httpParamsOptions ={
+      console.log('Finding horses');
+      const httpParamsOptions = {
         params: new HttpParams()
           .set('name', horse.name)
           .set('description', horse.description)
@@ -59,11 +70,12 @@ export class HorseService {
             horse.birthDate == null || horse.birthDate.toString().length === 0 ?
               new Date().toISOString().slice(0, 10) : horse.birthDate, 'yyyy-MM-dd', 'en-US'))
           .set('isMale', String(horse.isMale))
-          .set('breedId', String(horse.breed.id))
+          .set('breedId', horse.breed != null ? String(horse.breed.id) : '')
       };
       return this.httpClient.get<Horse[]>(this.messageBaseUri, httpParamsOptions);
     } else {
-      const httpParamsOptions ={ params: new HttpParams()
+      console.log('Getting horses');
+      const httpParamsOptions = { params: new HttpParams()
           .set('name', '')
           .set('description', '')
           .set('birthDate', formatDate('9999-01-01', 'yyyy-MM-dd', 'en-US'))
@@ -79,7 +91,6 @@ export class HorseService {
    * Gets all horses from the database
    */
   getHorseList(): Observable<Horse[]> {
-    console.log('Getting horses');
     return this.findHorses(null);
   }
 }

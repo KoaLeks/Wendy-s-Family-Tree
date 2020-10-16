@@ -17,8 +17,8 @@
 </div>
 
 <!-- Edit horse -->
-<div class="modal fade" id="horse-edit" role="dialog">
-  <div class="modal-dialog" role="document">
+<div class="modal fade" id="horse-edit" role="dialog" >
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Edit</h5>
@@ -60,9 +60,10 @@
             <span class="input-group-text">Breed</span>
           </div>
           <select class="custom-select" [(ngModel)]="editHorse.breed">
-            <option [ngValue]="">No specific breed</option>
+            <option value="">No specific breed</option>
             <option *ngFor="let breed of editBreedList" [ngValue]="breed">{{breed.name}}</option>
           </select>
+          {{editHorse.breed.name}}
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">
@@ -70,7 +71,7 @@
           </div>
           <select class="custom-select" [(ngModel)]="editHorse.fatherId">
             <option value="0">Unknown</option>
-            <ng-container *ngFor="let horse of editHorseList" >
+            <ng-container *ngFor="let horse of editPossibleParents" >
               <option *ngIf="horse.isMale === true && horse.id != editHorse.id" value="{{horse.id}}" >{{horse.name}}</option>
             </ng-container>
           </select>
@@ -81,7 +82,7 @@
           </div>
           <select class="custom-select" [(ngModel)]="editHorse.motherId">
             <option value="0">Unknown</option>
-            <ng-container *ngFor="let horse of editHorseList" >
+            <ng-container *ngFor="let horse of editPossibleParents" >
               <option *ngIf="horse.isMale === false && horse.id != editHorse.id" value="{{horse.id}}">{{horse.name}}</option>
             </ng-container>
           </select>
