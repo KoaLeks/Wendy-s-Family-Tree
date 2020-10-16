@@ -15,7 +15,7 @@ import {Subscription} from 'rxjs';
 })
 export class HorseEditComponent implements OnInit, OnDestroy {
 
-  private editHorse: Horse = new Horse(null, null, null, null, null,
+  editHorse: Horse = new Horse(null, null, null, null, null,
     new Breed(0, null, null), null, null);
   private editBreedList: Breed[];
   private editPossibleParents: Horse[];
