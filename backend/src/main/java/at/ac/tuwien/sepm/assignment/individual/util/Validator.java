@@ -49,6 +49,9 @@ public class Validator {
         if (horse.getBirthDate() == null || !horse.getBirthDate().toLocalDate().isBefore(LocalDate.now().plusDays(1))) {
             throw new ValidationException("Birthdate must be set! Can't be set to future date!");
         }
+        if(horse.getIsMale() == null) {
+            throw new ValidationException("Sex must be selected!");
+        }
     }
 
     public void validateUpdateHorse(Long id, Horse horse) throws ValidationException {
@@ -58,6 +61,9 @@ public class Validator {
         }
         if (horse.getBirthDate() == null || !horse.getBirthDate().toLocalDate().isBefore(LocalDate.now().plusDays(1))) {
             throw new ValidationException("Birthdate must be set! Can't be set to future date!");
+        }
+        if(horse.getIsMale() == null) {
+            throw new ValidationException("Sex must be selected!");
         }
     }
 
@@ -87,11 +93,7 @@ public class Validator {
         } catch (NotFoundException e) {
             return false;
         }
-        if (breed.getName().equalsIgnoreCase(duplicate.getName())) {
-            return true;
-        } else {
-            return false;
-        }
+        return breed.getName().equalsIgnoreCase(duplicate.getName());
     }
 
     public void checkId(Long id) {
