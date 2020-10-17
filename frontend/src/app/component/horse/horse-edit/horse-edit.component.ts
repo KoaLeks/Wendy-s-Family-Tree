@@ -50,6 +50,10 @@ export class HorseEditComponent implements OnInit, OnDestroy {
     );
   }
 
+  compareFn(breed1: Breed, breed2: Breed): boolean {
+    return breed1.id === breed2.id;
+  }
+
   /**
    * Loads possible parents for a selected horse
    */

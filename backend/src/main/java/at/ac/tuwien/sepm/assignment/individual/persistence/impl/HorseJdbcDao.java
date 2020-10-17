@@ -212,8 +212,20 @@ public class HorseJdbcDao implements HorseDao {
         horse.setBirthDate(Date.valueOf(resultSet.getTimestamp("birth_date").toLocalDateTime().toLocalDate()));
         horse.setIsMale(resultSet.getBoolean("is_male"));
         horse.setBreed(new Breed(resultSet.getLong("breed_id"), resultSet.getString("breed_name")));
-        horse.setFather(new Horse(resultSet.getLong("father_id")));
-        horse.setMother(new Horse(resultSet.getLong("mother_id")));
+        Horse father;
+        Horse mother;
+        try {
+            father = findOneById(resultSet.getLong("father_id"));
+            horse.setFather(father);
+        } catch (NotFoundException e){
+            horse.setFather(new Horse(0L));
+        }
+        try {
+            mother = findOneById(resultSet.getLong("mother_id"));
+            horse.setMother(mother);
+        } catch (NotFoundException e){
+            horse.setMother(new Horse(0L));
+        }
         return horse;
     }
 }

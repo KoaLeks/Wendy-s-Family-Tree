@@ -17,6 +17,10 @@ public class Horse {
     public Horse() {
     }
 
+    public Horse(Horse horse) {
+        this(horse.getId(), horse.getName(), horse.getDescription(), horse.getBirthDate(), horse.getIsMale(), horse.getBreed(), horse.getFather(), horse.getMother());
+    }
+
     public Horse(Long id) {
         this.id = id;
     }

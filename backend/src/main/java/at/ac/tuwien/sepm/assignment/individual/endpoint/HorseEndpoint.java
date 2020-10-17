@@ -1,5 +1,6 @@
 package at.ac.tuwien.sepm.assignment.individual.endpoint;
 
+import at.ac.tuwien.sepm.assignment.individual.endpoint.dto.HorseDetailDto;
 import at.ac.tuwien.sepm.assignment.individual.endpoint.dto.HorseDto;
 import at.ac.tuwien.sepm.assignment.individual.endpoint.dto.SearchDto;
 import at.ac.tuwien.sepm.assignment.individual.endpoint.mapper.HorseMapper;
@@ -119,6 +120,21 @@ public class HorseEndpoint {
             }
         } else {
             return getAllHorses();
+        }
+    }
+
+    @GetMapping(value = "/{id}/details")
+    @ResponseStatus(HttpStatus.OK)
+    public HorseDetailDto getHorseDetails(@PathVariable Long id) {
+        LOGGER.info("GET " + BASE_URL + "/{}/details", id);
+        try {
+            return horseMapper.entityToDetailDto(horseService.findOneById(id));
+        } catch (NotFoundException e) {
+            LOGGER.error("Error loading horse with id: " + id + e);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error during reading horse: " + e.getMessage(), e);
+        } catch (ValidationException e) {
+            LOGGER.error("Error loading horse with id: " + id + e);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error during reading horse: " + e.getMessage(), e);
         }
     }
 

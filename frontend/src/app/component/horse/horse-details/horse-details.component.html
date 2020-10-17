@@ -1,0 +1,40 @@
+<div class="card">
+  <div class="card-header">
+    <div class="row">
+      <div class="col-md-6 h2"> {{detailHorse.name}}</div>
+      <div class="col-md-4 h2">{{detailHorse.birthDate}}</div>
+      <div class="col-2">
+        <button class="btn btn-outline-primary float-right" data-toggle="modal" data-target="#horse-edit" (click)="selectHorseEdit(detailHorse)">
+          <i class="material-icons">edit</i>
+        </button>
+        <button class="btn btn-outline-danger float-right mr-2" data-toggle="modal" data-target="#horse-delete" (click)="selectHorseDelete(detailHorse)">
+          <i class="material-icons">delete</i>
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="card-body">
+    <dl class="row">
+      <dt class="col-md-2 ">Description:</dt>
+      <dd class="col-md-10 "> {{detailHorse.description}}</dd>
+      <dt class="col-md-2">Sex:</dt>
+        <dd class="col-md-10"> {{detailHorse.isMale ? 'Male' : 'Female'}}</dd>
+      <dt class="col-md-2">Breed:</dt>
+        <dd class="col-md-10">{{detailHorse.breed.id != 0 ? detailHorse.breed.name : 'not specified'}}</dd>
+      <dt class="col-md-2">Father:</dt>
+        <dd class="col-md-10"> {{ detailHorse.father != null && detailHorse.father.id != 0 ? (detailHorse.father.name) : 'unknown'}}
+          <a class="btn btn-outline-info float-right"  *ngIf="detailHorse.father.id !== 0"  [routerLink]="['/horses', detailHorse.father.id, 'details']">
+            Show details father
+          </a>
+        </dd>
+      <dt class="col-md-2">Mother:</dt>
+        <dd class="col-md-10">{{  detailHorse.mother != null  && detailHorse.mother.id != 0? (detailHorse.mother.name) : 'unknown'}}
+          <a class="btn btn-outline-info float-right" *ngIf="detailHorse.mother.id !== 0" [routerLink]="['/horses', detailHorse.mother.id, 'details']">
+            Show details mother
+          </a>
+        </dd>
+    </dl>
+  </div>
+</div>

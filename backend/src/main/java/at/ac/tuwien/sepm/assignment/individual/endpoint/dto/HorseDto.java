@@ -1,5 +1,7 @@
 package at.ac.tuwien.sepm.assignment.individual.endpoint.dto;
 
+import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
+
 import java.sql.Date;
 import java.util.Objects;
 
@@ -16,6 +18,14 @@ public class HorseDto {
     private Long motherId;
 
     public HorseDto() {
+    }
+
+    public HorseDto(Horse horse) {
+        this(horse.getId(), horse.getName(), horse.getDescription(), horse.getBirthDate(), horse.getIsMale(), new BreedDto(horse.getBreed()), horse.getFather().getId(), horse.getMother().getId());
+    }
+
+    public HorseDto(Long id) {
+        this.id = id;
     }
 
     public HorseDto(Long id, String name, String description, Date birthDate, Boolean isMale, BreedDto breed, Long fatherId, Long motherId) {

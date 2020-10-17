@@ -1,9 +1,9 @@
 import {Component, Input, OnInit, Output} from '@angular/core';
 import {Horse} from '../../../dto/horse';
-import {EventEmitter} from '@angular/core';
 import {Breed} from '../../../dto/breed';
 import {HorseService} from '../../../service/horse.service';
 import {HorseComponent} from '../horse.component';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-horse-list',
@@ -14,14 +14,12 @@ export class HorseListComponent implements OnInit {
 
   horseListTable: Horse[] = [];
   breedListTable: Breed[] = [];
-  outputHorse: EventEmitter<Horse> = new EventEmitter<Horse>();
-  public selectedHorseTable: Horse;
   public searchParam: Horse = new Horse(null, null, null, null, null,
     new Breed(null, null, null), 0, 0);
 
 
 
-  constructor(private horseService: HorseService, private horseComponent: HorseComponent) {
+  constructor(private horseService: HorseService, private horseComponent: HorseComponent, private router: Router) {
   }
 
   public selectHorseEdit(horse: Horse) {
@@ -32,19 +30,10 @@ export class HorseListComponent implements OnInit {
     this.horseService.emitSelectedHorseDelete(horse);
   }
 
-
-
   public keyPress(event) {
     if (event.key === 'Enter') {
       this.findHorses(this.searchParam);
     }
-  }
-
-  public findParent(id: number): Horse {
-    if (id === null || id === 0) {
-      return null;
-    }
-    return this.horseListTable.find(horse => horse.id === id);
   }
 
   public findHorses(horse: Horse){
@@ -55,21 +44,6 @@ export class HorseListComponent implements OnInit {
         this.horseComponent.defaultServiceErrorHandling(error);
       }
     );
-  }
-
-  scrollToParent(id: number){
-
-    const scrollDiv = document.querySelector('#horse' + id);
-    console.log(scrollDiv);
-    console.log(scrollDiv.scrollTop);
-    window.scrollTo(0, scrollDiv.scrollHeight);
-  }
-
-  public displayName(horse: Horse) {
-    if (horse == null) {
-      return 'unknown';
-    }
-    return horse.name;
   }
 
   ngOnInit(): void {

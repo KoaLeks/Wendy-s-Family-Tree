@@ -1,5 +1,7 @@
 package at.ac.tuwien.sepm.assignment.individual.endpoint.dto;
 
+import at.ac.tuwien.sepm.assignment.individual.entity.Breed;
+
 import java.util.Objects;
 
 public class BreedDto {
@@ -10,6 +12,10 @@ public class BreedDto {
 
 
     public BreedDto() {
+    }
+
+    public BreedDto(Breed breed) {
+        this(breed.getId(), breed.getName(), breed.getDescription());
     }
 
     public BreedDto(Long id) {

@@ -4,6 +4,7 @@ import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {environment} from 'src/environments/environment';
 import {Observable} from 'rxjs';
 import {formatDate} from '@angular/common';
+import {HorseDetail} from "../dto/horse-detail";
 
 @Injectable({
   providedIn: 'root'
@@ -22,8 +23,9 @@ export class HorseService {
     this.onHorseSelectEdit.emit(horse);
   }
 
-  emitSelectedHorseDelete(horse: Horse) {
+  emitSelectedHorseDelete(horse: Horse): boolean {
     this.onHorseSelectDelete.emit(horse);
+    return true;
   }
 
   /**
@@ -54,6 +56,24 @@ export class HorseService {
     console.log('Deleting horse ' + id);
     // @ts-ignore
     return this.httpClient.delete(this.messageBaseUri + '/' + id);
+  }
+
+  /**
+   * Loads specific horse from the backend
+   * @param id of horse to load
+   */
+  getHorseById(id: number): Observable<Horse> {
+    console.log('Load horse ' + id);
+    return this.httpClient.get<Horse>(this.messageBaseUri + '/' + id);
+  }
+
+  /**
+   * Loads specific horse from the backend
+   * @param id of horse to load
+   */
+  getHorseDetailsById(id: number): Observable<HorseDetail> {
+    console.log('Load horse details for ' + id);
+    return this.httpClient.get<HorseDetail>(this.messageBaseUri + '/' + id + '/details');
   }
 
   /**

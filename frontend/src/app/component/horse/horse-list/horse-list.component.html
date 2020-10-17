@@ -24,19 +24,15 @@
   </div>
 </span>
 
-<!--Accordion wrapper-->
-<div class="accordion md-accordion" id="accordion" role="tablist" aria-multiselectable="true">
-  <div class="card" *ngFor="let horse of horseListTable">
+  <div class="card mb-2" *ngFor="let horse of horseListTable">
     <div class="card-header container-fluid">
       <div class="row">
-        <div class="col-md-8">
-          <h2 class="mb-0">
-            <button type="button" class="btn btn-link btn-lg"  data-toggle="collapse" [attr.data-target]="'.horse'+ horse.id">{{horse.name}}</button>
-          </h2>
-        </div>
+        <div class="col-md-6">
 
-        <div class="col-md-2">
-          <h4>{{horse.birthDate}}</h4>
+          <button type="button" class="btn btn-link btn-lg" [routerLink]="['/horses', horse.id, 'details']"> <h1 class=""> {{horse.name}} </h1></button>
+        </div>
+        <div class="col-md-4">
+          <h1 class="mt-2">{{horse.birthDate}}</h1>
         </div>
         <div class="col-md-2">
           <button class="btn btn-outline-primary float-right" data-toggle="modal" data-target="#horse-edit" (click)="selectHorseEdit(horse)">
@@ -51,20 +47,4 @@
         </div>
       </div>
     </div>
-    <div class="card-body collapse horse{{horse.id}}" id="horse{{horse.id}}" data-parent="#accordion">
-      <p class="col-md-12 card-text">Description: {{horse.description}}</p>
-      <p class="col-md-12 card-text">Sex: {{horse.isMale ? 'Male' : 'Female'}}</p>
-      <p class="col-md-12 card-text">Breed: {{horse.breed.id != 0 ? horse.breed.name : 'not specified'}}</p>
-      <p class="col-md-12 card-text">Father: {{ horse.fatherId != 0 || horse.fatherId != null ? displayName(findParent(horse.fatherId)) : 'unknown'}}
-        <a class="btn btn-outline-info float-right" (click)="scrollToParent(horse.fatherId)" data-toggle="collapse" [attr.data-target]="'.horse' + ((horse.fatherId != null && horse.fatherId != 0) ? horse.fatherId : -1)">
-          Show details father
-        </a>
-      </p>
-      <p class="col-md-12 card-text">Mother: {{ horse.motherId != 0 || horse.motherId != null ? displayName(findParent(horse.motherId)) : 'unknown'}}
-        <a class="btn btn-outline-info float-right" (click)="scrollToParent(horse.motherId)" data-toggle="collapse" [attr.data-target]="'.horse' + ((horse.motherId != null && horse.motherId != 0) ? horse.motherId : -1)">
-          Show details mother
-        </a>
-      </p>
-    </div>
   </div>
-</div>

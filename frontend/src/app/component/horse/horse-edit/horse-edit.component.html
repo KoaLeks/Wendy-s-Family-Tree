@@ -59,11 +59,10 @@
           <div class="input-group-prepend">
             <span class="input-group-text">Breed</span>
           </div>
-          <select class="custom-select" [(ngModel)]="editHorse.breed">
-            <option value="">No specific breed</option>
-            <option *ngFor="let breed of editBreedList" [ngValue]="breed">{{breed.name}}</option>
+          <select class="custom-select" [(ngModel)]="editHorse.breed" [compareWith]="compareFn">
+            <option value="0" >No specific breed</option>
+            <option *ngFor="let breed of editBreedList" [ngValue]="breed" >{{breed.name}}</option>
           </select>
-          {{editHorse.breed.name}}
         </div>
         <div class="input-group mb-3">
           <div class="input-group-prepend">

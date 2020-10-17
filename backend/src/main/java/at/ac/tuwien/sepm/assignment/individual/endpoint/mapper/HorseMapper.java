@@ -1,6 +1,7 @@
 package at.ac.tuwien.sepm.assignment.individual.endpoint.mapper;
 
 import at.ac.tuwien.sepm.assignment.individual.endpoint.dto.BreedDto;
+import at.ac.tuwien.sepm.assignment.individual.endpoint.dto.HorseDetailDto;
 import at.ac.tuwien.sepm.assignment.individual.endpoint.dto.HorseDto;
 import at.ac.tuwien.sepm.assignment.individual.endpoint.dto.SearchDto;
 import at.ac.tuwien.sepm.assignment.individual.entity.Breed;
@@ -35,6 +36,13 @@ public class HorseMapper {
             (searchDto.getIsMale() != null && !searchDto.getIsMale().equals("null") && !searchDto.getIsMale().equals("")) ? Boolean.valueOf(searchDto.getIsMale()) : null,
             (searchDto.getBreedId() != null && !searchDto.getBreedId().equals("null") && !searchDto.getBreedId().equals("")) ? new Breed(Long.valueOf(searchDto.getBreedId())) : null,
             null, null);
+    }
+
+    public HorseDetailDto entityToDetailDto(Horse horse){
+        return new HorseDetailDto(horse.getId(), horse.getName(), horse.getDescription(), horse.getBirthDate(), horse.getIsMale(),
+            horse.getBreed() != null ? new BreedDto(horse.getBreed().getId(), horse.getBreed().getName()) : new BreedDto(0L),
+            horse.getFather() != null && horse.getFather().getId() != 0 ? new HorseDto(horse.getFather()) : new HorseDto(0L),
+            horse.getMother() != null && horse.getMother().getId() != 0 ? new HorseDto(horse.getMother()) : new HorseDto(0L));
     }
 
     public List<HorseDto> entityToDtoList(List<Horse> horseList) {
