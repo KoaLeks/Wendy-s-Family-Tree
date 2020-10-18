@@ -129,11 +129,16 @@ public class HorseJdbcDao implements HorseDao {
     @Override
     public void delete(Long id) throws PersistenceException{
         LOGGER.trace("Delete horse with id {}", id);
-        String sql = "DELETE FROM " + TABLE_NAME + " WHERE ID=?";
+        String sqlDeleteFather = "DELETE FROM " + TABLE_NAME + " WHERE ID=?;" +
+            "UPDATE " + TABLE_NAME + " SET FATHER_ID=0 WHERE FATHER_ID=?";
+        String sqlDeleteMother = "DELETE FROM " + TABLE_NAME + " WHERE ID=?;" +
+            "UPDATE " + TABLE_NAME + " SET MOTHER_ID=0 WHERE MOTHER_ID=?";
+        Horse horse = findOneById(id);
         try {
             jdbcTemplate.update(connection -> {
-                PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                PreparedStatement stmt = connection.prepareStatement(horse.getIsMale() ? sqlDeleteFather : sqlDeleteMother, Statement.RETURN_GENERATED_KEYS);
                 stmt.setLong(1, id);
+                stmt.setLong(2, id);
                 LOGGER.debug("Query: " + stmt.toString());
                 return stmt;
             });
