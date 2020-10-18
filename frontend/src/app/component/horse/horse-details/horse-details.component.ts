@@ -5,7 +5,7 @@ import {HorseService} from '../../../service/horse.service';
 import {Breed} from '../../../dto/breed';
 // @ts-ignore
 import $ = require('jquery');
-import {HorseDetail} from "../../../dto/horse-detail";
+import {HorseDetail} from '../../../dto/horse-detail';
 
 @Component({
   selector: 'app-horse-details',
@@ -34,11 +34,11 @@ export class HorseDetailsComponent implements OnInit {
     });
   }
 
-  selectHorseEdit(horse: Horse) {
+  selectHorseEdit(horse: any) {
     this.horseService.emitSelectedHorseEdit(horse);
   }
 
-  selectHorseDelete(horse: Horse){
+  selectHorseDelete(horse: any){
     this.horseService.emitSelectedHorseDelete(horse);
     // @ts-ignore
     $('#successDeleteModal').on('hidden.bs.modal', () => this.router.navigateByUrl('horses/list'));

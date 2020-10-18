@@ -50,7 +50,7 @@
   </div>
   <select class="custom-select" [(ngModel)]="newHorse.breed">
     <option selected disabled hidden>Please select a breed</option>
-    <option value="null" >No specific breed</option>
+    <option [ngValue]="unspecificBreed" >No specific breed</option>
     <option *ngFor="let breed of addBreedList" [ngValue]="breed">{{breed.name}}</option>
   </select>
 </div>

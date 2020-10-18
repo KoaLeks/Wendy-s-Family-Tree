@@ -7,7 +7,7 @@
     <input class="form-control" type="text" placeholder="Name" [(ngModel)]="searchParam.name">
     <input class="form-control" type="text" placeholder="Description" [(ngModel)]="searchParam.description">
     <input type="date" class="form-control" [(ngModel)]="searchParam.birthDate"  id="datePicker">
-    <select class="custom-select" placeholder="Sex" [(ngModel)]="searchParam.isMale">
+    <select class="custom-select" [(ngModel)]="searchParam.isMale">
       <option value="null">Both</option>
       <option value="true">Male</option>
       <option value="false">Female</option>
@@ -24,12 +24,11 @@
   </div>
 </span>
 
-  <div class="card mb-2" *ngFor="let horse of horseListTable">
+  <div class="card mb-2" *ngFor="let horse of horseListTable; trackBy: trackId">
     <div class="card-header container-fluid">
       <div class="row">
         <div class="col-md-6">
-
-          <button type="button" class="btn btn-link btn-lg" [routerLink]="['/horses', horse.id, 'details']"> <h1 class=""> {{horse.name}} </h1></button>
+          <button type="button" class="btn btn-link btn-lg" [routerLink]="['/horses', horse.id, 'details']"> <h1> {{horse.name}} </h1></button>
         </div>
         <div class="col-md-4">
           <h1 class="mt-2">{{horse.birthDate}}</h1>

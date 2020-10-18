@@ -60,8 +60,8 @@
             <span class="input-group-text">Breed</span>
           </div>
           <select class="custom-select" [(ngModel)]="editHorse.breed" [compareWith]="compareFn">
-            <option value="0" >No specific breed</option>
-            <option *ngFor="let breed of editBreedList" [ngValue]="breed" >{{breed.name}}</option>
+            <option [ngValue]="unspecificBreed">No specific breed</option>
+            <option *ngFor="let breed of editBreedList" [ngValue]="breed">{{breed.name}}</option>
           </select>
         </div>
         <div class="input-group mb-3">

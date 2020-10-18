@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {Breed} from '../dto/breed';
 import {environment} from 'src/environments/environment';
 
@@ -11,6 +11,14 @@ const baseUri = environment.backendUrl + 'breeds';
 })
 export class BreedService {
   constructor(private httpClient: HttpClient) {
+  }
+
+  private onInitBreedListSource = new BehaviorSubject<Breed[]>(null);
+  public onInitBreedList$ = this.onInitBreedListSource.asObservable();
+
+
+  emitBreedList(breed: Breed[]) {
+    this.onInitBreedListSource.next(breed);
   }
 
   /**

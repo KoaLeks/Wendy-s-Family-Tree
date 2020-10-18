@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {Horse} from '../../../dto/horse';
 import {Breed} from '../../../dto/breed';
 import {HorseService} from '../../../service/horse.service';
@@ -15,11 +15,12 @@ import {Subscription} from 'rxjs';
 })
 export class HorseEditComponent implements OnInit, OnDestroy {
 
+  unspecificBreed: Breed = new Breed(0, null, null);
   editHorse: Horse = new Horse(null, null, null, null, null,
-    new Breed(0, null, null), null, null);
-  editBreedList: Breed[];
+    this.unspecificBreed, null, null);
+  @Input() editBreedList: Breed[];
   editPossibleParents: Horse[];
-  public editError = false;
+  private editError = false;
   private subscription: Subscription;
 
   constructor(private horseService: HorseService, private horseComponent: HorseComponent, private breedService: BreedService) {
@@ -28,7 +29,7 @@ export class HorseEditComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscription = this.horseService.onHorseSelectEdit.subscribe(horse => {
       this.editHorse = horse;
-      this.getBreedList();
+      // this.getBreedList();
       this.getPossibleParents();
     });
   }
@@ -37,21 +38,8 @@ export class HorseEditComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  /**
-   * Loads all breeds
-   */
-  public getBreedList() {
-    this.breedService.getBreedList().subscribe(
-      (breeds: Breed[]) => {
-        this.editBreedList = breeds;
-      }, error => {
-        this.horseComponent.defaultServiceErrorHandling(error);
-      }
-    );
-  }
-
-  compareFn(breed1: Breed, breed2: Breed): boolean {
-    return breed1.id === breed2.id;
+  compareFn(breed1: any, breed2: any): boolean {
+    return breed1 && breed2 ? breed1.id === breed2.id : breed1 === breed2;
   }
 
   /**

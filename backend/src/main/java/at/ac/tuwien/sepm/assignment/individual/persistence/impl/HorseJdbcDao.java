@@ -50,7 +50,7 @@ public class HorseJdbcDao implements HorseDao {
                 stmt.setBoolean(4, horse.getIsMale());
 //                LOGGER.info(""+horse);
 //                LOGGER.info(""+horse.getBreed());
-                if (horse.getBreed() != null && horse.getBreed().getId() != null) {
+                if (horse.getBreed() != null && horse.getBreed().getId() != null && horse.getBreed().getId() != 0) {
                     stmt.setLong(5, horse.getBreed().getId());
                     stmt.setString(6, horse.getBreed().getName());
                 } else {
@@ -95,7 +95,7 @@ public class HorseJdbcDao implements HorseDao {
                 stmt.setBoolean(4, horse.getIsMale());
 //                LOGGER.info(""+horse);
 //                LOGGER.info(""+horse.getBreed());
-                if (horse.getBreed() != null && horse.getBreed().getId() != null ) {
+                if (horse.getBreed() != null && horse.getBreed().getId() != null && horse.getBreed().getId() != 0) {
                     stmt.setLong(5, horse.getBreed().getId());
                     stmt.setString(6, horse.getBreed().getName());
                 } else {

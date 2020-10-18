@@ -13,16 +13,24 @@ import $ = require('jquery');
 })
 export class HorseComponent implements OnInit {
 
-  public horseList: Horse[];
-  public breedList: Breed[];
-  public selectedHorse: Horse = new Horse(null, null, null, null, null,
-    new Breed(null, null, null), 0, 0);
+  public horseList: Horse[] = [];
+  public breedList: Breed[] = [];
   public error = false;
   public errorMessage = '';
 
-  constructor(private horseService: HorseService, private breedService: BreedService) { }
+  constructor(private horseService: HorseService, private breedService: BreedService) {
+    this.horseService.getHorseList().subscribe(horseList => {
+      this.horseList = horseList;
+      this.horseService.emitHorseList(this.horseList);
+    });
+    this.breedService.getBreedList().subscribe(breedList => {
+      this.breedList = breedList;
+      this.breedService.emitBreedList(this.breedList);
+    });
+  }
 
   ngOnInit(): void {
+
   }
 
   /**

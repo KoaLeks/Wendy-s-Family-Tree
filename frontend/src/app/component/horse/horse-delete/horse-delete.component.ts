@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Horse} from '../../../dto/horse';
 import {Breed} from '../../../dto/breed';
 import {HorseService} from '../../../service/horse.service';
@@ -26,7 +26,6 @@ export class HorseDeleteComponent implements OnInit, OnDestroy {
     this.subscription = this.horseService.onHorseSelectDelete.subscribe(
     horse => {
       this.delHorse = horse;
-      console.log(this.delHorse);
     });
   }
 
@@ -44,6 +43,7 @@ export class HorseDeleteComponent implements OnInit, OnDestroy {
         if (!this.deleteError) {
           // @ts-ignore
           $('#successDeleteModal').modal('show');
+          this.horseService.emitDeleteHorse(this.delHorse);
         }
         this.deleteError = false;
     });

@@ -1,12 +1,12 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Horse} from '../../../dto/horse';
 import {HorseService} from '../../../service/horse.service';
 import {HorseComponent} from '../horse.component';
 import {Breed} from '../../../dto/breed';
 // @ts-ignore
 import $ = require('jquery');
-import {BreedComponent} from "../../breed/breed.component";
-import {BreedService} from "../../../service/breed.service";
+import {BreedService} from '../../../service/breed.service';
+import {Subscription} from 'rxjs';
 
 
 @Component({
@@ -14,20 +14,32 @@ import {BreedService} from "../../../service/breed.service";
   templateUrl: './horse-add.component.html',
   styleUrls: ['./horse-add.component.scss']
 })
-export class HorseAddComponent implements OnInit {
+export class HorseAddComponent implements OnInit, OnDestroy {
 
-  public newHorse: Horse = new Horse(null, null, null, null, null,
-    new Breed(null, null, null), 0, 0);
+  unspecificBreed: Breed = new Breed(0, null, null);
+  newHorse: Horse = new Horse(null, null, null, null, null,
+    this.unspecificBreed, 0, 0);
   addBreedList: Breed[];
   addHorseList: Horse[];
-  addError = false;
+  private addError = false;
+  private subscriptionGetHorseList: Subscription;
+  private subscriptionGetBreedList: Subscription;
 
   constructor(private horseService: HorseService, private horseComponent: HorseComponent,  private breedService: BreedService) {
   }
 
   ngOnInit(): void {
-    this.getHorseList();
-    this.getBreedList();
+    this.subscriptionGetHorseList = this.horseService.onInitHorseList$.subscribe(horseList => {
+      this.addHorseList = horseList;
+    });
+    this.subscriptionGetBreedList = this.breedService.onInitBreedList$.subscribe(breedList => {
+      this.addBreedList = breedList;
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptionGetHorseList.unsubscribe();
+    this.subscriptionGetBreedList.unsubscribe();
   }
 
   public getBreedList(){
@@ -61,6 +73,9 @@ export class HorseAddComponent implements OnInit {
         }
       ).add(() => {
         if (!this.addError) {
+          this.horseService.emitNewHorse(this.newHorse);
+          this.addHorseList.push(new Horse(this.newHorse.id, this.newHorse.name, this.newHorse.description,
+            this.newHorse.birthDate, this.newHorse.isMale, this.newHorse.breed, this.newHorse.fatherId, this.newHorse.motherId));
           // @ts-ignore
           $('#successAddModal').modal('show');
           this.newHorse.id = null;

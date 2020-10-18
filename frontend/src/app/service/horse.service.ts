@@ -1,10 +1,10 @@
-import {EventEmitter, Injectable, OnDestroy} from '@angular/core';
+import {EventEmitter, Injectable} from '@angular/core';
 import {Horse} from '../dto/horse';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {environment} from 'src/environments/environment';
-import {Observable} from 'rxjs';
+import {BehaviorSubject, Observable, ReplaySubject} from 'rxjs';
 import {formatDate} from '@angular/common';
-import {HorseDetail} from "../dto/horse-detail";
+import {HorseDetail} from '../dto/horse-detail';
 
 @Injectable({
   providedIn: 'root'
@@ -14,18 +14,38 @@ export class HorseService {
   private messageBaseUri: string = environment.backendUrl + 'horses';
   public onHorseSelectEdit: EventEmitter<Horse> = new EventEmitter<Horse>();
   public onHorseSelectDelete: EventEmitter<Horse> = new EventEmitter<Horse>();
+  public onHorseDelete = new EventEmitter<Horse>();
+
+  public onHorseAddSource = new ReplaySubject<Horse>(1);
+
+    // new BehaviorSubject<Horse>(new Horse(null, null, null, null, null, new Breed(null, null, null), null, null));
+  private onInitHorseListSource = new BehaviorSubject<Horse[]>(null);
+
+  public onInitHorseList$ = this.onInitHorseListSource.asObservable();
+  public onHorseAdd$ = this.onHorseAddSource.asObservable();
 
 
   constructor(private httpClient: HttpClient) {
   }
 
-  emitSelectedHorseEdit(horse: Horse) {
+  emitHorseList(horse: Horse[]) {
+    this.onInitHorseListSource.next(horse);
+  }
+
+  emitNewHorse(horse: Horse) {
+    this.onHorseAddSource.next(horse);
+  }
+
+  emitDeleteHorse(horse: Horse) {
+    this.onHorseDelete.emit(horse);
+  }
+
+  emitSelectedHorseEdit(horse: any) {
     this.onHorseSelectEdit.emit(horse);
   }
 
-  emitSelectedHorseDelete(horse: Horse): boolean {
+  emitSelectedHorseDelete(horse: any) {
     this.onHorseSelectDelete.emit(horse);
-    return true;
   }
 
   /**
@@ -95,13 +115,6 @@ export class HorseService {
       return this.httpClient.get<Horse[]>(this.messageBaseUri, httpParamsOptions);
     } else {
       console.log('Getting horses');
-      const httpParamsOptions = { params: new HttpParams()
-          .set('name', '')
-          .set('description', '')
-          .set('birthDate', formatDate('9999-01-01', 'yyyy-MM-dd', 'en-US'))
-          .set('isMale', '')
-          .set('breedId', '')
-      };
       return this.httpClient.get<Horse[]>(this.messageBaseUri);
     }
 
