@@ -19,18 +19,11 @@ export class HorseComponent implements OnInit {
   public errorMessage = '';
 
   constructor(private horseService: HorseService, private breedService: BreedService) {
-    this.horseService.getHorseList().subscribe(horseList => {
-      this.horseList = horseList;
-      this.horseService.emitHorseList(this.horseList);
-    });
-    this.breedService.getBreedList().subscribe(breedList => {
-      this.breedList = breedList;
-      this.breedService.emitBreedList(this.breedList);
-    });
   }
 
   ngOnInit(): void {
-
+    this.getHorseList();
+    this.getBreedList();
   }
 
   /**
@@ -40,6 +33,7 @@ export class HorseComponent implements OnInit {
     this.breedService.getBreedList().subscribe(
       (breeds: Breed[]) => {
         this.breedList = breeds;
+        this.breedService.emitBreedList(this.breedList);
       }, error => {
         this.defaultServiceErrorHandling(error);
       }
@@ -53,6 +47,7 @@ export class HorseComponent implements OnInit {
     this.horseService.getHorseList().subscribe(
       (horseList: Horse[]) => {
         this.horseList = horseList;
+        this.horseService.emitHorseList(this.horseList);
       }, error => {
         this.defaultServiceErrorHandling(error);
       }

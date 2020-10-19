@@ -19,7 +19,6 @@ export class HorseListComponent implements OnInit, OnDestroy {
     new Breed(null, null, null), 0, 0);
   private subscriptionGetHorseList: Subscription;
   private subscriptionGetBreedList: Subscription;
-  private subscriptionAdd: Subscription;
   private subscriptionDelete: Subscription;
 
 
@@ -33,14 +32,6 @@ export class HorseListComponent implements OnInit, OnDestroy {
     this.subscriptionGetBreedList = this.breedService.onInitBreedList$.subscribe(breedList => {
       this.breedListTable = breedList;
     });
-    this.subscriptionAdd = this.horseService.onHorseAdd$.subscribe(horse => {
-      if (horse.id != null) {
-        // console.log('array push: ' + JSON.stringify(newHorse));
-        this.horseListTable.push(
-          new Horse(horse.id, horse.name, horse.description, horse.birthDate, horse.isMale, horse.breed, horse.fatherId, horse.motherId));
-        console.log(this.horseListTable);
-      }
-    });
     this.subscriptionDelete = this.horseService.onHorseDelete$.subscribe(deleteHorse => {
       if (deleteHorse != null) {
         this.horseListTable.splice(this.horseListTable.findIndex(horse  => horse.id === deleteHorse.id),  1);
@@ -52,7 +43,6 @@ export class HorseListComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
      this.subscriptionGetHorseList.unsubscribe();
      this.subscriptionGetBreedList.unsubscribe();
-     this.subscriptionAdd.unsubscribe();
      this.subscriptionDelete.unsubscribe();
   }
 

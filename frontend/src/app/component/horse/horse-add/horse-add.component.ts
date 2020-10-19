@@ -42,26 +42,6 @@ export class HorseAddComponent implements OnInit, OnDestroy {
     this.subscriptionGetBreedList.unsubscribe();
   }
 
-  public getBreedList(){
-    this.breedService.getBreedList().subscribe(
-      (breeds: Breed[]) => {
-        this.addBreedList = breeds;
-      }, error => {
-        this.horseComponent.defaultServiceErrorHandling(error);
-      }
-    );
-  }
-
-  public getHorseList(){
-    this.horseService.getHorseList().subscribe(
-      (horseList: Horse[]) => {
-        this.addHorseList = horseList;
-      }, error => {
-        this.horseComponent.defaultServiceErrorHandling(error);
-      }
-    );
-  }
-
   public addHorse(horse: Horse) {
     this.horseService.addHorse(horse)
       .subscribe(
@@ -73,7 +53,6 @@ export class HorseAddComponent implements OnInit, OnDestroy {
         }
       ).add(() => {
         if (!this.addError) {
-          this.horseService.emitNewHorse(this.newHorse);
           this.addHorseList.push(new Horse(this.newHorse.id, this.newHorse.name, this.newHorse.description,
             this.newHorse.birthDate, this.newHorse.isMale, this.newHorse.breed, this.newHorse.fatherId, this.newHorse.motherId));
           // @ts-ignore

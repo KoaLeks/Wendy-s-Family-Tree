@@ -18,6 +18,21 @@ export class BreedComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getBreedList();
+  }
+
+  /**
+   * Loads all breeds
+   */
+  public getBreedList(){
+    this.breedService.getBreedList().subscribe(
+      (breeds: Breed[]) => {
+        this.breedList = breeds;
+        this.breedService.emitBreedList(this.breedList);
+      }, error => {
+        this.defaultServiceErrorHandling(error);
+      }
+    );
   }
 
   /**

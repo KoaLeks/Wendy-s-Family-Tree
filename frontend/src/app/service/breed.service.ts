@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject, Observable, ReplaySubject} from 'rxjs';
 import {Breed} from '../dto/breed';
 import {environment} from 'src/environments/environment';
 
@@ -14,8 +14,15 @@ export class BreedService {
   }
 
   private onInitBreedListSource = new BehaviorSubject<Breed[]>(null);
-  public onInitBreedList$ = this.onInitBreedListSource.asObservable();
+  private onBreedAddSource = new ReplaySubject<Breed>(1);
 
+  public onInitBreedList$ = this.onInitBreedListSource.asObservable();
+  public onBreedAdd$ = this.onBreedAddSource.asObservable();
+
+
+  emitNewBreed(breed: Breed) {
+    this.onBreedAddSource.next(breed);
+  }
 
   emitBreedList(breed: Breed[]) {
     this.onInitBreedListSource.next(breed);

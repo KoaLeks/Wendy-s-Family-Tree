@@ -1,29 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Breed} from '../../../dto/breed';
-import {BreedService} from "../../../service/breed.service";
-import {BreedComponent} from "../breed.component";
+import {BreedService} from '../../../service/breed.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-breed-list',
   templateUrl: './breed-list.component.html',
   styleUrls: ['./breed-list.component.scss']
 })
-export class BreedListComponent implements OnInit {
+export class BreedListComponent implements OnInit, OnDestroy {
 
   breedList: Breed[];
-  constructor(private breedService: BreedService, private breedComponent: BreedComponent) { }
+  private subscriptionGetBreedList: Subscription;
+
+  constructor(private breedService: BreedService) { }
 
   ngOnInit(): void {
-    this.getBreedList();
+    this.subscriptionGetBreedList = this.breedService.onInitBreedList$.subscribe(breedList => {
+      this.breedList = breedList;
+    });
   }
-
-  private getBreedList(){
-    this.breedService.getBreedList().subscribe(
-      (breeds: Breed[]) =>{
-        this.breedList = breeds;
-      }, error => {
-        this.breedComponent.defaultServiceErrorHandling(error);
-      }
-    );
+  ngOnDestroy(): void {
+    this.subscriptionGetBreedList.unsubscribe();
   }
 }

@@ -16,11 +16,9 @@ export class HorseService {
   public onHorseSelectDelete: EventEmitter<Horse> = new EventEmitter<Horse>();
 
   private onHorseDeleteSource = new ReplaySubject<Horse>(1);
-  private onHorseAddSource = new ReplaySubject<Horse>(1);
   private onInitHorseListSource = new BehaviorSubject<Horse[]>(null);
 
   public onInitHorseList$ = this.onInitHorseListSource.asObservable();
-  public onHorseAdd$ = this.onHorseAddSource.asObservable();
   public onHorseDelete$ = this.onHorseDeleteSource.asObservable();
 
 
@@ -29,10 +27,6 @@ export class HorseService {
 
   emitHorseList(horse: Horse[]) {
     this.onInitHorseListSource.next(horse);
-  }
-
-  emitNewHorse(horse: Horse) {
-    this.onHorseAddSource.next(horse);
   }
 
   setNextDeleteSourceNull(){
