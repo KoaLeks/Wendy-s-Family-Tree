@@ -29,7 +29,6 @@ export class HorseEditComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscription = this.horseService.onHorseSelectEdit.subscribe(horse => {
       this.editHorse = horse;
-      // this.getBreedList();
       this.getPossibleParents();
     });
   }

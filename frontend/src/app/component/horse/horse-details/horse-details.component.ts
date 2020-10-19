@@ -34,11 +34,19 @@ export class HorseDetailsComponent implements OnInit {
     });
   }
 
-  selectHorseEdit(horse: any) {
-    this.horseService.emitSelectedHorseEdit(horse);
+  selectHorseEdit(horse: HorseDetail) {
+    const horseEdit: Horse = new Horse(horse.id, horse.name, horse.description, horse.birthDate,
+      horse.isMale, horse.breed, horse.father.id, horse.mother.id);
+    this.horseService.emitSelectedHorseEdit(horseEdit);
+    const currentUrl = this.router.url;
+    $('#successEditModal').on('hidden.bs.modal', () =>  this.router.navigateByUrl('/', {skipLocationChange: true})
+      .then(() => {
+        this.router.navigate([currentUrl]);
+      })
+    );
   }
 
-  selectHorseDelete(horse: any){
+  selectHorseDelete(horse: HorseDetail){
     this.horseService.emitSelectedHorseDelete(horse);
     // @ts-ignore
     $('#successDeleteModal').on('hidden.bs.modal', () =>  this.router.navigateByUrl('horses/list'));
