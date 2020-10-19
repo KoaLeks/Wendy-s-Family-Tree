@@ -2,7 +2,7 @@ import {EventEmitter, Injectable} from '@angular/core';
 import {Horse} from '../dto/horse';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {environment} from 'src/environments/environment';
-import {BehaviorSubject, Observable, ReplaySubject} from 'rxjs';
+import {BehaviorSubject, Observable, ReplaySubject, Subject} from 'rxjs';
 import {formatDate} from '@angular/common';
 import {HorseDetail} from '../dto/horse-detail';
 
@@ -14,15 +14,14 @@ export class HorseService {
   private messageBaseUri: string = environment.backendUrl + 'horses';
   public onHorseSelectEdit: EventEmitter<Horse> = new EventEmitter<Horse>();
   public onHorseSelectDelete: EventEmitter<Horse> = new EventEmitter<Horse>();
-  public onHorseDelete = new EventEmitter<Horse>();
 
-  public onHorseAddSource = new ReplaySubject<Horse>(1);
-
-    // new BehaviorSubject<Horse>(new Horse(null, null, null, null, null, new Breed(null, null, null), null, null));
+  private onHorseDeleteSource = new ReplaySubject<Horse>(1);
+  private onHorseAddSource = new ReplaySubject<Horse>(1);
   private onInitHorseListSource = new BehaviorSubject<Horse[]>(null);
 
   public onInitHorseList$ = this.onInitHorseListSource.asObservable();
   public onHorseAdd$ = this.onHorseAddSource.asObservable();
+  public onHorseDelete$ = this.onHorseDeleteSource.asObservable();
 
 
   constructor(private httpClient: HttpClient) {
@@ -36,8 +35,12 @@ export class HorseService {
     this.onHorseAddSource.next(horse);
   }
 
+  setNextDeleteSourceNull(){
+    this.onHorseDeleteSource.next(null);
+  }
+
   emitDeleteHorse(horse: Horse) {
-    this.onHorseDelete.emit(horse);
+    this.onHorseDeleteSource.next(horse);
   }
 
   emitSelectedHorseEdit(horse: any) {

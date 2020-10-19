@@ -83,7 +83,7 @@ export class HorseAddComponent implements OnInit, OnDestroy {
           this.newHorse.description = null;
           this.newHorse.birthDate = null;
           this.newHorse.isMale = null;
-          this.newHorse.breed = new Breed(null, null, null);
+          this.newHorse.breed = this.unspecificBreed;
           this.newHorse.fatherId = 0;
           this.newHorse.motherId = 0;
         }

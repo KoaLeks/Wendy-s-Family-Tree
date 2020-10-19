@@ -41,7 +41,7 @@ export class HorseDetailsComponent implements OnInit {
   selectHorseDelete(horse: any){
     this.horseService.emitSelectedHorseDelete(horse);
     // @ts-ignore
-    $('#successDeleteModal').on('hidden.bs.modal', () => this.router.navigateByUrl('horses/list'));
+    $('#successDeleteModal').on('hidden.bs.modal', () =>  this.router.navigateByUrl('horses/list'));
   }
 
 

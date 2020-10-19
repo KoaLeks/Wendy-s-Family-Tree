@@ -6,6 +6,7 @@ import {HorseComponent} from '../horse.component';
 // @ts-ignore
 import $ = require('jquery');
 import {Subscription} from 'rxjs';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-horse-delete',
@@ -18,7 +19,7 @@ export class HorseDeleteComponent implements OnInit, OnDestroy {
   private deleteError = false;
   private subscription: Subscription;
 
-  constructor(private horseService: HorseService, private horseComponent: HorseComponent) {
+  constructor(private horseService: HorseService, private horseComponent: HorseComponent, private router: Router) {
   }
 
 

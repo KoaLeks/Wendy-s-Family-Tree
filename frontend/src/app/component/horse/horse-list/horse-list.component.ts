@@ -41,8 +41,11 @@ export class HorseListComponent implements OnInit, OnDestroy {
         console.log(this.horseListTable);
       }
     });
-    this.subscriptionDelete = this.horseService.onHorseDelete.subscribe(deleteHorse => {
-      this.horseListTable.splice(this.horseListTable.findIndex(horse  => horse.id === deleteHorse.id),  1);
+    this.subscriptionDelete = this.horseService.onHorseDelete$.subscribe(deleteHorse => {
+      if (deleteHorse != null) {
+        this.horseListTable.splice(this.horseListTable.findIndex(horse  => horse.id === deleteHorse.id),  1);
+        this.horseService.setNextDeleteSourceNull();
+      }
     });
   }
 
