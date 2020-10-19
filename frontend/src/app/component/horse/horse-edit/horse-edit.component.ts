@@ -18,6 +18,8 @@ export class HorseEditComponent implements OnInit, OnDestroy {
   unspecificBreed: Breed = new Breed(0, null, null);
   editHorse: Horse = new Horse(null, null, null, null, null,
     this.unspecificBreed, null, null);
+  originalHorse: Horse = new Horse(null, null, null, null, null,
+    this.unspecificBreed, null, null);
   @Input() editBreedList: Breed[];
   editPossibleParents: Horse[];
   private editError = false;
@@ -28,6 +30,8 @@ export class HorseEditComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscription = this.horseService.onHorseSelectEdit.subscribe(horse => {
+      this.originalHorse = new Horse(horse.id, horse.name, horse.description, horse.birthDate,
+        horse.isMale, horse.breed, horse.fatherId, horse.motherId);
       this.editHorse = horse;
       this.getPossibleParents();
     });
@@ -36,6 +40,17 @@ export class HorseEditComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
+
+  cancelChanges(){
+    this.editHorse.name = this.originalHorse.name;
+    this.editHorse.description = this.originalHorse.description;
+    this.editHorse.birthDate = this.originalHorse.birthDate;
+    this.editHorse.isMale = this.originalHorse.isMale;
+    this.editHorse.breed = this.originalHorse.breed;
+    this.editHorse.fatherId = this.originalHorse.fatherId;
+    this.editHorse.motherId = this.originalHorse.motherId;
+  }
+
 
   compareFn(breed1: any, breed2: any): boolean {
     return breed1 && breed2 ? breed1.id === breed2.id : breed1 === breed2;
@@ -71,5 +86,4 @@ export class HorseEditComponent implements OnInit, OnDestroy {
     }
     );
   }
-
 }

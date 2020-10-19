@@ -6,7 +6,7 @@ import {HorseComponent} from '../horse.component';
 // @ts-ignore
 import $ = require('jquery');
 import {Subscription} from 'rxjs';
-import {Router} from "@angular/router";
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-horse-delete',

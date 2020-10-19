@@ -1,23 +1,26 @@
-Aleksandar Marinkovic, 01634028, Summe: ~66h 35min (19.10.20)
+Aleksandar Marinkovic, 01634028, Summe: ~67h 30min (19.10.20)
 
-03.10.20: Story 1: 4h
-04.10.20: Story 1: 6h
-05.10.20: Story 1: 3h
-06.10.20: Story 2: 6h
-07.10.20: Story 2: 3h
-07.10.20: Story 3: 1h
-08.10.20: Story 4: 6h
-08.10.20: Story 3: 1h
-09.10.20: Story 5: 6h
-11.10.20: Story 6: 8h
-12.10.20: Story 6: 3h
-13.10.20: Story 7: 3h
-13.10.20: Story 8: 1h
-16.10.20: Story 5: 5h
-16.10.20: Story 15: 5 min
-16.10.20: Story 18: 5 min
-16.10.20: Story 24: 5 min
-17.10.20: Story 5: 4h
-18.10.20: Story 3: 20 min
+03.10.20: Story  1: 4h
+04.10.20: Story  1: 6h
+05.10.20: Story  1: 3h
+06.10.20: Story  2: 6h
+07.10.20: Story  2: 3h
+07.10.20: Story  3: 1h
+08.10.20: Story  4: 6h
+08.10.20: Story  3: 1h
+09.10.20: Story  5: 6h
+11.10.20: Story  6: 8h
+12.10.20: Story  6: 3h
+13.10.20: Story  7: 3h
+13.10.20: Story  8: 1h
+16.10.20: Story  5: 5h
+16.10.20: Story 15: 5min
+16.10.20: Story 18: 5min
+16.10.20: Story 24: 5min
+17.10.20: Story  5: 4h
+18.10.20: Story  3: 20min
 18.10.20: Story 23: 5h
-19.10.20: Story 5: 1h
+19.10.20: Story  5: 1h
+19.10.20: Story  5: 30min
+19.10.20: Story 23: 20min
+19.10.20: Story  2: 35min

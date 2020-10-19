@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Breed} from '../../../dto/breed';
 import {BreedService} from '../../../service/breed.service';
 import {BreedComponent} from '../breed.component';
-import {Subscription} from "rxjs";
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-breed-add',
