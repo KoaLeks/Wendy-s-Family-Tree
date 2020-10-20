@@ -39,6 +39,7 @@ public class BreedEndpoint {
         try {
             return breedMapper.entityToDto(breedService.getOneById(id));
         } catch (NotFoundException e) {
+            LOGGER.error("Error finding breed with id: " + id + e);
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error during reading breed" + e.getMessage(), e);
         }
     }

@@ -4,6 +4,7 @@ import at.ac.tuwien.sepm.assignment.individual.entity.Breed;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.exception.PersistenceException;
+import at.ac.tuwien.sepm.assignment.individual.persistence.BreedDao;
 import at.ac.tuwien.sepm.assignment.individual.persistence.HorseDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,11 +28,13 @@ public class HorseJdbcDao implements HorseDao {
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private final JdbcTemplate jdbcTemplate;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private final BreedDao breedDao;
 
     @Autowired
-    public HorseJdbcDao(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+    public HorseJdbcDao(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate, BreedDao breedDao) {
         this.jdbcTemplate = jdbcTemplate;
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+        this.breedDao = breedDao;
     }
 
     @Override
@@ -129,14 +132,12 @@ public class HorseJdbcDao implements HorseDao {
     @Override
     public void delete(Long id) throws PersistenceException{
         LOGGER.trace("Delete horse with id {}", id);
-        String sqlDeleteFather = "DELETE FROM " + TABLE_NAME + " WHERE ID=?;" +
-            "UPDATE " + TABLE_NAME + " SET FATHER_ID=0 WHERE FATHER_ID=?";
-        String sqlDeleteMother = "DELETE FROM " + TABLE_NAME + " WHERE ID=?;" +
-            "UPDATE " + TABLE_NAME + " SET MOTHER_ID=0 WHERE MOTHER_ID=?";
         Horse horse = findOneById(id);
+        String horseParent =  horse.getIsMale() ?  " SET FATHER_ID=0 WHERE FATHER_ID=?" : " SET MOTHER_ID=0 WHERE MOTHER_ID=?";
+        String sql = "DELETE FROM " + TABLE_NAME + " WHERE ID=?; UPDATE " + TABLE_NAME + horseParent;
         try {
             jdbcTemplate.update(connection -> {
-                PreparedStatement stmt = connection.prepareStatement(horse.getIsMale() ? sqlDeleteFather : sqlDeleteMother, Statement.RETURN_GENERATED_KEYS);
+                PreparedStatement stmt = connection.prepareStatement( sql, Statement.RETURN_GENERATED_KEYS);
                 stmt.setLong(1, id);
                 stmt.setLong(2, id);
                 LOGGER.debug("Query: " + stmt.toString());
@@ -160,7 +161,7 @@ public class HorseJdbcDao implements HorseDao {
 
     @Override
     public List<Horse> findHorses(Horse horse) throws PersistenceException {
-        LOGGER.info("Search for horses with parameter: name: {}, description: {}, birthDate: {}, isMale: {}, breed: {}",
+        LOGGER.trace("Search for horses with parameter: name: {}, description: {}, birthDate: {}, isMale: {}, breed: {}",
             horse.getName(), horse.getDescription(),  horse.getBirthDate(), horse.getIsMale(), horse.getBreed());
         String sql = "SELECT * FROM " + TABLE_NAME + " WHERE UPPER(NAME) LIKE UPPER(?) AND UPPER(IFNULL(DESCRIPTION, '')) LIKE UPPER(?) " +
             "AND BIRTH_DATE <= ? AND IS_MALE LIKE ? AND IFNULL(BREED_ID, '0') LIKE ?";
@@ -188,7 +189,6 @@ public class HorseJdbcDao implements HorseDao {
         } catch (DataAccessException e){
             throw new PersistenceException("Could not access database while searching for horses.");
         }
-//        LOGGER.info("List: "+horseList);
         return horseList;
     }
 
@@ -209,6 +209,26 @@ public class HorseJdbcDao implements HorseDao {
         }
     }
 
+    @Override
+    public List<Horse> getChildren(Long id) throws PersistenceException {
+        LOGGER.trace("Get children for horse with id {}", id);
+        Horse parent = findOneById(id);
+        String horseParent =  parent.getIsMale() ?  "FATHER_ID=?" : "MOTHER_ID=?";
+        String sql = "SELECT * FROM " + TABLE_NAME + " WHERE " + horseParent + "  ORDER BY BIRTH_DATE ASC";
+        List<Horse> horseList;
+        try {
+            horseList = jdbcTemplate.query(connection -> {
+                PreparedStatement stmt = connection.prepareStatement( sql, Statement.RETURN_GENERATED_KEYS);
+                stmt.setLong(1, parent.getId());
+                LOGGER.debug("Query: " + stmt.toString());
+                return stmt;
+            }, this::mapRow);
+        } catch (DataAccessException e){
+            throw new PersistenceException("Could not get children for horse with id: " + parent.getId());
+        }
+        return horseList;
+    }
+
     private Horse mapRow(ResultSet resultSet, int i) throws SQLException {
         final Horse horse = new Horse();
         horse.setId(resultSet.getLong("id"));
@@ -216,7 +236,7 @@ public class HorseJdbcDao implements HorseDao {
         horse.setDescription(resultSet.getString("description"));
         horse.setBirthDate(Date.valueOf(resultSet.getTimestamp("birth_date").toLocalDateTime().toLocalDate()));
         horse.setIsMale(resultSet.getBoolean("is_male"));
-        horse.setBreed(new Breed(resultSet.getLong("breed_id"), resultSet.getString("breed_name")));
+        horse.setBreed(breedDao.getOneById(resultSet.getLong("breed_id")));
         Horse father;
         Horse mother;
         try {

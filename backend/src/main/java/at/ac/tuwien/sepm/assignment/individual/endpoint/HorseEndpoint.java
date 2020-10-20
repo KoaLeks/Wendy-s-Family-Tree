@@ -85,6 +85,7 @@ public class HorseEndpoint {
             LOGGER.error("Error deleting horse: " + e);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error deleting horse: " + e.getMessage(), e);
         } catch (NotFoundException e) {
+            LOGGER.error("Error deleting horse: " + e);
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error deleting horse: " + e.getMessage(), e);
         }
 
@@ -114,8 +115,10 @@ public class HorseEndpoint {
             try {
                 return horseMapper.entityToDtoList(horseService.findHorses(horseMapper.searchDtoToEntity(searchDto)));
             } catch (PersistenceException e) {
+                LOGGER.error("Error searching horses: " + e);
                 throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Error getting horses: " + e.getMessage());
             } catch (ValidationException e) {
+                LOGGER.error("Error searching horses: " + e);
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error getting horses: " + e.getMessage());
             }
         } else {

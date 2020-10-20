@@ -60,7 +60,8 @@ export class HorseEditComponent implements OnInit, OnDestroy {
    * Loads possible parents for a selected horse
    */
   public getPossibleParents(){
-    this.horseService.findHorses(new Horse(null, null, null, this.editHorse.birthDate, null, null, null, null)).subscribe(
+    this.horseService.findHorses(new Horse(null, null, null, this.editHorse.birthDate, null, null, null, null))
+      .subscribe(
       (horseList: Horse[]) => {
         this.editPossibleParents = horseList;
       }, error => {
@@ -75,6 +76,7 @@ export class HorseEditComponent implements OnInit, OnDestroy {
         this.editHorse = horse;
       },
       error => {
+        this.cancelChanges();
         this.editError = this.horseComponent.defaultServiceErrorHandling(error);
       }
     ).add(() => {

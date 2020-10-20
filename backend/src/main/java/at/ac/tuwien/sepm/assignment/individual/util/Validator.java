@@ -4,11 +4,13 @@ import at.ac.tuwien.sepm.assignment.individual.entity.Breed;
 import java.lang.invoke.MethodHandles;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.List;
 
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.exception.ValidationException;
 import at.ac.tuwien.sepm.assignment.individual.persistence.BreedDao;
+import at.ac.tuwien.sepm.assignment.individual.persistence.HorseDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,17 +20,25 @@ import org.springframework.stereotype.Component;
 public class Validator {
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private final BreedDao breedDao;
+    private final HorseDao horseDao;
 
     @Autowired
-    public Validator(BreedDao breedDao) {
+    public Validator(BreedDao breedDao, HorseDao horseDao) {
         this.breedDao = breedDao;
+        this.horseDao = horseDao;
     }
 
     public void validateNewBreed(Breed breed) {
+        if (breed.getId() != null) {
+        throw new ValidationException("Please don't assign IDs manually. IDs are automatically assigned!");
+        }
         if (breed.getName() == null || breed.getName().equals("")) {
             throw new ValidationException("Name must be set!");
         }
-        if (breed.getName().length() >= 255) {
+        if (breed.getName().length() > 255) {
+            throw new ValidationException("Name too long! Please keep it below 255 characters!");
+        }
+        if (breed.getDescription() != null && breed.getDescription().length() > 255) {
             throw new ValidationException("Name too long! Please keep it below 255 characters!");
         }
         if (checkIfDuplicateBreedName(breed)) {
@@ -37,6 +47,25 @@ public class Validator {
     }
 
     public void validateNewHorse(Horse horse) throws ValidationException {
+        if (horse.getId() != null) {
+            throw new ValidationException("Please don't assign IDs manually. IDs are automatically assigned!");
+        }
+        validateHorseValues(horse);
+    }
+
+    public void validateUpdateHorse(Long id, Horse horse) throws ValidationException {
+        List<Horse> children = horseDao.getChildren(id);
+        checkId(id);
+        validateHorseValues(horse);
+        if (checkIfSexChanged(horse) && !children.isEmpty()) {
+            throw new ValidationException("Horse still has children! Please make sure the horse has no children, before changing its sex!");
+        }
+        if (!children.isEmpty() && children.get(0).getBirthDate().toLocalDate().isBefore(horse.getBirthDate().toLocalDate().plusDays(1))) {
+            throw new ValidationException("Invalid Date! Parents can't be younger than their oldest child! Oldest child name: " + children.get(0).getName() + ", birthdate: " + children.get(0).getBirthDate());
+        }
+    }
+
+    private void validateHorseValues(Horse horse) {
         if (horse.getName() == null || horse.getName().equals("")) {
             throw new ValidationException("Name must be set!");
         }
@@ -52,38 +81,56 @@ public class Validator {
         if(horse.getIsMale() == null) {
             throw new ValidationException("Sex must be selected!");
         }
+        if (!checkIfBreedExists(horse.getBreed())) {
+            throw new ValidationException("Horse breed does not match breed in database!");
+        }
+        validateParents(horse);
     }
 
-    public void validateUpdateHorse(Long id, Horse horse) throws ValidationException {
-        checkId(id);
-        if (horse.getName() == null || horse.getName().equals("")) {
-            throw new ValidationException("Name must be set!");
-        }
-        if (horse.getBirthDate() == null || !horse.getBirthDate().toLocalDate().isBefore(LocalDate.now().plusDays(1))) {
-            throw new ValidationException("Birthdate must be set! Can't be set to future date!");
-        }
-        if(horse.getIsMale() == null) {
-            throw new ValidationException("Sex must be selected!");
-        }
+    private boolean checkIfSexChanged(Horse horse) {
+        Horse horseCheck = horseDao.findOneById(horse.getId());
+        return !(horseCheck.getIsMale() == horse.getIsMale());
     }
 
-    public void validateParentDate(Horse child, Horse parent){
+    private void validateParentDate(Horse child, Horse parent){
         if (parent == null) {
             return;
         }
-        if(child.getBirthDate().toLocalDate().isBefore(parent.getBirthDate().toLocalDate()) ||
-            child.getBirthDate().toLocalDate().isEqual(parent.getBirthDate().toLocalDate())){
-            throw new ValidationException("Invalid parent! Children can't be older than their parents!");
+        if (child.getBirthDate().toLocalDate().isBefore(parent.getBirthDate().toLocalDate().plusDays(1))) {
+            throw new ValidationException("Invalid date! Children can't be older than their parents!");
         }
     }
 
-    public void validateParentsCheckIfSameSex(Horse father, Horse mother) {
+    private void validateParentsCheckIfSameSex(Horse father, Horse mother) {
         if (father == null || mother == null) {
             return;
         }
         if (father.getIsMale() == mother.getIsMale()) {
             throw new ValidationException("Both parents can't have the same sex!");
         }
+    }
+
+    public void validateParents(Horse horse) {
+        Horse father;
+        Horse mother;
+        try {
+            father = horse.getFather() != null ? horseDao.findOneById(horse.getFather().getId()) : null;
+        } catch (NotFoundException e) {
+            father = null;
+        }
+        try {
+            mother = horse.getMother() != null ? horseDao.findOneById(horse.getMother().getId()) : null;
+        } catch (NotFoundException e) {
+            mother = null;
+        }
+        validateParentsCheckIfSameSex(father, mother);
+        validateParentDate(horse, father);
+        validateParentDate(horse, mother);
+    }
+
+    public boolean checkIfBreedExists(Breed breed) {
+        Breed breedCheck = breedDao.getOneById(breed.getId());
+        return breedCheck.equals(breed);
     }
 
     public boolean checkIfDuplicateBreedName(Breed breed){
@@ -97,7 +144,7 @@ public class Validator {
     }
 
     public void checkId(Long id) {
-        if (id < 0) {
+        if (id == null || id < 0) {
             throw new ValidationException("Invalid ID value! ID=" + id);
         }
     }
