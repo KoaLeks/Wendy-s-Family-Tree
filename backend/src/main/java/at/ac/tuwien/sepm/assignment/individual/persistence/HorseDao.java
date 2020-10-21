@@ -51,6 +51,14 @@ public interface HorseDao {
     List<Horse> getChildren(Long id) throws PersistenceException;
 
     /**
+     * @param fatherId id of father.
+     * @param motherId id of mother.
+     * @return A list of horse parents, where parent horse is either mother or father.
+     * @throws PersistenceException will be thrown if something goes wrong during the database access.
+     */
+    List<Horse> getParents(Long fatherId, Long motherId) throws PersistenceException;
+
+    /**
      * @return list of all horses in the database.
      * @throws PersistenceException will be thrown if something goes wrong during the database access.
      */

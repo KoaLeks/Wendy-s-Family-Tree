@@ -5,6 +5,7 @@ import {environment} from 'src/environments/environment';
 import {BehaviorSubject, Observable, ReplaySubject, Subject} from 'rxjs';
 import {formatDate} from '@angular/common';
 import {HorseDetail} from '../dto/horse-detail';
+import {HorseTree} from "../dto/horse-tree";
 
 @Injectable({
   providedIn: 'root'
@@ -117,6 +118,16 @@ export class HorseService {
 
   }
 
+  /**
+   * Gets all horses from the database
+   */
+  getHorseFamilyList(id: number, generations: number): Observable<HorseTree[]> {
+    console.log('Getting family members');
+    const httpParamsOptions = {
+      params: new HttpParams().set('generations', String(generations))
+    };
+    return this.httpClient.get<HorseTree[]>(this.messageBaseUri  + '/' + id + '/family_tree', httpParamsOptions);
+  }
   /**
    * Gets all horses from the database
    */

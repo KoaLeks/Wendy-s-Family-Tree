@@ -1,8 +1,6 @@
 package at.ac.tuwien.sepm.assignment.individual.endpoint;
 
-import at.ac.tuwien.sepm.assignment.individual.endpoint.dto.HorseDetailDto;
-import at.ac.tuwien.sepm.assignment.individual.endpoint.dto.HorseDto;
-import at.ac.tuwien.sepm.assignment.individual.endpoint.dto.SearchDto;
+import at.ac.tuwien.sepm.assignment.individual.endpoint.dto.*;
 import at.ac.tuwien.sepm.assignment.individual.endpoint.mapper.HorseMapper;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
@@ -16,9 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.io.IOException;
 import java.lang.invoke.MethodHandles;
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -141,13 +137,31 @@ public class HorseEndpoint {
         }
     }
 
+    @GetMapping(value = "/{id}/family_tree")
+    @ResponseStatus(HttpStatus.OK)
+    public List<HorseTreeDto> getHorseFamilyTree(@PathVariable Long id, GenerationDto generationDto) {
+        LOGGER.info("GET " + BASE_URL + "/{}/family_tree?generations={}", id, generationDto.getGenerations());
+        try {
+            return horseMapper.entityToHorseTreeDtoList(horseService.getFamilyTree(id, generationDto.getGenerations()));
+        } catch (NotFoundException e) {
+            LOGGER.error("Error loading family tree for horse with id: " + id + e);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error during getting family tree for horse with id: " + id + e.getMessage(), e);
+        } catch (ValidationException e) {
+            LOGGER.error("Error loading family tree for horse with id: " + id + e);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error during getting family tree for horse with id: " + id + e.getMessage(), e);
+        }catch (PersistenceException e) {
+            LOGGER.error("Error loading family tree for horse with id: " + id + e);
+            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY,"Error during getting family tree for horse with id: " + id + e.getMessage(), e);
+        }
+    }
+
     public List<HorseDto> getAllHorses(){
         LOGGER.info("GET All " + BASE_URL + "/" + "");
         try {
             return horseMapper.entityToDtoList(horseService.getAll());
         }catch (PersistenceException e) {
             LOGGER.error("Error loading horses: " + e);
-            throw new ResponseStatusException(HttpStatus.SERVICE_UNAVAILABLE,"Error getting horse list: ", e);
+            throw new ResponseStatusException(HttpStatus.BAD_GATEWAY,"Error getting horse list: " + e.getMessage(), e);
         }
     }
 }

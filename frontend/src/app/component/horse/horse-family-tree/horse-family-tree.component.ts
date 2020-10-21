@@ -1,7 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HorseService} from '../../../service/horse.service';
-import {Horse} from '../../../dto/horse';
+import {HorseTree} from '../../../dto/horse-tree';
+import {HorseComponent} from '../horse.component';
 
 @Component({
   selector: 'app-horse-family-tree',
@@ -10,32 +11,27 @@ import {Horse} from '../../../dto/horse';
 })
 export class HorseFamilyTreeComponent implements OnInit {
 
-  @Input() horseId: number;
-  horseTree: Horse;
-  horseFamily: Horse[] = [];
+  horseId;
+  maxGenerations = 1;
+  horseRoot: HorseTree;
+  horseFamily: HorseTree[] = [];
 
-  constructor(private route: ActivatedRoute, private router: Router, private horseService: HorseService) {
+  constructor(private route: ActivatedRoute, private horseService: HorseService, private horseComponent: HorseComponent) {
     this.route.params.subscribe(params => {
       this.horseId = params.id;
     });
   }
+
   ngOnInit(): void {
-    if (this.horseId != null && this.horseId !== 0) {
-      this.horseService.getHorseById(this.horseId).subscribe(horse => {
-        this.horseTree = horse;
-      });
-    }
   }
-  selectHorseDelete(){
-    console.log('delete');
-    console.log('icon' + this.horseTree.id);
-  }
-  toggleIcon() {
-    const icon = document.getElementById('icon' + this.horseTree.id);
-    if (icon.innerText === 'add') {
-      icon.innerHTML = 'remove';
-    } else {
-      icon.innerHTML = 'add';
-    }
+
+  getHorseFamily(horseId: number, maxGenerations: number) {
+    this.horseService.getHorseFamilyList(horseId, maxGenerations)
+      .subscribe(horseFamily  => {
+        this.horseRoot = horseFamily[0];
+        this.horseFamily = horseFamily;
+    }, error => {
+      this.horseComponent.defaultServiceErrorHandling(error);
+    });
   }
 }

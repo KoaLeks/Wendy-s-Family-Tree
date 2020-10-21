@@ -16,6 +16,7 @@ import { BreedAddComponent } from './component/breed/breed-add/breed-add.compone
 import { BreedListComponent } from './component/breed/breed-list/breed-list.component';
 import { HorseDetailsComponent } from './component/horse/horse-details/horse-details.component';
 import { HorseFamilyTreeComponent } from './component/horse/horse-family-tree/horse-family-tree.component';
+import { HorseFamilyTreeElementComponent } from './component/horse/horse-family-tree-element/horse-family-tree-element.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { HorseFamilyTreeComponent } from './component/horse/horse-family-tree/ho
     BreedAddComponent,
     BreedListComponent,
     HorseDetailsComponent,
-    HorseFamilyTreeComponent
+    HorseFamilyTreeComponent,
+    HorseFamilyTreeElementComponent
   ],
     imports: [
         BrowserModule,

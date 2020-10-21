@@ -1,9 +1,6 @@
 package at.ac.tuwien.sepm.assignment.individual.endpoint.mapper;
 
-import at.ac.tuwien.sepm.assignment.individual.endpoint.dto.BreedDto;
-import at.ac.tuwien.sepm.assignment.individual.endpoint.dto.HorseDetailDto;
-import at.ac.tuwien.sepm.assignment.individual.endpoint.dto.HorseDto;
-import at.ac.tuwien.sepm.assignment.individual.endpoint.dto.SearchDto;
+import at.ac.tuwien.sepm.assignment.individual.endpoint.dto.*;
 import at.ac.tuwien.sepm.assignment.individual.entity.Breed;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import org.springframework.stereotype.Component;
@@ -50,6 +47,17 @@ public class HorseMapper {
         for (Horse horse: horseList) {
             dtoList.add(new HorseDto(horse.getId(), horse.getName(), horse.getDescription(), horse.getBirthDate(),
                 horse.getIsMale(), horse.getBreed() != null ? new BreedDto(horse.getBreed().getId(), horse.getBreed().getName(), horse.getBreed().getDescription()) : null,
+                horse.getFather() != null ? horse.getFather().getId() : 0,
+                horse.getMother() != null ? horse.getMother().getId() : 0)
+            );
+        }
+        return dtoList;
+    }
+
+    public List<HorseTreeDto> entityToHorseTreeDtoList(List<Horse> horseList) {
+        List<HorseTreeDto> dtoList = new LinkedList<>();
+        for (Horse horse: horseList) {
+            dtoList.add(new HorseTreeDto(horse.getId(), horse.getName(), horse.getBirthDate(),
                 horse.getFather() != null ? horse.getFather().getId() : 0,
                 horse.getMother() != null ? horse.getMother().getId() : 0)
             );

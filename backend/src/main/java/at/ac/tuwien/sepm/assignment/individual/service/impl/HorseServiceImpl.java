@@ -7,6 +7,7 @@ import at.ac.tuwien.sepm.assignment.individual.exception.ValidationException;
 import at.ac.tuwien.sepm.assignment.individual.persistence.HorseDao;
 import at.ac.tuwien.sepm.assignment.individual.service.HorseService;
 import at.ac.tuwien.sepm.assignment.individual.util.Validator;
+import ch.qos.logback.core.joran.conditional.IfAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Service;
 
 import java.lang.invoke.MethodHandles;
 import java.rmi.ServerException;
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -74,5 +77,34 @@ public class HorseServiceImpl implements HorseService {
         return horseDao.getAll();
     }
 
+    @Override
+    public List<Horse> getFamilyTree(Long id, Long generations) throws PersistenceException {
+        LOGGER.trace("Get family tree for horse={}, number of generations={}", id, generations);
+        validator.validateHorseTree(generations);
+        Horse horseRoot = findOneById(id);
+        List<Horse> family = new LinkedList<>();
+        family.add(horseRoot);
+        family.addAll(getTree(horseRoot, generations));
+        return generations > 0 ? family : List.of();
+    }
 
+    private List<Horse> getTree(Horse root, Long generations) {
+        if (generations <= 1) {
+            return List.of();
+        }
+        List<Horse> tree = new LinkedList<>();
+        Horse father = root.getFather();
+        Horse mother = root.getMother();
+        if (father.getId() == 0 && mother.getId() == 0) {
+            return tree;
+        }
+        tree.addAll(horseDao.getParents(father.getId(), mother.getId()));
+        if (father.getId() != 0) {
+            tree.addAll(getTree(father, generations - 1));
+        }
+        if (mother.getId() != 0) {
+            tree.addAll(getTree(mother, generations - 1));
+        }
+        return tree;
+    }
 }

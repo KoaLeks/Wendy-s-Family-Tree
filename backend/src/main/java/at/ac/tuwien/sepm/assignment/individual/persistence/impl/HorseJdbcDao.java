@@ -229,6 +229,33 @@ public class HorseJdbcDao implements HorseDao {
         return horseList;
     }
 
+    @Override
+    public List<Horse> getParents(Long fatherId, Long motherId) throws PersistenceException {
+        LOGGER.trace("Get parents for horse with ids: father={}, mother={}", fatherId, motherId);
+        String sql = "SELECT * FROM " + TABLE_NAME + " WHERE ID IN (?,?)";
+        List<Horse> horseList;
+        try {
+            horseList = jdbcTemplate.query(connection -> {
+                PreparedStatement stmt = connection.prepareStatement( sql, Statement.RETURN_GENERATED_KEYS);
+                if (fatherId != null) {
+                    stmt.setLong(1, fatherId);
+                } else {
+                    stmt.setNull(1, Type.LONG);
+                }
+                if (motherId != null) {
+                    stmt.setLong(2, motherId);
+                } else {
+                    stmt.setNull(2, Type.LONG);
+                }
+                LOGGER.debug("Query: " + stmt.toString());
+                return stmt;
+            }, this::mapRow);
+        } catch (DataAccessException e){
+            throw new PersistenceException("Could not get parents with ids: father=" + fatherId + ", mother=" + motherId);
+        }
+        return horseList;
+    }
+
     private Horse mapRow(ResultSet resultSet, int i) throws SQLException {
         final Horse horse = new Horse();
         horse.setId(resultSet.getLong("id"));

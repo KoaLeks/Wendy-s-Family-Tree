@@ -28,6 +28,13 @@ public class Validator {
         this.horseDao = horseDao;
     }
 
+    public void validateHorseTree(Long generations) {
+        if (generations == null || generations <= 0) {
+            throw new ValidationException("Number of generations must be set! Numbers below 1 won't display anything!");
+        }
+
+    }
+
     public void validateNewBreed(Breed breed) {
         if (breed.getId() != null) {
         throw new ValidationException("Please don't assign IDs manually. IDs are automatically assigned!");
