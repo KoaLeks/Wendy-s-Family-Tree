@@ -7,6 +7,7 @@ import {HorseListComponent} from './component/horse/horse-list/horse-list.compon
 import {BreedAddComponent} from './component/breed/breed-add/breed-add.component';
 import {BreedListComponent} from './component/breed/breed-list/breed-list.component';
 import {HorseDetailsComponent} from './component/horse/horse-details/horse-details.component';
+import {HorseFamilyTreeComponent} from "./component/horse/horse-family-tree/horse-family-tree.component";
 
 
 const routes: Routes = [
@@ -20,8 +21,8 @@ const routes: Routes = [
     children: [
       {path: 'add', component: HorseAddComponent},
       {path: 'list', component: HorseListComponent},
-      {path: ':id/details', component: HorseDetailsComponent}
-      // {path: 'tree', component: HorseTreeComponent}
+      {path: ':id/details', component: HorseDetailsComponent},
+      {path: ':id/family_tree', component: HorseFamilyTreeComponent}
     ]
   }
 ];

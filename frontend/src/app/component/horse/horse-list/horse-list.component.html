@@ -40,7 +40,7 @@
           <button class="btn btn-outline-danger float-right" data-toggle="modal" data-target="#horse-delete" (click)="selectHorseDelete(horse)">
             <i class="material-icons">delete</i>
           </button>
-          <button class="btn btn-outline-info float-right ">
+          <button class="btn btn-outline-info float-right" [routerLink]="['/horses', horse.id, 'family_tree']">
             Family Tree
           </button>
         </div>

@@ -15,6 +15,7 @@ import { HorseDeleteComponent } from './component/horse/horse-delete/horse-delet
 import { BreedAddComponent } from './component/breed/breed-add/breed-add.component';
 import { BreedListComponent } from './component/breed/breed-list/breed-list.component';
 import { HorseDetailsComponent } from './component/horse/horse-details/horse-details.component';
+import { HorseFamilyTreeComponent } from './component/horse/horse-family-tree/horse-family-tree.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { HorseDetailsComponent } from './component/horse/horse-details/horse-det
     HorseDeleteComponent,
     BreedAddComponent,
     BreedListComponent,
-    HorseDetailsComponent
+    HorseDetailsComponent,
+    HorseFamilyTreeComponent
   ],
     imports: [
         BrowserModule,
