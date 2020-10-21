@@ -37,6 +37,7 @@ public class BreedServiceImpl implements BreedService {
     @Override
     public Breed save(Breed breed) throws PersistenceException, ValidationException {
         LOGGER.trace("save({})", breed);
+        LOGGER.debug("Save: Breed values: " + breed);
         validator.validateNewBreed(breed);
         return dao.save(breed);
     }

@@ -40,8 +40,8 @@ public class HorseJdbcDao implements HorseDao {
     @Override
     public Horse save(Horse horse) throws PersistenceException {
         LOGGER.trace("Save horse with name: " + horse.getName());
-        final String sql = "INSERT INTO " + TABLE_NAME + " (ID, NAME, DESCRIPTION, BIRTH_DATE, IS_MALE, BREED_ID, BREED_NAME, FATHER_ID, MOTHER_ID)" +
-            " VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?)";
+        final String sql = "INSERT INTO " + TABLE_NAME + " (ID, NAME, DESCRIPTION, BIRTH_DATE, IS_MALE, BREED_ID, FATHER_ID, MOTHER_ID)" +
+            " VALUES (null, ?, ?, ?, ?, ?, ?, ?)";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         try {
@@ -55,20 +55,20 @@ public class HorseJdbcDao implements HorseDao {
 //                LOGGER.info(""+horse.getBreed());
                 if (horse.getBreed() != null && horse.getBreed().getId() != null && horse.getBreed().getId() != 0) {
                     stmt.setLong(5, horse.getBreed().getId());
-                    stmt.setString(6, horse.getBreed().getName());
+//                    stmt.setString(6, horse.getBreed().getName());
                 } else {
                     stmt.setNull(5, Types.BIGINT);
-                    stmt.setString(6, null);
+//                    stmt.setString(6, null);
                 }
                 if (horse.getFather() != null && horse.getFather().getId() != null) {
-                    stmt.setLong(7, horse.getFather().getId());
+                    stmt.setLong(6, horse.getFather().getId());
                 } else {
-                    stmt.setNull(7, Type.LONG);
+                    stmt.setNull(6, Type.LONG);
                 }
                 if (horse.getMother() != null && horse.getMother().getId() != null) {
-                    stmt.setLong(8, horse.getMother().getId());
+                    stmt.setLong(7, horse.getMother().getId());
                 } else {
-                    stmt.setNull(8, Type.LONG);
+                    stmt.setNull(7, Type.LONG);
                 }
                 LOGGER.debug("Query: " + stmt.toString());
                 return stmt;
@@ -86,7 +86,7 @@ public class HorseJdbcDao implements HorseDao {
     public Horse update(Long id, Horse horse) throws NotFoundException, PersistenceException {
         LOGGER.trace("Get horse with id {} and update values", id);
         String sql = "UPDATE " + TABLE_NAME + " SET NAME=COALESCE(?, NAME), DESCRIPTION=COALESCE(?, DESCRIPTION), " +
-            "BIRTH_DATE=COALESCE(?, BIRTH_DATE), IS_MALE=COALESCE(?, IS_MALE), BREED_ID=?, BREED_NAME=COALESCE(?, BREED_NAME), FATHER_ID=?, MOTHER_ID=? WHERE ID=?";
+            "BIRTH_DATE=COALESCE(?, BIRTH_DATE), IS_MALE=COALESCE(?, IS_MALE), BREED_ID=?, FATHER_ID=?, MOTHER_ID=? WHERE ID=?";
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         try {
@@ -100,22 +100,22 @@ public class HorseJdbcDao implements HorseDao {
 //                LOGGER.info(""+horse.getBreed());
                 if (horse.getBreed() != null && horse.getBreed().getId() != null && horse.getBreed().getId() != 0) {
                     stmt.setLong(5, horse.getBreed().getId());
-                    stmt.setString(6, horse.getBreed().getName());
+//                    stmt.setString(6, horse.getBreed().getName());
                 } else {
                     stmt.setNull(5, Type.LONG);
-                    stmt.setString(6, null);
+//                    stmt.setString(6, null);
                 }
                 if (horse.getFather() != null && horse.getFather().getId() != null) {
-                    stmt.setLong(7, horse.getFather().getId());
+                    stmt.setLong(6, horse.getFather().getId());
+                } else {
+                    stmt.setNull(6, Type.LONG);
+                }
+                if (horse.getMother() != null && horse.getMother().getId() != null) {
+                    stmt.setLong(7, horse.getMother().getId());
                 } else {
                     stmt.setNull(7, Type.LONG);
                 }
-                if (horse.getMother() != null && horse.getMother().getId() != null) {
-                    stmt.setLong(8, horse.getMother().getId());
-                } else {
-                    stmt.setNull(8, Type.LONG);
-                }
-                stmt.setLong(9, id);
+                stmt.setLong(8, id);
                 LOGGER.debug("Query: " + stmt.toString());
                 return stmt;
             }, keyHolder);

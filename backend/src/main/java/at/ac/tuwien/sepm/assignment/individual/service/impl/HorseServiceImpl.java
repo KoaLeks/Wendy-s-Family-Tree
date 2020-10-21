@@ -39,7 +39,7 @@ public class HorseServiceImpl implements HorseService {
     @Override
     public Horse update(Long id, Horse horse) throws PersistenceException, NotFoundException, ValidationException {
         LOGGER.trace("update({})", id);
-        LOGGER.debug("Update: Horse id: {}; Horse values:  name={}, description={},  date={}, isMale={}, breedId={}",
+        LOGGER.debug("Update: Horse id: {}; Horse values:  name={}, description={},  date={}, isMale={}, breed={}",
             id, horse.getName(), horse.getDescription(), horse.getBirthDate(), horse.getIsMale(), horse.getBreed());
         validator.validateUpdateHorse(id, horse);
         return horseDao.update(id, horse);
@@ -63,6 +63,8 @@ public class HorseServiceImpl implements HorseService {
     @Override
     public List<Horse> findHorses(Horse horse) throws PersistenceException {
         LOGGER.trace("Search for horses.");
+        LOGGER.debug("Search params: name={}, description={}, date={}, isMale={}, breed={}",
+            horse.getName(), horse.getDescription(), horse.getBirthDate(), horse.getIsMale(), horse.getBreed());
         return horseDao.findHorses(horse);
     }
 

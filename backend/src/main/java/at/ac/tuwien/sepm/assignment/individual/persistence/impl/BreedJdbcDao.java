@@ -17,6 +17,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+@SuppressWarnings("ALL")
 @Repository
 public class BreedJdbcDao implements BreedDao {
 
@@ -59,14 +60,14 @@ public class BreedJdbcDao implements BreedDao {
         final String sql = "INSERT INTO " + TABLE_NAME + " (ID, NAME, DESCRIPTION)" +
             " VALUES (null, ?, ?)";
 
-        LOGGER.info("" + breed);
+//        LOGGER.info("" + breed);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         try {
             jdbcTemplate.update(connection -> {
                 PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
                 stmt.setString(1, breed.getName());
                 stmt.setString(2, breed.getDescription());
-                LOGGER.info("Query: " + stmt.toString());
+                LOGGER.debug("Query: " + stmt.toString());
                 return stmt;
             }, keyHolder);
         } catch (DataAccessException e){

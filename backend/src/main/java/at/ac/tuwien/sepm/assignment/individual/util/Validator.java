@@ -114,14 +114,14 @@ public class Validator {
         Horse father;
         Horse mother;
         try {
-            father = horse.getFather() != null ? horseDao.findOneById(horse.getFather().getId()) : null;
+            father = horse.getFather() != null && horse.getFather().getId() != 0 ? horseDao.findOneById(horse.getFather().getId()) : null;
         } catch (NotFoundException e) {
-            father = null;
+            throw new NotFoundException("Invalid Parent. Father with id= " + horse.getFather().getId() + " does not exist.");
         }
         try {
-            mother = horse.getMother() != null ? horseDao.findOneById(horse.getMother().getId()) : null;
+            mother = horse.getMother() != null && horse.getMother().getId() != 0 ? horseDao.findOneById(horse.getMother().getId()) : null;
         } catch (NotFoundException e) {
-            mother = null;
+            throw new NotFoundException("Invalid Parent. Mother with id= " + horse.getFather().getId() + " does not exist.");
         }
         validateParentsCheckIfSameSex(father, mother);
         validateParentDate(horse, father);

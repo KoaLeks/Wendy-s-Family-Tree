@@ -34,6 +34,7 @@ public class BreedEndpoint {
     }
 
     @GetMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public BreedDto getOneById(@PathVariable("id") Long id) {
         LOGGER.info("GET " + BASE_URL + "/{}", id);
         try {
@@ -45,9 +46,9 @@ public class BreedEndpoint {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     public BreedDto saveBreed(@RequestBody BreedDto breed) {
         LOGGER.info("POST " + BASE_URL + "/");
-        LOGGER.info("" + breed);
         try {
             Breed breedEntity = breedMapper.dtoToEntity(breed);
             return breedMapper.entityToDto(breedService.save(breedEntity));
