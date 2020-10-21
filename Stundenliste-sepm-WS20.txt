@@ -1,4 +1,4 @@
-Aleksandar Marinkovic, 01634028, Summe: ~67h 30min (19.10.20)
+Aleksandar Marinkovic, 01634028, Summe: ~71h 0min (21.10.20)
 
 03.10.20: Story  1: 4h
 04.10.20: Story  1: 6h
@@ -24,3 +24,6 @@ Aleksandar Marinkovic, 01634028, Summe: ~67h 30min (19.10.20)
 19.10.20: Story  5: 30min
 19.10.20: Story 23: 20min
 19.10.20: Story  2: 35min
+20.10.20: Story 15: 3h
+21.10.20: Story 10: 10min
+21.10.20: Story 26: 20min
