@@ -38,10 +38,10 @@ public interface TestData {
      * Horse Data
      */
     static Horse getNewHorse(){
-        return new Horse(12L, "Johan", "alt", Date.valueOf("2020-06-22"), true, null, new Horse(88L), new Horse(77L));
+        return new Horse(12L, "Johan", "", Date.valueOf("2020-06-22"), true, null, new Horse(88L), new Horse(77L));
     }
     static Horse getNewHorse(Horse father, Horse mother){
-        return new Horse(null, "Johan", "alt", Date.valueOf("2020-06-22"), true, null, father, mother);
+        return new Horse(null, "Johan", "", Date.valueOf("2020-06-22"), true, null, father, mother);
     }
 
 }

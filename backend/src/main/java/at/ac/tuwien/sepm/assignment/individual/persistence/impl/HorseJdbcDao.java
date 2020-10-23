@@ -38,8 +38,8 @@ public class HorseJdbcDao implements HorseDao {
     }
 
     @Override
-    public Horse save(Horse horse) throws PersistenceException {
-        LOGGER.trace("Save horse with name: " + horse.getName());
+    public Horse save(Horse horse) {
+        LOGGER.trace("save({})", horse);
         final String sql = "INSERT INTO " + TABLE_NAME + " (ID, NAME, DESCRIPTION, BIRTH_DATE, IS_MALE, BREED_ID, FATHER_ID, MOTHER_ID)" +
             " VALUES (null, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -51,14 +51,10 @@ public class HorseJdbcDao implements HorseDao {
                 stmt.setString(2, horse.getDescription());
                 stmt.setDate(3, horse.getBirthDate());
                 stmt.setBoolean(4, horse.getIsMale());
-//                LOGGER.info(""+horse);
-//                LOGGER.info(""+horse.getBreed());
                 if (horse.getBreed() != null && horse.getBreed().getId() != null && horse.getBreed().getId() != 0) {
                     stmt.setLong(5, horse.getBreed().getId());
-//                    stmt.setString(6, horse.getBreed().getName());
                 } else {
                     stmt.setNull(5, Types.BIGINT);
-//                    stmt.setString(6, null);
                 }
                 if (horse.getFather() != null && horse.getFather().getId() != null) {
                     stmt.setLong(6, horse.getFather().getId());
@@ -77,14 +73,16 @@ public class HorseJdbcDao implements HorseDao {
             throw new PersistenceException("Failed to save horse.");
         }
 
-        horse.setId(((Number)keyHolder.getKeys().get("id")).longValue());
+        if (!keyHolder.getKeyList().isEmpty()) {
+            horse.setId(((Number) keyHolder.getKeys().get("id")).longValue());
+        }
 
         return horse;
     }
 
     @Override
-    public Horse update(Long id, Horse horse) throws NotFoundException, PersistenceException {
-        LOGGER.trace("Get horse with id {} and update values", id);
+    public Horse update(Long id, Horse horse) {
+        LOGGER.trace("update({}, {})", id, horse);
         String sql = "UPDATE " + TABLE_NAME + " SET NAME=COALESCE(?, NAME), DESCRIPTION=COALESCE(?, DESCRIPTION), " +
             "BIRTH_DATE=COALESCE(?, BIRTH_DATE), IS_MALE=COALESCE(?, IS_MALE), BREED_ID=?, FATHER_ID=?, MOTHER_ID=? WHERE ID=?";
 
@@ -96,14 +94,10 @@ public class HorseJdbcDao implements HorseDao {
                 stmt.setString(2, horse.getDescription());
                 stmt.setDate(3, horse.getBirthDate());
                 stmt.setBoolean(4, horse.getIsMale());
-//                LOGGER.info(""+horse);
-//                LOGGER.info(""+horse.getBreed());
                 if (horse.getBreed() != null && horse.getBreed().getId() != null && horse.getBreed().getId() != 0) {
                     stmt.setLong(5, horse.getBreed().getId());
-//                    stmt.setString(6, horse.getBreed().getName());
                 } else {
                     stmt.setNull(5, Type.LONG);
-//                    stmt.setString(6, null);
                 }
                 if (horse.getFather() != null && horse.getFather().getId() != null) {
                     stmt.setLong(6, horse.getFather().getId());
@@ -122,16 +116,16 @@ public class HorseJdbcDao implements HorseDao {
         } catch (DataAccessException e){
             throw new PersistenceException("Failed to update horse with id: " + id);
         }
-        if (keyHolder.getKeyList().isEmpty()){
+
+        if (keyHolder.getKeyList().isEmpty()) {
             throw new NotFoundException("Could not find horse with id: " + id);
         }
-
         return horse;
     }
 
     @Override
-    public void delete(Long id) throws PersistenceException{
-        LOGGER.trace("Delete horse with id {}", id);
+    public void delete(Long id) {
+        LOGGER.trace("delete({})", id);
         Horse horse = findOneById(id);
         String horseParent =  horse.getIsMale() ?  " SET FATHER_ID=0 WHERE FATHER_ID=?" : " SET MOTHER_ID=0 WHERE MOTHER_ID=?";
         String sql = "DELETE FROM " + TABLE_NAME + " WHERE ID=?; UPDATE " + TABLE_NAME + horseParent;
@@ -150,7 +144,7 @@ public class HorseJdbcDao implements HorseDao {
 
     @Override
     public Horse findOneById(Long id) {
-        LOGGER.trace("Get horse with id {}", id);
+        LOGGER.trace("findOneById({})", id);
         final String sql = "SELECT * FROM " + TABLE_NAME + " WHERE ID=?";
         List<Horse> horses = jdbcTemplate.query(sql, new Object[] { id }, this::mapRow);
         if (horses.isEmpty()) {
@@ -160,9 +154,8 @@ public class HorseJdbcDao implements HorseDao {
     }
 
     @Override
-    public List<Horse> findHorses(Horse horse) throws PersistenceException {
-        LOGGER.trace("Search for horses with parameter: name: {}, description: {}, birthDate: {}, isMale: {}, breed: {}",
-            horse.getName(), horse.getDescription(),  horse.getBirthDate(), horse.getIsMale(), horse.getBreed());
+    public List<Horse> findHorses(Horse horse) {
+        LOGGER.trace("findHorses({})", horse);
         String sql = "SELECT * FROM " + TABLE_NAME + " WHERE UPPER(NAME) LIKE UPPER(?) AND UPPER(IFNULL(DESCRIPTION, '')) LIKE UPPER(?) " +
             "AND BIRTH_DATE <= ? AND IS_MALE LIKE ? AND IFNULL(BREED_ID, '0') LIKE ?";
 
@@ -193,8 +186,8 @@ public class HorseJdbcDao implements HorseDao {
     }
 
     @Override
-    public List<Horse> getAll() throws PersistenceException {
-        LOGGER.trace("Get all horses");
+    public List<Horse> getAll() {
+        LOGGER.trace("getAll()");
         String sql = "SELECT * FROM " + TABLE_NAME;
         List<Horse> horseList;
         try {
@@ -210,8 +203,8 @@ public class HorseJdbcDao implements HorseDao {
     }
 
     @Override
-    public List<Horse> getChildren(Long id) throws PersistenceException {
-        LOGGER.trace("Get children for horse with id {}", id);
+    public List<Horse> getChildren(Long id) {
+        LOGGER.trace("getChildren({})", id);
         Horse parent = findOneById(id);
         String horseParent =  parent.getIsMale() ?  "FATHER_ID=?" : "MOTHER_ID=?";
         String sql = "SELECT * FROM " + TABLE_NAME + " WHERE " + horseParent + "  ORDER BY BIRTH_DATE ASC";
@@ -230,8 +223,8 @@ public class HorseJdbcDao implements HorseDao {
     }
 
     @Override
-    public List<Horse> getParents(Long fatherId, Long motherId) throws PersistenceException {
-        LOGGER.trace("Get parents for horse with ids: father={}, mother={}", fatherId, motherId);
+    public List<Horse> getParents(Long fatherId, Long motherId) {
+        LOGGER.trace("getParents({}, {})", fatherId, motherId);
         String sql = "SELECT * FROM " + TABLE_NAME + " WHERE ID IN (?,?)";
         List<Horse> horseList;
         try {

@@ -7,15 +7,12 @@ import at.ac.tuwien.sepm.assignment.individual.exception.ValidationException;
 import at.ac.tuwien.sepm.assignment.individual.persistence.HorseDao;
 import at.ac.tuwien.sepm.assignment.individual.service.HorseService;
 import at.ac.tuwien.sepm.assignment.individual.util.Validator;
-import ch.qos.logback.core.joran.conditional.IfAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.lang.invoke.MethodHandles;
-import java.rmi.ServerException;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -32,7 +29,7 @@ public class HorseServiceImpl implements HorseService {
     }
 
     @Override
-    public Horse save(Horse horse) throws PersistenceException, ValidationException {
+    public Horse save(Horse horse) {
         LOGGER.trace("save({})", horse);
         LOGGER.debug("Save: Horse values: " + horse);
         validator.validateNewHorse(horse);
@@ -40,7 +37,7 @@ public class HorseServiceImpl implements HorseService {
     }
 
     @Override
-    public Horse update(Long id, Horse horse) throws PersistenceException, NotFoundException, ValidationException {
+    public Horse update(Long id, Horse horse) {
         LOGGER.trace("update({})", id);
         LOGGER.debug("Update: Horse id: {}; Horse values:  name={}, description={},  date={}, isMale={}, breed={}",
             id, horse.getName(), horse.getDescription(), horse.getBirthDate(), horse.getIsMale(), horse.getBreed());
@@ -49,7 +46,7 @@ public class HorseServiceImpl implements HorseService {
     }
 
     @Override
-    public void delete(Long id) throws ValidationException, NotFoundException, PersistenceException {
+    public void delete(Long id) {
         LOGGER.trace("delete({})", id);
         validator.checkId(id);
         findOneById(id);
@@ -57,7 +54,7 @@ public class HorseServiceImpl implements HorseService {
     }
 
     @Override
-    public Horse findOneById(Long id) throws ValidationException {
+    public Horse findOneById(Long id)  {
         LOGGER.trace("findOneById({})", id);
         validator.checkId(id);
         return horseDao.findOneById(id);
@@ -65,7 +62,7 @@ public class HorseServiceImpl implements HorseService {
 
     @Override
     public List<Horse> findHorses(Horse horse) throws PersistenceException {
-        LOGGER.trace("Search for horses.");
+        LOGGER.trace("findHorses({})", horse);
         LOGGER.debug("Search params: name={}, description={}, date={}, isMale={}, breed={}",
             horse.getName(), horse.getDescription(), horse.getBirthDate(), horse.getIsMale(), horse.getBreed());
         return horseDao.findHorses(horse);
@@ -73,22 +70,23 @@ public class HorseServiceImpl implements HorseService {
 
     @Override
     public List<Horse> getAll() throws PersistenceException {
-        LOGGER.trace("Get all horses.");
+        LOGGER.trace("getAll()");
         return horseDao.getAll();
     }
 
     @Override
-    public List<Horse> getFamilyTree(Long id, Long generations) throws PersistenceException {
-        LOGGER.trace("Get family tree for horse={}, number of generations={}", id, generations);
+    public List<Horse> getFamilyTree(Long id, Long generations) {
+        LOGGER.trace("getFamilyTree({}, {})", id, generations);
         validator.validateHorseTree(generations);
         Horse horseRoot = findOneById(id);
         List<Horse> family = new LinkedList<>();
         family.add(horseRoot);
         family.addAll(getTree(horseRoot, generations));
-        return generations > 0 ? family : List.of();
+        return generations > 1 ? family : List.of();
     }
 
     private List<Horse> getTree(Horse root, Long generations) {
+        LOGGER.trace("getTree({}, {})", root, generations);
         if (generations <= 1) {
             return List.of();
         }

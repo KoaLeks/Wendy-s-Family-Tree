@@ -56,11 +56,10 @@ public class BreedJdbcDao implements BreedDao {
 
     @Override
     public Breed save(Breed breed) {
-        LOGGER.trace("Save breed with name: " + breed.getName());
+        LOGGER.trace("save({})", breed);
         final String sql = "INSERT INTO " + TABLE_NAME + " (ID, NAME, DESCRIPTION)" +
             " VALUES (null, ?, ?)";
 
-//        LOGGER.info("" + breed);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         try {
             jdbcTemplate.update(connection -> {
@@ -81,7 +80,7 @@ public class BreedJdbcDao implements BreedDao {
 
     @Override
     public List<Breed> getAll() {
-        LOGGER.trace("Get all breeds");
+        LOGGER.trace("getAll()");
         String sql = "SELECT * FROM " + TABLE_NAME;
 
         List<Breed> breedList;

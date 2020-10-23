@@ -29,6 +29,7 @@ public class Validator {
     }
 
     public void validateHorseTree(Long generations) {
+        LOGGER.trace("validateHorseTree({})", generations);
         if (generations == null || generations <= 0) {
             throw new ValidationException("Number of generations must be set! Numbers below 1 won't display anything!");
         }
@@ -36,6 +37,7 @@ public class Validator {
     }
 
     public void validateNewBreed(Breed breed) {
+        LOGGER.trace("validateNewBreed({})", breed);
         if (breed.getId() != null) {
         throw new ValidationException("Please don't assign IDs manually. IDs are automatically assigned!");
         }
@@ -54,6 +56,7 @@ public class Validator {
     }
 
     public void validateNewHorse(Horse horse) throws ValidationException {
+        LOGGER.trace("validateNewHorse({})", horse);
         if (horse.getId() != null) {
             throw new ValidationException("Please don't assign IDs manually. IDs are automatically assigned!");
         }
@@ -61,6 +64,7 @@ public class Validator {
     }
 
     public void validateUpdateHorse(Long id, Horse horse) throws ValidationException {
+        LOGGER.trace("validateUpdateHorse({})", horse);
         List<Horse> children = horseDao.getChildren(id);
         checkId(id);
         validateHorseValues(horse);
@@ -73,6 +77,7 @@ public class Validator {
     }
 
     private void validateHorseValues(Horse horse) {
+        LOGGER.trace("validateHorseValues({})", horse);
         if (horse.getName() == null || horse.getName().equals("")) {
             throw new ValidationException("Name must be set!");
         }
@@ -95,11 +100,13 @@ public class Validator {
     }
 
     private boolean checkIfSexChanged(Horse horse) {
+        LOGGER.trace("checkIfSexChanged({})", horse);
         Horse horseCheck = horseDao.findOneById(horse.getId());
         return !(horseCheck.getIsMale() == horse.getIsMale());
     }
 
     private void validateParentDate(Horse child, Horse parent){
+        LOGGER.trace("validateParentDate({}, {})", child, parent);
         if (parent == null) {
             return;
         }
@@ -109,6 +116,7 @@ public class Validator {
     }
 
     private void validateParentsCheckIfSameSex(Horse father, Horse mother) {
+        LOGGER.trace("validateParentsCheckIfSameSex({}, {})", father, mother);
         if (father == null || mother == null) {
             return;
         }
@@ -118,15 +126,17 @@ public class Validator {
     }
 
     public void validateParents(Horse horse) {
+        LOGGER.trace("validateParents({})", horse);
         Horse father;
         Horse mother;
         try {
-            father = horse.getFather() != null && horse.getFather().getId() != 0 ? horseDao.findOneById(horse.getFather().getId()) : null;
+
+            father = horse.getFather() != null && horse.getFather().getId() != null && horse.getFather().getId() != 0 ? horseDao.findOneById(horse.getFather().getId()) : null;
         } catch (NotFoundException e) {
             throw new NotFoundException("Invalid Parent. Father with id= " + horse.getFather().getId() + " does not exist.");
         }
         try {
-            mother = horse.getMother() != null && horse.getMother().getId() != 0 ? horseDao.findOneById(horse.getMother().getId()) : null;
+            mother = horse.getMother() != null && horse.getMother().getId() != null  && horse.getMother().getId() != 0 ? horseDao.findOneById(horse.getMother().getId()) : null;
         } catch (NotFoundException e) {
             throw new NotFoundException("Invalid Parent. Mother with id= " + horse.getFather().getId() + " does not exist.");
         }
@@ -136,11 +146,16 @@ public class Validator {
     }
 
     public boolean checkIfBreedExists(Breed breed) {
+        LOGGER.trace("checkIfBreedExists({})", breed);
+        if (breed == null) {
+            return true;
+        }
         Breed breedCheck = breedDao.getOneById(breed.getId());
         return breedCheck.equals(breed);
     }
 
     public boolean checkIfDuplicateBreedName(Breed breed){
+        LOGGER.trace("checkIfDuplicateBreedName({})", breed);
         Breed duplicate;
         try {
             duplicate = breedDao.getOneByName(breed.getName());
@@ -151,6 +166,7 @@ public class Validator {
     }
 
     public void checkId(Long id) {
+        LOGGER.trace("checkId({})", id);
         if (id == null || id < 0) {
             throw new ValidationException("Invalid ID value! ID=" + id);
         }
