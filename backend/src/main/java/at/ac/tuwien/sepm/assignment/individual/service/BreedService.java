@@ -15,7 +15,6 @@ public interface BreedService {
      * Gets the breed with a given ID.
      * @param id of the owner to find.
      * @return the owner with the specified id.
-     * @throws RuntimeException  if something goes wrong during data processing.
      * @throws NotFoundException if the owner could not be found in the system.
      */
     Breed getOneById(Long id);
@@ -28,7 +27,7 @@ public interface BreedService {
      * @throws PersistenceException will be thrown if something goes wrong during data processing.
      * @throws ValidationException  will be thrown if the horse has invalid values.
      */
-    Breed save(Breed breed) throws PersistenceException, ValidationException;
+    Breed save(Breed breed);
 
     /**
      * @return A list that contains all breeds
