@@ -48,8 +48,7 @@ export class BreedService {
   }
 
   /**
-   * Loads specific breed from the backend
-   * @param id of breed to load
+   * Loads all breeds from the backend
    */
   getBreedList(): Observable<Breed[]> {
     console.log('Getting breeds');

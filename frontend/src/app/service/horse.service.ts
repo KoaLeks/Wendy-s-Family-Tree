@@ -58,7 +58,7 @@ export class HorseService {
 
   /**
    * Update specific horse from the backend
-   * @param horse contains the updated values
+   * @param horse that contains the updated values
    */
   updateHorse(horse: Horse) {
     console.log('Edit horse ' + horse.id);
@@ -96,6 +96,7 @@ export class HorseService {
 
   /**
    * Finds all horses that fulfill the parameter from the database
+   * @param horse search parameter
    */
   findHorses(horse: Horse): Observable<Horse[]>{
     if (horse != null) {
@@ -120,13 +121,15 @@ export class HorseService {
 
   /**
    * Gets all horses from the database
+   * @param id of horse to get the family members
+   * @param generations number of generations to get
    */
   getHorseFamilyList(id: number, generations: number): Observable<HorseTree[]> {
     console.log('Getting family members');
     const httpParamsOptions = {
       params: new HttpParams().set('generations', String(generations))
     };
-    return this.httpClient.get<HorseTree[]>(this.messageBaseUri  + '/' + id + '/family_tree', httpParamsOptions);
+    return this.httpClient.get<HorseTree[]>(this.messageBaseUri  + '/' + id + '/family_trees', httpParamsOptions);
   }
   /**
    * Gets all horses from the database
