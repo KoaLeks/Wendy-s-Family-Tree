@@ -23,12 +23,12 @@ public abstract class HorseDaoTestBase {
     @Test
     @DisplayName("Updating horse should change its values")
     public void updatingHorse_shouldChangeHorseValues() {
-        Horse beforeUpdate = horseDao.save(TestData.getNewHorse());
-        Horse newValues = TestData.getNewHorse();
+        Horse beforeUpdate = horseDao.findOneById(1L);
+        Horse newValues = new Horse();
         newValues.setName("Mimi");
         newValues.setDescription("new Description");
         newValues.setIsMale(false);
-        Horse afterUpdate = horseDao.update(beforeUpdate.getId(), newValues);
+        Horse afterUpdate = horseDao.update(1L, newValues);
         assertNotEquals(beforeUpdate, afterUpdate);
     }
 }

@@ -21,13 +21,13 @@ public abstract class BreedEndpointTestBase {
     }
 
     @Test
-    @DisplayName("Saving breed with no name should throw BAD_REQUEST ResponseStatusException")
-    public void savingBreed_WithNoName_Throws_BAD_REQUEST_ResponseStatusException() {
+    @DisplayName("Saving breed with no name should throw UNPROCESSABLE_ENTITY ResponseStatusException")
+    public void savingBreed_WithNoName_Throws_UNPROCESSABLE_ENTITY_ResponseStatusException() {
         BreedDto breedDto = new BreedDto(null, "", "no name");
         try {
             breedEndPoint.saveBreed(breedDto);
         } catch (ResponseStatusException e) {
-            assertEquals(e.getStatus(), HttpStatus.BAD_REQUEST);
+            assertEquals(e.getStatus(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 

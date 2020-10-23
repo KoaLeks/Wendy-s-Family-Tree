@@ -27,13 +27,13 @@ public abstract class HorseEndpointTestBase {
     }
 
     @Test
-    @DisplayName("Updating horses sex while it's assigned as a parent to a horse should throw BAD_REQUEST ResponseStatusException")
-    public void updatingHorse_changingSexWhileItsAssignedAsAParent_Throws_BAD_REQUEST_ResponseStatusException(){
+    @DisplayName("Updating horses sex while it's assigned as a parent to a horse should throw UNPROCESSABLE_ENTITY ResponseStatusException")
+    public void updatingHorse_changingSexWhileItsAssignedAsAParent_Throws_UNPROCESSABLE_ENTITY_ResponseStatusException(){
         HorseDto horse = new HorseDto(null, null, null, null, true, null, null, null);
         try {
             horseEndpoint.updateHorse(2L, horse);
         } catch (ResponseStatusException e) {
-            assertEquals(e.getStatus(), HttpStatus.BAD_REQUEST);
+            assertEquals(e.getStatus(), HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 }

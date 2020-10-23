@@ -54,12 +54,13 @@ public class BreedEndpoint {
             return breedMapper.entityToDto(breedService.save(breedEntity));
         } catch (ValidationException e) {
             LOGGER.error("Error saving breed: " + e);
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error during saving breed: " + e.getMessage(), e);
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Error during saving breed: " + e.getMessage(), e);
         } catch (PersistenceException e) {
             LOGGER.error("Error saving breed: " + e);
             throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Error during saving breed: " + e.getMessage(), e);
         }
     }
+
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<BreedDto> getAll() {

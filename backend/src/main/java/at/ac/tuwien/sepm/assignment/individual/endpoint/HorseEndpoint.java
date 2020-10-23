@@ -42,7 +42,7 @@ public class HorseEndpoint {
             return horseMapper.entityToDto(horseService.save(horseEntity));
         } catch (ValidationException e) {
             LOGGER.error("Error saving horse: " + e);
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error saving horse: " + e.getMessage(), e);
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Error saving horse: " + e.getMessage(), e);
         } catch (PersistenceException e){
             LOGGER.error("Error saving horse: " + e);
             throw  new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Error saving horse: " + e.getMessage(), e);
@@ -61,7 +61,7 @@ public class HorseEndpoint {
             throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Error updating horse: " + e.getMessage(), e);
         } catch (ValidationException e) {
             LOGGER.error("Error updating horse: " + e);
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error updating horse: " + e.getMessage(), e);
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Error updating horse: " + e.getMessage(), e);
         } catch (NotFoundException e) {
             LOGGER.error("Error updating horse: " + e);
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error updating horse: " + e.getMessage(), e);
@@ -79,7 +79,7 @@ public class HorseEndpoint {
             throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Error deleting horse: " + e.getMessage(), e);
         } catch (ValidationException e) {
             LOGGER.error("Error deleting horse: " + e);
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error deleting horse: " + e.getMessage(), e);
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Error deleting horse: " + e.getMessage(), e);
         } catch (NotFoundException e) {
             LOGGER.error("Error deleting horse: " + e);
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error deleting horse: " + e.getMessage(), e);
@@ -94,11 +94,11 @@ public class HorseEndpoint {
         try {
             return horseMapper.entityToDto(horseService.findOneById(id));
         } catch (NotFoundException e) {
-            LOGGER.error("Error loading horse with id: " + id + e);
+            LOGGER.error("Error loading horse with id: " + id + "; " + e);
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error during reading horse: " + e.getMessage(), e);
         } catch (ValidationException e) {
-            LOGGER.error("Error loading horse with id: " + id + e);
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error during reading horse: " + e.getMessage(), e);
+            LOGGER.error("Error loading horse with id: " + id + "; " + e);
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Error during reading horse: " + e.getMessage(), e);
         }
     }
 
@@ -115,7 +115,7 @@ public class HorseEndpoint {
                 throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Error getting horses: " + e.getMessage());
             } catch (ValidationException e) {
                 LOGGER.error("Error searching horses: " + e);
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error getting horses: " + e.getMessage());
+                throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Error getting horses: " + e.getMessage());
             }
         } else {
             return getAllHorses();
@@ -129,11 +129,11 @@ public class HorseEndpoint {
         try {
             return horseMapper.entityToDetailDto(horseService.findOneById(id));
         } catch (NotFoundException e) {
-            LOGGER.error("Error loading horse with id: " + id + e);
+            LOGGER.error("Error loading horse with id: " + id + "; " + e);
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error during reading horse: " + e.getMessage(), e);
         } catch (ValidationException e) {
-            LOGGER.error("Error loading horse with id: " + id + e);
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error during reading horse: " + e.getMessage(), e);
+            LOGGER.error("Error loading horse with id: " + id + "; " + e);
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Error during reading horse: " + e.getMessage(), e);
         }
     }
 
@@ -144,13 +144,13 @@ public class HorseEndpoint {
         try {
             return horseMapper.entityToHorseTreeDtoList(horseService.getFamilyTree(id, generationDto.getGenerations()));
         } catch (NotFoundException e) {
-            LOGGER.error("Error loading family tree for horse with id: " + id + e);
+            LOGGER.error("Error loading family tree for horse with id: " + id + "; " + e);
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error during getting family tree for horse with id: " + id + e.getMessage(), e);
         } catch (ValidationException e) {
-            LOGGER.error("Error loading family tree for horse with id: " + id + e);
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Error during getting family tree for horse with id: " + id + e.getMessage(), e);
+            LOGGER.error("Error loading family tree for horse with id: " + id + "; " + e);
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Error during getting family tree for horse with id: " + id + e.getMessage(), e);
         }catch (PersistenceException e) {
-            LOGGER.error("Error loading family tree for horse with id: " + id + e);
+            LOGGER.error("Error loading family tree for horse with id: " + id + "; " + e);
             throw new ResponseStatusException(HttpStatus.BAD_GATEWAY,"Error during getting family tree for horse with id: " + id + e.getMessage(), e);
         }
     }
