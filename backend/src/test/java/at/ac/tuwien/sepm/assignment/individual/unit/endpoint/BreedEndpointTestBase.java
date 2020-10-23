@@ -27,7 +27,7 @@ public abstract class BreedEndpointTestBase {
         try {
             breedEndPoint.saveBreed(breedDto);
         } catch (ResponseStatusException e) {
-            assertEquals(e.getStatus(), HttpStatus.UNPROCESSABLE_ENTITY);
+            assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, e.getStatus());
         }
     }
 

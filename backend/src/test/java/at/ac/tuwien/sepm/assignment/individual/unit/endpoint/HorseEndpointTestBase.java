@@ -33,7 +33,7 @@ public abstract class HorseEndpointTestBase {
         try {
             horseEndpoint.updateHorse(2L, horse);
         } catch (ResponseStatusException e) {
-            assertEquals(e.getStatus(), HttpStatus.UNPROCESSABLE_ENTITY);
+            assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, e.getStatus());
         }
     }
 }

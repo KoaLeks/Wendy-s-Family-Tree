@@ -137,7 +137,7 @@ public class HorseEndpoint {
         }
     }
 
-    @GetMapping(value = "/{id}/family_tree")
+    @GetMapping(value = "/{id}/family_trees")
     @ResponseStatus(HttpStatus.OK)
     public List<HorseTreeDto> getHorseFamilyTree(@PathVariable Long id, GenerationDto generationDto) {
         LOGGER.info("GET " + BASE_URL + "/{}/family_tree?generations={}", id, generationDto.getGenerations());
