@@ -129,6 +129,8 @@ public class HorseJdbcDao implements HorseDao {
         Horse horse = findOneById(id);
         String horseParent =  horse.getIsMale() ?  " SET FATHER_ID=0 WHERE FATHER_ID=?" : " SET MOTHER_ID=0 WHERE MOTHER_ID=?";
         String sql = "DELETE FROM " + TABLE_NAME + " WHERE ID=?; UPDATE " + TABLE_NAME + horseParent;
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
         try {
             jdbcTemplate.update(connection -> {
                 PreparedStatement stmt = connection.prepareStatement( sql, Statement.RETURN_GENERATED_KEYS);
@@ -136,9 +138,12 @@ public class HorseJdbcDao implements HorseDao {
                 stmt.setLong(2, id);
                 LOGGER.debug("Query: " + stmt.toString());
                 return stmt;
-            });
+            }, keyHolder);
         } catch (DataAccessException e){
             throw new PersistenceException("Could not find horse with id: " + id);
+        }
+        if (keyHolder.getKeyList().isEmpty()) {
+            throw new NotFoundException("Could not find horse with id: " + id);
         }
     }
 
@@ -256,7 +261,13 @@ public class HorseJdbcDao implements HorseDao {
         horse.setDescription(resultSet.getString("description"));
         horse.setBirthDate(Date.valueOf(resultSet.getTimestamp("birth_date").toLocalDateTime().toLocalDate()));
         horse.setIsMale(resultSet.getBoolean("is_male"));
-        horse.setBreed(breedDao.getOneById(resultSet.getLong("breed_id")));
+        Breed breed;
+        try {
+            breed = breedDao.getOneById(resultSet.getLong("breed_id"));
+            horse.setBreed(breed);
+        } catch (NotFoundException e) {
+            horse.setBreed(new Breed(0L));
+        }
         Horse father;
         Horse mother;
         try {

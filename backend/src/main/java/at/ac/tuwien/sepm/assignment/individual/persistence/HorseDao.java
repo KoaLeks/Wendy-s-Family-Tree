@@ -25,6 +25,7 @@ public interface HorseDao {
 
     /**
      * @param id of the horse to delete.
+     * @throws NotFoundException    will be thrown if the horse could not be found in the database.
      * @throws PersistenceException will be thrown if something goes wrong during the database access.
      */
     void delete(Long id);
@@ -44,6 +45,12 @@ public interface HorseDao {
     List<Horse> findHorses(Horse horse);
 
     /**
+     * @return list of all horses in the database.
+     * @throws PersistenceException will be thrown if something goes wrong during the database access.
+     */
+    List<Horse> getAll();
+
+    /**
      * @param id of parent.
      * @return A list of horse children, where parent horse is either mother or father.
      * @throws PersistenceException will be thrown if something goes wrong during the database access.
@@ -57,10 +64,4 @@ public interface HorseDao {
      * @throws PersistenceException will be thrown if something goes wrong during the database access.
      */
     List<Horse> getParents(Long fatherId, Long motherId);
-
-    /**
-     * @return list of all horses in the database.
-     * @throws PersistenceException will be thrown if something goes wrong during the database access.
-     */
-    List<Horse> getAll();
 }

@@ -1,9 +1,7 @@
 package at.ac.tuwien.sepm.assignment.individual.service.impl;
 
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
-import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.exception.PersistenceException;
-import at.ac.tuwien.sepm.assignment.individual.exception.ValidationException;
 import at.ac.tuwien.sepm.assignment.individual.persistence.HorseDao;
 import at.ac.tuwien.sepm.assignment.individual.service.HorseService;
 import at.ac.tuwien.sepm.assignment.individual.util.Validator;
@@ -39,7 +37,7 @@ public class HorseServiceImpl implements HorseService {
     @Override
     public Horse update(Long id, Horse horse) {
         LOGGER.trace("update({})", id);
-        LOGGER.debug("Update: Horse id: {}; Horse values:  name={}, description={},  date={}, isMale={}, breed={}",
+        LOGGER.debug("Update: Horse id: {}; Horse values: name={}, description={},  date={}, isMale={}, breed={}",
             id, horse.getName(), horse.getDescription(), horse.getBirthDate(), horse.getIsMale(), horse.getBreed());
         validator.validateUpdateHorse(id, horse);
         return horseDao.update(id, horse);
@@ -49,7 +47,6 @@ public class HorseServiceImpl implements HorseService {
     public void delete(Long id) {
         LOGGER.trace("delete({})", id);
         validator.checkId(id);
-        findOneById(id);
         horseDao.delete(id);
     }
 
@@ -61,7 +58,7 @@ public class HorseServiceImpl implements HorseService {
     }
 
     @Override
-    public List<Horse> findHorses(Horse horse) throws PersistenceException {
+    public List<Horse> findHorses(Horse horse)  {
         LOGGER.trace("findHorses({})", horse);
         LOGGER.debug("Search params: name={}, description={}, date={}, isMale={}, breed={}",
             horse.getName(), horse.getDescription(), horse.getBirthDate(), horse.getIsMale(), horse.getBreed());
@@ -69,7 +66,7 @@ public class HorseServiceImpl implements HorseService {
     }
 
     @Override
-    public List<Horse> getAll() throws PersistenceException {
+    public List<Horse> getAll()  {
         LOGGER.trace("getAll()");
         return horseDao.getAll();
     }

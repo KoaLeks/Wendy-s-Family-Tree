@@ -4,9 +4,8 @@ import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.exception.PersistenceException;
 import at.ac.tuwien.sepm.assignment.individual.exception.ValidationException;
+import at.ac.tuwien.sepm.assignment.individual.exception.ServiceException;
 
-import java.io.IOException;
-import java.rmi.ServerException;
 import java.util.List;
 
 public interface HorseService {
@@ -18,6 +17,7 @@ public interface HorseService {
      * @return the saved horse
      * @throws PersistenceException will be thrown if something goes wrong during data processing.
      * @throws ValidationException  will be thrown if the horse has invalid values.
+     * @throws ServiceException     will be thrown if the horse has valid values that could cause a conflict.
      */
     Horse save(Horse horse);
 
@@ -30,6 +30,7 @@ public interface HorseService {
      * @throws PersistenceException will be thrown if something goes wrong during the database access.
      * @throws ValidationException  will be thrown if the horse has invalid values.
      * @throws NotFoundException    will be thrown if the horse could not be found in the system.
+     * @throws ServiceException     will be thrown if the horse has valid values that could cause a conflict.
      */
     Horse update(Long id, Horse horse);
 
@@ -41,7 +42,7 @@ public interface HorseService {
      * @throws NotFoundException    will be thrown if the horse does not exist
      * @throws PersistenceException will be thrown if something goes wrong during the database access.
      */
-    void delete(Long id) throws ValidationException, NotFoundException, PersistenceException;
+    void delete(Long id);
 
     /**
      * @param id of the horse to find.
@@ -49,7 +50,7 @@ public interface HorseService {
      * @throws NotFoundException   will be thrown if the owner could not be found in the system.
      * @throws ValidationException will be thrown if the id value is invalid.
      */
-    Horse findOneById(Long id) throws RuntimeException, NotFoundException, ValidationException;
+    Horse findOneById(Long id);
 
     /**
      * Finds all horses that fulfill the search parameter
