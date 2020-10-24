@@ -6,6 +6,7 @@ import at.ac.tuwien.sepm.assignment.individual.entity.Breed;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.exception.PersistenceException;
+import at.ac.tuwien.sepm.assignment.individual.exception.ServiceException;
 import at.ac.tuwien.sepm.assignment.individual.exception.ValidationException;
 import at.ac.tuwien.sepm.assignment.individual.service.BreedService;
 import java.lang.invoke.MethodHandles;
@@ -58,6 +59,8 @@ public class BreedEndpoint {
         } catch (PersistenceException e) {
             LOGGER.error("Error saving breed: " + e);
             throw new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Error during saving breed: " + e.getMessage(), e);
+        } catch (ServiceException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Error during saving breed: " + e.getMessage(), e);
         }
     }
 

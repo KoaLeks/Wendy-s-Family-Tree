@@ -5,6 +5,7 @@ import at.ac.tuwien.sepm.assignment.individual.endpoint.mapper.HorseMapper;
 import at.ac.tuwien.sepm.assignment.individual.entity.Horse;
 import at.ac.tuwien.sepm.assignment.individual.exception.NotFoundException;
 import at.ac.tuwien.sepm.assignment.individual.exception.PersistenceException;
+import at.ac.tuwien.sepm.assignment.individual.exception.ServiceException;
 import at.ac.tuwien.sepm.assignment.individual.exception.ValidationException;
 import at.ac.tuwien.sepm.assignment.individual.service.HorseService;
 import org.slf4j.Logger;
@@ -46,6 +47,8 @@ public class HorseEndpoint {
         } catch (PersistenceException e){
             LOGGER.error("Error saving horse: " + e);
             throw  new ResponseStatusException(HttpStatus.BAD_GATEWAY, "Error saving horse: " + e.getMessage(), e);
+        } catch (ServiceException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Error saving horse: " + e.getMessage(), e);
         }
     }
 
@@ -65,6 +68,8 @@ public class HorseEndpoint {
         } catch (NotFoundException e) {
             LOGGER.error("Error updating horse: " + e);
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Error updating horse: " + e.getMessage(), e);
+        } catch (ServiceException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Error updating horse: " + e.getMessage(), e);
         }
     }
 
