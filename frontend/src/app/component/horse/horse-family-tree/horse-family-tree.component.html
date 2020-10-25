@@ -1,12 +1,9 @@
 <div class="input-group mb-3 mt-3">
-
   <div class="input-group-prepend">
     <span class="input-group-text">Number of generations to Display:  </span>
   </div>
-    <input class="form-control" type="number" value="1" min="1" [(ngModel)]="maxGenerations">
-  <button type="button" class="btn btn-outline-secondary">
-    <i class="material-icons float-right" (click)="getHorseFamily(horseId, maxGenerations)">search</i>
-  </button>
+  <input class="form-control" type="number" value="1" min="1" [(ngModel)]="maxGenerations">
+  <button type="button" class="btn btn-outline-secondary" (click)="getHorseFamily(horseId, maxGenerations)">Generate Family Tree</button>
 </div>
 <app-horse-family-tree-element [maxGenerations]="maxGenerations" [genCount]="0" [horseRoot]="horseRoot" [horseFamily]="horseFamily"></app-horse-family-tree-element>
 
