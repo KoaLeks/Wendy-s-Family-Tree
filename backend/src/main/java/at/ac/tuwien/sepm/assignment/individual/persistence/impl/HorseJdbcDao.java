@@ -142,9 +142,6 @@ public class HorseJdbcDao implements HorseDao {
         } catch (DataAccessException e){
             throw new PersistenceException("Could not find horse with id: " + id);
         }
-        if (keyHolder.getKeyList().isEmpty()) {
-            throw new NotFoundException("Could not find horse with id: " + id);
-        }
     }
 
     @Override

@@ -46,7 +46,7 @@ public class HorseServiceImpl implements HorseService {
     @Override
     public void delete(Long id) {
         LOGGER.trace("delete({})", id);
-        validator.checkId(id);
+        findOneById(id);
         horseDao.delete(id);
     }
 
