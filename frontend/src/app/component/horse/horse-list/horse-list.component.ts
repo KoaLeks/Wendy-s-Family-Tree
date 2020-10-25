@@ -65,6 +65,10 @@ export class HorseListComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * Gets all horses that fulfill the parameter from the database
+   * @param horse search parameter
+   */
   public findHorses(horse: Horse){
     this.horseService.findHorses(horse).subscribe(
       (horses: Horse[]) => {
@@ -74,5 +78,4 @@ export class HorseListComponent implements OnInit, OnDestroy {
       }
     );
   }
-
 }

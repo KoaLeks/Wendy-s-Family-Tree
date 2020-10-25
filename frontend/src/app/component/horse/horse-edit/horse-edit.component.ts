@@ -70,6 +70,9 @@ export class HorseEditComponent implements OnInit, OnDestroy {
     );
   }
 
+  /**
+   * Update specific horse from the backend, on success show modal, on error cancel changes
+   */
   public updateHorse(){
     this.horseService.updateHorse(this.editHorse).subscribe(
       (horse: Horse) => {

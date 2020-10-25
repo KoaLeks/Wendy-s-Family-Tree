@@ -25,6 +25,12 @@ export class HorseFamilyTreeComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  /**
+   * Gets Family tree for a specific horse
+   *
+   * @param horseId of the root horse
+   * @param maxGenerations number of generations to get
+   */
   getHorseFamily(horseId: number, maxGenerations: number) {
     this.horseService.getHorseFamilyList(horseId, maxGenerations)
       .subscribe(horseFamily  => {

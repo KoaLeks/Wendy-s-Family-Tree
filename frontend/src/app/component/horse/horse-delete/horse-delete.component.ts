@@ -34,6 +34,10 @@ export class HorseDeleteComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
+  /**
+   * Delete horse from backend, on success show modal and pass deleted horse to horse-list component to update list
+   * @param horse to be deleted
+   */
   public deleteHorse(id: number){
     this.horseService.deleteHorse(id)
       .subscribe(() => {

@@ -61,6 +61,10 @@ export class HorseComponent implements OnInit {
     this.error = false;
   }
 
+  /**
+   * Triggers error modal and displays error message
+   * @param error that may appear
+   */
   defaultServiceErrorHandling(error: any): boolean {
     this.error = true;
     if (error.status === 0) {

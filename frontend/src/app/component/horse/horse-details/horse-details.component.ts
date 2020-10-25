@@ -34,6 +34,10 @@ export class HorseDetailsComponent implements OnInit {
     });
   }
 
+  /**
+   * Pass horse to horse-edit component, on successful edit navigate to current page
+   * @param horse to be edited
+   */
   selectHorseEdit(horse: HorseDetail) {
     const horseEdit: Horse = new Horse(horse.id, horse.name, horse.description, horse.birthDate,
       horse.isMale, horse.breed, horse.father.id, horse.mother.id);
@@ -46,6 +50,10 @@ export class HorseDetailsComponent implements OnInit {
     );
   }
 
+  /**
+   * Pass horse to horse-delete component, on successful delete return to horse-list component
+   * @param horse to be deleted
+   */
   selectHorseDelete(horse: HorseDetail){
     this.horseService.emitSelectedHorseDelete(horse);
     // @ts-ignore

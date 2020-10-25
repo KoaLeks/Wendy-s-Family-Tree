@@ -16,16 +16,18 @@ export class HorseFamilyTreeElementComponent implements OnInit {
   @Input() maxGenerations;
 
   constructor(private horseService: HorseService, private router: Router) {
-
   }
 
   ngOnInit(): void {
     this.genCount++;
   }
 
+  /**
+   * Pass horse to horse-delete component, on successful delete navigate to current page
+   * @param horse to be deleted
+   */
   selectHorseDelete(horse: HorseTree){
     this.horseService.emitSelectedHorseDelete(horse);
-
     const currentUrl = this.router.url;
     $('#successDeleteModal').on('hidden.bs.modal', () => this.router.navigateByUrl('/', {skipLocationChange: true})
       .then(() => {
@@ -38,6 +40,10 @@ export class HorseFamilyTreeElementComponent implements OnInit {
     return this.horseFamily.find(horse => parentId === horse.id);
   }
 
+
+  /**
+   * Toggles + / - sign of the selected tree element on click
+   */
   toggleIcon() {
     const icon = document.getElementById('icon' + this.horseRoot.id + this.genCount);
     if (icon.innerText === 'add') {

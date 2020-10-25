@@ -29,6 +29,10 @@ export class BreedAddComponent implements OnInit, OnDestroy {
     this.subscriptionGetBreedList.unsubscribe();
   }
 
+  /**
+   * Add new breed to the database, on success add breed to list
+   * @param breed to be added to the database
+   */
   public addBreed(breed: Breed) {
     this.breedService.addBreed(breed)
       .subscribe(
@@ -40,7 +44,6 @@ export class BreedAddComponent implements OnInit, OnDestroy {
         }
       ).add(() => {
         if (!this.addError) {
-          this.breedService.emitNewBreed(this.newBreed);
           this.breedList.push(new Breed(breed.id, breed.name, breed.description));
           console.log(this.newBreed);
           // @ts-ignore

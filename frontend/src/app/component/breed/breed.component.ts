@@ -59,6 +59,10 @@ export class BreedComponent implements OnInit {
   }
 
 
+  /**
+   * Triggers error modal and displays error message
+   * @param error that may appear
+   */
   defaultServiceErrorHandling(error: any): boolean {
     console.log(error);
     this.error = true;

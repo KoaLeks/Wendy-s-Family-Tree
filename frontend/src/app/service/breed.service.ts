@@ -10,20 +10,17 @@ const baseUri = environment.backendUrl + 'breeds';
   providedIn: 'root'
 })
 export class BreedService {
+
   constructor(private httpClient: HttpClient) {
   }
 
   private onInitBreedListSource = new BehaviorSubject<Breed[]>(null);
-  private onBreedAddSource = new ReplaySubject<Breed>(1);
-
   public onInitBreedList$ = this.onInitBreedListSource.asObservable();
-  public onBreedAdd$ = this.onBreedAddSource.asObservable();
 
 
-  emitNewBreed(breed: Breed) {
-    this.onBreedAddSource.next(breed);
-  }
-
+  /**
+   * Communications between components
+   */
   emitBreedList(breed: Breed[]) {
     this.onInitBreedListSource.next(breed);
   }

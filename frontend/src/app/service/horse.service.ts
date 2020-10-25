@@ -26,6 +26,10 @@ export class HorseService {
   constructor(private httpClient: HttpClient) {
   }
 
+  /**
+   * Communications between components
+   */
+
   emitHorseList(horse: Horse[]) {
     this.onInitHorseListSource.next(horse);
   }
@@ -95,7 +99,7 @@ export class HorseService {
   }
 
   /**
-   * Finds all horses that fulfill the parameter from the database
+   * Gets all horses that fulfill the parameter from the database
    * @param horse search parameter
    */
   findHorses(horse: Horse): Observable<Horse[]>{
