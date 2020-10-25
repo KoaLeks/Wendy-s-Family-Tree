@@ -17,8 +17,8 @@
       <option *ngFor="let breed of breedListTable" value="{{breed.id}}">{{breed.name}}</option>
     </select>
     <div class="input-group-append">
-      <button type="button" class="btn btn-outline-secondary">
-        <i class="material-icons float-right" (click)="findHorses(searchParam)">search</i>
+      <button type="button" class="btn btn-outline-secondary" (click)="findHorses(searchParam)">
+        <i class="material-icons float-right">search</i>
       </button>
     </div>
   </div>
