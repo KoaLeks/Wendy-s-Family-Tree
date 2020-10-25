@@ -79,7 +79,7 @@ public class HorseServiceImpl implements HorseService {
         List<Horse> family = new LinkedList<>();
         family.add(horseRoot);
         family.addAll(getTree(horseRoot, generations));
-        return generations > 1 ? family : List.of();
+        return generations >= 1 ? family : List.of();
     }
 
     private List<Horse> getTree(Horse root, Long generations) {
